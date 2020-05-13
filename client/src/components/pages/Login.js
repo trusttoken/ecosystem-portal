@@ -1,16 +1,33 @@
 import React, { Component } from 'react'
 import { Redirect } from 'react-router-dom'
+import { Magic } from 'magic-sdk';
 
 import { formInput, formFeedback } from '@/utils/formHelpers'
 import { apiUrl } from '@/constants'
 import agent from '@/utils/agent'
+
+const magic = new Magic('pk_test_527D527E4613C26C');
 
 class Login extends Component {
   state = {
     email: '',
     emailError: null,
     loading: false,
-    redirectTo: null
+    redirectTo: null,
+    testMessage: ''
+  }
+
+  componentWillMount() {
+    console.log('mounting');
+    try {
+      agent
+        .post(`${apiUrl}/api/ping`)
+        .then((res) => {
+           this.setState({ testMessage: res.text })
+        })
+    } catch (err) {
+      console.log(err)
+    }
   }
 
   handleSendEmailToken = async () => {
@@ -20,19 +37,30 @@ class Login extends Component {
       return
     }
     this.setState({ loading: true })
+    // try {
+    //   await agent
+    //     .post(`${apiUrl}/api/send_email_token`)
+    //     .send({ email: this.state.email })
+    // } catch (error) {
+    //   this.setState({
+    //     loading: false,
+    //     emailError: 'Failed to send email token. Try again shortly.'
+    //   })
+    //   return
+    // }
     try {
-      await agent
-        .post(`${apiUrl}/api/send_email_token`)
-        .send({ email: this.state.email })
+      const didToken = await magic.auth.loginWithMagicLink({ email: this.state.email });
+      this.setState({ loading: false, redirectTo: `/login_handler/${didToken}` });
     } catch (error) {
+      console.log(error);
       this.setState({
         loading: false,
         emailError: 'Failed to send email token. Try again shortly.'
-      })
-      return
+      });
+      return;
     }
 
-    this.setState({ loading: false, redirectTo: '/check_email' })
+    // this.setState({ loading: false, redirectTo: '/check_email' })
   }
 
   render() {
@@ -53,7 +81,7 @@ class Login extends Component {
     let messageElement
     if (!error) {
       messageElement = (
-        <p>We will send you a magic link to your email to confirm access.</p>
+        <p>We will send you a magic link to your email to confirm access ASAP. Test Message: {this.state.testMessage}</p>
       )
     } else if (error === 'expired') {
       messageElement = (

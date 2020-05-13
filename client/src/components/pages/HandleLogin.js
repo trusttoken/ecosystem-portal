@@ -18,6 +18,7 @@ const HandleLogin = props => {
   }, [])
 
   const handleLoginToken = async token => {
+    console.log(token);
     let response
     try {
       response = await agent

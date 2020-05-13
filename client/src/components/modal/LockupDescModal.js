@@ -19,7 +19,7 @@ const LockupDescModal = ({ handleModalClose, onEarnBonusClick }) => {
       <div className="row text-left">
         <div className="col-12 col-sm-7 pr-4">
           <p>
-            As an Origin investor we’re giving you the unique opportunity to
+            As an TrustToken purchaser we’re giving you the unique opportunity to
             lock up your tokens and earn a return.
           </p>
           <p>

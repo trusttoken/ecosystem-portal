@@ -103,7 +103,7 @@ function investorVestingSchedule(grantObj) {
   const vestingSchedule = []
 
   // Calculate initial vest percentage granted on grant start date
-  const initialVestPercentage = 6
+  const initialVestPercentage = 0
   const initialVestAmount = BigNumber(grant.amount)
     .times(initialVestPercentage)
     .div(100)
@@ -125,29 +125,42 @@ function investorVestingSchedule(grantObj) {
   const adjustedFinalVest = quarterlyVestAmount.plus(roundingError)
 
   // Add initial vest
-  vestingSchedule.push({
-    grantId: grantObj.id,
-    amount: initialVestAmount,
-    date: grant.start.clone(),
-    vested: hasVested(grant.start, grantObj)
-  })
+  // vestingSchedule.push({
+  //   grantId: grantObj.id,
+  //   amount: initialVestAmount,
+  //   date: grant.start.clone(),
+  //   vested: hasVested(grant.start, grantObj)
+  // })
 
-  const vestingDate = grant.start.clone()
-  // Iterate over quarterly vests and push
-  for (let i = 0; i < 8; i++) {
-    if (i === 0) {
-      // Add initial delay to vesting fdate
-      vestingDate.add(quarterlyVestDelayMonths, 'months')
-    } else {
-      // Add quarter of a year to the last vesting date
-      vestingDate.add(3, 'months')
-    }
+  // const vestingDate = grant.start.clone()
+  // // Iterate over quarterly vests and push
+  // for (let i = 0; i < 8; i++) {
+  //   if (i === 0) {
+  //     // Add initial delay to vesting fdate
+  //     vestingDate.add(quarterlyVestDelayMonths, 'months')
+  //   } else {
+  //     // Add quarter of a year to the last vesting date
+  //     vestingDate.add(3, 'months')
+  //   }
+  //   vestingSchedule.push({
+  //     grantId: grantObj.id,
+  //     amount: i === 7 ? adjustedFinalVest : quarterlyVestAmount,
+  //     date: vestingDate.clone(),
+  //     vested: hasVested(vestingDate, grant)
+  //   })
+  // }
+
+  const vestingDelaysInDays = [120, 210, 300, 390, 480, 570, 660, 750];
+
+  for (let i = 0; i < vestingDelaysInDays.length; i++) {
+    const vestingDate = grant.start.clone();
+    vestingDate.add(vestingDelaysInDays[i], 'days');
     vestingSchedule.push({
       grantId: grantObj.id,
-      amount: i === 7 ? adjustedFinalVest : quarterlyVestAmount,
+      amount: grant.amount / 8,
       date: vestingDate.clone(),
-      vested: hasVested(vestingDate, grant)
-    })
+      vested: hasVested(vestingDate, grant),
+    });
   }
 
   return vestingSchedule

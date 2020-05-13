@@ -1,6 +1,11 @@
-require('dotenv').config()
+const path = require('path');
+require('dotenv').config({ path: path.join(__dirname, `../.env.${process.env.NODE_ENV}`)});
 
 const moment = require('moment')
+
+// Magic configuration
+const { Magic } = require("@magic-sdk/admin");
+const magic = new Magic(process.env.MAGIC_SECRET_KEY);
 
 const logger = require('./logger')
 const {
@@ -21,7 +26,8 @@ const networkId = Number.parseInt(process.env.NETWORK_ID) || 999
 const port = process.env.PORT || 5000
 
 const clientUrl =
-  process.env.CLIENT_URL || 'https://investor.originprotocol.com/#'
+  process.env.CLIENT_URL || 'https://tt-ecosystem-portal-web.herokuapp.com/#'
+
 
 // Sendgrid configuration
 const sendgridFromEmail = process.env.SENDGRID_FROM_EMAIL
@@ -30,7 +36,8 @@ if (!sendgridFromEmail) {
   process.exit(1)
 }
 
-const sendgridApiKey = process.env.SENDGRID_API_KEY
+// const sendgridApiKey = process.env.SENDGRID_API_KEY
+const sendgridApiKey = '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'
 if (!sendgridFromEmail) {
   logger.error('SENDGRID_API_KEY must be set through EnvKey or manually')
   process.exit(1)
@@ -88,6 +95,7 @@ const lockupsEnabled = process.env.LOCKUPS_ENABLED || true
 const otcRequestEnabled = process.env.OTC_REQUEST_ENABLED || false
 
 module.exports = {
+  magic,
   discordWebhookUrl,
   encryptionSecret,
   earlyLockupBonusRate,

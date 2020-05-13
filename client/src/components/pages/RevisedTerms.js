@@ -35,7 +35,7 @@ const RevisedTerms = ({ editUser, user, userIsEditing }) => {
           &ldquo;Amendment&rdquo;) is made on and as of 9/1/2019 and amends the
           Simple Agreements for Future Tokens (Series 2018-25%) (each, a
           &ldquo;SAFT&rdquo; and collectively, the &ldquo;SAFTs&rdquo;), by and
-          between Origin Protocol, Inc., a Delaware corporation (the
+          between TrustToken, Inc., a Delaware corporation (the
           &ldquo;Company&rdquo;) and the purchasers identified therein
           (collectively, the &ldquo;Purchasers&rdquo;), and has been executed by
           the Company and the Purchasers who are signatories hereto,
@@ -43,67 +43,6 @@ const RevisedTerms = ({ editUser, user, userIsEditing }) => {
           amendment under Section 6(a) of the SAFTs. Capitalized terms used but
           not defined herein have the respective meanings ascribed to them in
           the SAFTs.
-        </p>
-
-        <p>
-          <strong>RECITAL:</strong>
-        </p>
-
-        <p>
-          The Company desires to amend the terms of the SAFTs on the terms set
-          forth herein, and the signatories hereto desire to approve this
-          Amendment.
-        </p>
-
-        <p>
-          <strong>AGREEMENT:</strong>
-        </p>
-
-        <p>
-          NOW, THEREFORE, in consideration of the foregoing, and for other good
-          and valuable consideration, the receipt and sufficiency of which are
-          hereby acknowledged, the parties hereto, being the requisite
-          signatories required to amend the SAFTs, hereby agree that all of the
-          SAFTs are amended as set forth below:
-        </p>
-
-        <p>
-          1. Amendment to Section 1(a). The last sentence of Section 1(a) is
-          amended and restated in its entirety to read as follows: &ldquo;The
-          Company, or an affiliate thereof (the &ldquo;Issuer&rdquo;), will
-          deliver the applicable Tokens to the Purchaser in eight (8) equal
-          quarterly installments (rounded down to the nearest whole Token,
-          except for the last installment) beginning on the date that is four
-          (4) months following the date of the Application Launch, provided that
-          the Issuer may accelerate delivery of the Tokens in its sole
-          discretion.&rdquo;
-        </p>
-
-        <p>
-          2. Amendment to Section 6(d). The following is added to the end of the
-          last sentence of Section 6(d): &ldquo;or to an affiliate of the
-          Company.&rdquo;
-        </p>
-
-        <p>
-          3. Remaining Provisions. Upon the effectiveness of this Amendment,
-          each reference in the SAFTs to &ldquo;this SAFT,&rdquo;
-          &ldquo;hereunder,&rdquo; &ldquo;hereof,&rdquo; &ldquo;herein,&rdquo;
-          or words of like import shall mean and be a reference to the SAFT as
-          amended hereby, and each reference to the SAFT in any other document,
-          instrument or agreement executed or delivered in connection with the
-          SAFT shall mean and be a reference to the SAFT as amended hereby. All
-          provisions of the SAFT not specifically amended by this Amendment
-          shall remain in full force and effect.
-        </p>
-
-        <p>
-          4. Miscellaneous. This Amendment may be executed in one or more
-          counterparts (including facsimile, PDF, or other electronic
-          counterparts), each of which, when taken together, shall constitute
-          but one and the same agreement. This Amendment shall be binding on all
-          parties to the SAFTs (including those who are not signatories of this
-          Amendment) pursuant to the applicable provisions of the SAFTs.
         </p>
       </>
     )
@@ -115,17 +54,17 @@ const RevisedTerms = ({ editUser, user, userIsEditing }) => {
         <p>
           <strong>
             AMENDMENT TO PURCHASE AGREEMENTS FOR THE RIGHT TO RECEIVE TOKENS
-            (SERIES 2018-CL)
+            (SERIES 2018-25%)
           </strong>
         </p>
 
         <p>
           This AMENDMENT TO PURCHASE AGREEMENTS FOR THE RIGHT TO RECEIVE TOKENS
-          (this &ldquo;Amendment&rdquo;) is made on and as of October 2, 2019
-          and amends the Purchase Agreements for the Right to Receive Tokens
-          (Series 2018-CL) (each, a &ldquo;Purchase Agreement&rdquo; and
-          collectively, the &ldquo;Purchase Agreements&rdquo;), by and between
-          Origin Protocol, Inc., a Delaware corporation (the
+          (this &ldquo;Amendment&rdquo;) is made on and as of 09/01/2019
+          and amends the Simple Agreements for Future Tokens
+          (Series 2018-25%) (each, a &ldquoSAFT&rdquo; and
+          collectively, the &ldquo;SAFTs&rdquo;), by and between
+          TrustToken, Inc., a Delaware corporation (the
           &ldquo;Company&rdquo;) and the purchasers identified therein
           (collectively, the &ldquo;Purchasers&rdquo;), and has been executed by
           the Company and the Purchasers who are signatories hereto,
@@ -203,10 +142,10 @@ const RevisedTerms = ({ editUser, user, userIsEditing }) => {
   return (
     <>
       <div className="action-card">
-        <h1>Investor Amendment Agreement</h1>
+        <h1>Purchaser Amendment Agreement</h1>
         <p>
-          Please agree to the investor amendment below to use the Origin
-          Investor Portal.
+          Please agree to the purchaser amendment below to use the TrustToken
+          Purchaser Portal.
         </p>
         <div className="form-group">
           <div className="terms-wrapper">
@@ -216,13 +155,13 @@ const RevisedTerms = ({ editUser, user, userIsEditing }) => {
           </div>
           <p style={{ textAlign: 'left', fontSize: '12px' }}>
             If you do not agree with the proposed amendment, you can contact
-            Origin Investor Relations at{' '}
+            TrustToken Purchaser Relations at{' '}
             <a href="mailto:investor-relations@originprotocol.com">
               investor-relations@originprotocol.com
             </a>{' '}
             to voice your dissent or abstain. Declining to accept the amendment
             will not give you different token release terms from other
-            investors. All investors will be treated the same. If the proposed
+            purchasers. All purchasers will be treated the same. If the proposed
             amendment fails to pass, we will be unable to proceed with our plans
             to list on top-tier exchanges.
           </p>
@@ -236,7 +175,7 @@ const RevisedTerms = ({ editUser, user, userIsEditing }) => {
             defaultChecked
           />
           <label className="form-check-label mt-0" htmlFor="acceptCheck">
-            I have read and agree to the Investor Amendment Agreement.
+            I have read and agree to the Purchaser Amendment Agreement.
           </label>
         </div>
         <button

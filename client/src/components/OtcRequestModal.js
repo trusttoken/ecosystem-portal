@@ -113,7 +113,7 @@ class OtcRequestModal extends Component {
         <form onSubmit={this.handleFormSubmit}>
           <div className="col-12 col-sm-8 offset-sm-2">
             <p>
-              By submitting this OTC request, you grant Origin the right to
+              By submitting this OTC request, you grant TrustToken the right to
               share your email address, phone number, and desired trade amount
               with one or more OTC desk partners.
             </p>
@@ -157,7 +157,7 @@ class OtcRequestModal extends Component {
               >
                 <input {...input('amount')} type="number" />
                 <div className="input-group-append">
-                  <span className="badge badge-secondary">OGN</span>
+                  <span className="badge badge-secondary">TRU</span>
                 </div>
               </div>
               <div className={this.state.amountError ? 'input-group-fix' : ''}>

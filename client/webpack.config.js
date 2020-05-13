@@ -1,6 +1,6 @@
-require('dotenv').config()
+const path = require('path');
+require('dotenv').config({ path: path.join(__dirname, `.env.${process.env.NODE_ENV}`)});
 
-const path = require('path')
 const webpack = require('webpack')
 const SriPlugin = require('webpack-subresource-integrity')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')

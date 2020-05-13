@@ -1,12 +1,12 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import BigNumber from 'bignumber.js'
+import BigNumber from 'bignumber'
 import get from 'lodash.get'
 import ReactGA from 'react-ga'
 import moment from 'moment'
 
-import { lockupConfirmationTimeout } from '@origin/token-transfer-server/src/shared'
+import { lockupConfirmationTimeout } from '@trusttoken/token-transfer-server/src/shared'
 
 import { DataContext } from '@/providers/data'
 import { addLockup } from '@/actions/lockup'
@@ -94,14 +94,14 @@ class BonusModal extends React.Component {
       this.setState({
         amountError: `Lock up amount is greater than your balance of ${Number(
           balance
-        ).toLocaleString()} OGN`
+        ).toLocaleString()} TRU`
       })
       return
     }
 
     if (BigNumber(this.state.amount).isLessThan(100)) {
       this.setState({
-        amountError: `Lock up amount must be at least 100 OGN`
+        amountError: `Lock up amount must be at least 100 TRU`
       })
       return
     }
@@ -200,7 +200,7 @@ class BonusModal extends React.Component {
                   <div className="faux-input form-control form-control-lg">
                     <strong>
                       {Number(this.getBalance(this.context)).toLocaleString()}{' '}
-                      OGN
+                      TRU
                     </strong>{' '}
                     on {moment(this.props.nextVest.date).format('L')}
                   </div>
@@ -228,7 +228,7 @@ class BonusModal extends React.Component {
                     >
                       Max
                     </a>
-                    <span className="badge badge-secondary">OGN</span>
+                    <span className="badge badge-secondary">TRU</span>
                   </div>
                 </div>
                 <div
@@ -359,7 +359,7 @@ class BonusModal extends React.Component {
                 <strong>
                   {Number(this.props.nextVest.amount).toLocaleString()}
                 </strong>{' '}
-                OGN are scheduled to vest in{' '}
+                TRU are scheduled to vest in{' '}
                 {moment(this.props.nextVest.date).format('MMMM')}
               </div>
             </div>
@@ -398,7 +398,7 @@ class BonusModal extends React.Component {
             <div className="col">
               This program is only available to our existing Advisor, Strategic,
               and CoinList investors. Thank you for your early support of
-              Origin.
+              TrustToken.
             </div>
           </div>
         )}

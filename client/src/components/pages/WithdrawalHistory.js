@@ -3,7 +3,7 @@ import { withRouter } from 'react-router-dom'
 import moment from 'moment'
 import get from 'lodash.get'
 
-import enums from '@origin/token-transfer-server/src/enums'
+import enums from '@trusttoken/token-transfer-server/src/enums'
 
 import { DataContext } from '@/providers/data'
 import EthAddress from '@/components/EthAddress'
@@ -30,14 +30,14 @@ const WithdrawalHistory = ({ history }) => {
             {data.config.isLocked
               ? 0
               : Number(data.totals.balance).toLocaleString()}{' '}
-            OGN
+            TRU
           </small>
         </div>
         <div className="col-12 col-md-2 text-md-right">
           <small>
             <strong>Withdrawn </strong>
             <span className="text-nowrap">
-              {Number(data.totals.withdrawn).toLocaleString()} OGN
+              {Number(data.totals.withdrawn).toLocaleString()} TRU
             </span>
           </small>
         </div>
@@ -45,7 +45,7 @@ const WithdrawalHistory = ({ history }) => {
           <small>
             <strong>Unvested </strong>
             <span className="text-nowrap">
-              {Number(data.totals.unvested).toLocaleString()} OGN
+              {Number(data.totals.unvested).toLocaleString()} TRU
             </span>
           </small>
         </div>
@@ -53,7 +53,7 @@ const WithdrawalHistory = ({ history }) => {
           <small>
             <strong>Total purchase </strong>
             <span className="text-nowrap">
-              {Number(data.totals.granted).toLocaleString()} OGN
+              {Number(data.totals.granted).toLocaleString()} TRU
             </span>
           </small>
         </div>
@@ -91,7 +91,7 @@ const WithdrawalHistory = ({ history }) => {
                         <strong>
                           {Number(transfer.amount).toLocaleString()}
                         </strong>{' '}
-                        <span className="ogn">OGN</span>
+                        <span className="ogn">TRU</span>
                       </td>
                       <td>{get(transfer.data, 'ip', 'Unknown')}</td>
                       <td>

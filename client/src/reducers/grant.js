@@ -2,7 +2,7 @@ import {
   calculateGranted,
   calculateVested,
   momentizeGrant
-} from '@origin/token-transfer-server/src/shared'
+} from '@trusttoken/token-transfer-server/src/shared'
 
 import {
   FETCH_GRANTS_PENDING,

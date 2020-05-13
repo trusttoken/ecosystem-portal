@@ -26,7 +26,7 @@ const AccountActions = props => {
         <div className="mx-3 d-inline-block">|</div>
         <a
           className="text-muted"
-          href="mailto:investor-relations@originprotocol.com"
+          href="https://support.trusttoken.com"
         >
           Contact Support
         </a>

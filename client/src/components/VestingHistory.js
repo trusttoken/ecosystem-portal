@@ -1,16 +1,18 @@
 import React, { useContext } from 'react'
 import moment from 'moment'
 
-import { vestingSchedule } from '@origin/token-transfer-server/src/lib/vesting'
+import { vestingSchedule } from '@trusttoken/token-transfer-server/src/lib/vesting'
 
 import { DataContext } from '@/providers/data'
 
 const VestingHistory = props => {
   const data = useContext(DataContext)
+  console.log('wtfmate')
 
   const schedule = {}
   data.grants.forEach(grant => {
     vestingSchedule(props.user, grant).forEach(vest => {
+      console.log(vest);
       const dateKey = vest.date.format()
       schedule[dateKey] = schedule[dateKey]
         ? schedule[dateKey].plus(vest.amount)
@@ -31,7 +33,7 @@ const VestingHistory = props => {
           ></div>
         </td>
         <td className="text-nowrap" width="130px">
-          {Number(schedule[date]).toLocaleString()} OGN
+          {Number(schedule[date]).toLocaleString()} TRU
         </td>
         <td className="d-none d-sm-block">
           <span className="text-muted">
@@ -45,7 +47,7 @@ const VestingHistory = props => {
 
   return (
     <>
-      <h2 className="mb-4">Vesting Schedule</h2>
+      <h2 className="mb-4">My Unlocking Schedule</h2>
       <hr />
       <div className="table-card">
         <div className="scrolling-table">
@@ -54,7 +56,7 @@ const VestingHistory = props => {
               {data.config.isLocked ? (
                 <tr>
                   <td className="table-empty-cell" colSpan="100%">
-                    Vesting has not yet started.
+                    Unlocking has not yet started.
                     <br />
                     Please check back after Lockup Period ends.
                   </td>

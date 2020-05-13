@@ -1,11 +1,11 @@
 {
-  "name": "@origin/token-transfer-server",
+  "name": "@trusttoken/token-transfer-server",
   "version": "0.1.0",
-  "description": "API for Origin Investor Portal",
+  "description": "API for TrustToken Investor Portal",
   "engines": {
     "node": "10.x"
   },
-  "author": "Origin Protocol Inc",
+  "author": "TrustToken, Inc.",
   "license": "MIT",
   "main": "app/app.js",
   "scripts": {
@@ -15,12 +15,15 @@
     "migrate": "sequelize db:migrate",
     "seed": "sequelize db:seed:all",
     "start": "per-env",
-    "start:development": "nodemon src/app.js",
+    "start:development": "NODE_ENV=development nodemon src/app.js",
     "start:production": "node src/app.js",
     "test": "LOG_LEVEL=NONE NODE_ENV=test mocha -r @babel/register  -r @babel/polyfill -t 10000 --exit test/**/*.js",
-    "test:debug": "LOG_LEVEL=DEBUG NODE_ENV=test mocha -r @babel/register  -r @babel/polyfill -t 10000 --exit test/**/*.js"
+    "test:debug": "LOG_LEVEL=DEBUG NODE_ENV=test mocha -r @babel/register  -r @babel/polyfill -t 10000 --exit test/**/*.js",
+    "deploy:client": "bash deploy-client.sh",
+    "deploy:server": "bash deploy-server.sh"
   },
   "dependencies": {
+    "@magic-sdk/admin": "^1.0.0",
     "@sendgrid/mail": "^7.0.0",
     "@sentry/node": "5.15.4",
     "async-lock": "^1.2.2",
@@ -46,6 +49,7 @@
     "notp": "^2.0.3",
     "passport": "^0.4.1",
     "passport-http-bearer": "^1.0.1",
+    "passport-magic": "^1.0.0",
     "per-env": "^1.0.2",
     "pg": "^8.0.0",
     "prettier": "^1.19.1",
@@ -66,6 +70,7 @@
     "chai-as-promised": "7.1.1",
     "chai-bignumber": "3.0.0",
     "chai-moment": "0.1.0",
+    "csv-parse": "^4.8.9",
     "mocha": "7.1.1",
     "nodemon": "2.0.2"
   },

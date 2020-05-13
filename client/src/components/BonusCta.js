@@ -42,7 +42,7 @@ const BonusCta = ({
       <div className={`row ${fullWidth ? 'align-items-center' : ''}`}>
         <div className={`${fullWidth ? 'col-lg-3 col-12' : 'col-8'}`}>
           <h1 className="mb-0">
-            {moment(nextVest.date).format('YYYY MMMM')}
+            {/*moment(nextVest.date).format('YYYY MMMM')*/}
             <br />
             <strong>SPECIAL OFFER!</strong>
           </h1>
@@ -55,7 +55,7 @@ const BonusCta = ({
         <div className={`${fullWidth ? 'col-lg-6' : ''} col-12`}>
           <p className="mb-0">
             Earn <strong>{lockupBonusRate}% bonus</strong> on your tokens that
-            vest in {moment(nextVest.date).format('MMMM')}.
+            unlock in {/*moment(nextVest.date).format('MMMM')*/}.
             <br />
             Offer valid until{' '}
             {moment.utc(data.config.earlyLockupsEnabledUntil).format('DD MMMM')}

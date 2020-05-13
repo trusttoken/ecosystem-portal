@@ -17,12 +17,20 @@ const logger = require('../logger')
 const { sendLoginToken } = require('../lib/email')
 const { ensureLoggedIn } = require('../lib/login')
 
+router.post(
+  '/ping',
+  asyncMiddleware(async (req, res) => {
+    res.send(JSON.stringify({ message: 'pong' }))
+  })
+)
+
 /**
  * Sends a login code by email.
  */
 router.post(
   '/send_email_token',
   asyncMiddleware(async (req, res) => {
+    logger.info('SENDING EMAIL TOKEN');
     const email = req.body.email
     logger.info(`Email token requested for ${email}`)
 
@@ -39,9 +47,18 @@ router.post(
 /**
  * Verifies a login code sent by email.
  */
+// router.post(
+//   '/verify_email_token',
+//   passport.authenticate('bearer'),
+//   (req, res) => {
+//     logger.debug('/verify_email_token called')
+//     res.send(req.user.get({ plain: true }))
+//   }
+// )
+
 router.post(
   '/verify_email_token',
-  passport.authenticate('bearer'),
+  passport.authenticate('magic'),
   (req, res) => {
     logger.debug('/verify_email_token called')
     res.send(req.user.get({ plain: true }))
@@ -68,7 +85,7 @@ router.post(
 
     // Generate QR token for scanning into Google Authenticator
     // Reference: https://code.google.com/p/google-authenticator/wiki/KeyUriFormat
-    const otpUrl = `otpauth://totp/${req.user.email}?secret=${encodedKey}&period=30&issuer=OriginProtocol`
+    const otpUrl = `otpauth://totp/${req.user.email}?secret=${encodedKey}&period=30&issuer=TrustTokenEcosystem`
     const otpQrUrl = await qrcode.toDataURL(otpUrl)
 
     res.setHeader('Content-Type', 'application/json')

@@ -19,7 +19,7 @@ const WithdrawalHistoryCard = () => {
                 ).toLocaleString()}
           </strong>{' '}
           <span className="ogn" style={{ fontSize: '14px', color: '#007cff' }}>
-            OGN
+            TRU
           </span>
         </div>
       </div>
@@ -30,14 +30,14 @@ const WithdrawalHistoryCard = () => {
             <span className="text-nowrap">
               {Number(data.totals.withdrawn).toLocaleString()}
             </span>
-            OGN
+            TRU
           </span>
         </div>
         <div className="col-12 col-md-4">
           <span className="text-muted">
             Unvested:{' '}
             <span className="text-nowrap">
-              {Number(data.totals.unvested).toLocaleString()} OGN
+              {Number(data.totals.unvested).toLocaleString()} TRU
             </span>
           </span>
         </div>
@@ -45,7 +45,7 @@ const WithdrawalHistoryCard = () => {
           <span className="text-muted">
             Total Purchase:{' '}
             <span className="text-nowrap">
-              {Number(data.totals.granted).toLocaleString()} OGN
+              {Number(data.totals.granted).toLocaleString()} TRU
             </span>
           </span>
         </div>

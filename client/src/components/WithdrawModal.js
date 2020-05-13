@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import get from 'lodash.get'
-import BigNumber from 'bignumber.js'
+import BigNumber from 'bignumber'
 import web3Utils from 'web3-utils'
 import ReactGA from 'react-ga'
 import moment from 'moment'
@@ -96,7 +96,7 @@ class WithdrawModal extends Component {
       this.setState({
         amountError: `Withdrawal amount is greater than your balance of ${Number(
           this.context.totals.balance
-        ).toLocaleString()} OGN`
+        ).toLocaleString()} TRU`
       })
       return
     }
@@ -212,7 +212,7 @@ class WithdrawModal extends Component {
             className="mr-3 d-none d-sm-inline-block"
             style={{ marginTop: '-10px' }}
           />
-          <h1 className="my-3 d-inline-block">Withdraw OGN</h1>
+          <h1 className="my-3 d-inline-block">Withdraw TRU</h1>
         </div>
       </div>
     )
@@ -388,7 +388,7 @@ class WithdrawModal extends Component {
                 >
                   <input {...input('amount')} type="number" />
                   <div className="input-group-append">
-                    <span className="badge badge-secondary">OGN</span>
+                    <span className="badge badge-secondary">TRU</span>
                   </div>
                 </div>
                 <div
@@ -458,7 +458,7 @@ class WithdrawModal extends Component {
                     <WhaleIcon className="mb-3" />
                   </div>
                   <strong className="mb-2">
-                    Selling a large quantity of OGN?
+                    Selling a large quantity of TRU?
                   </strong>
                   <p>
                     Try an OTC (over-the-counter) trade. OTC trades oftentimes

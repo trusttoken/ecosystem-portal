@@ -1,14 +1,29 @@
 import React, { useContext, useState } from 'react'
 import moment from 'moment'
 import numeral from 'numeral'
-import BigNumber from 'bignumber.js'
+import BigNumber from 'bignumber'
 
 import { DataContext } from '@/providers/data'
 
 const VestingBars = ({ user }) => {
   const data = useContext(DataContext)
 
+  console.log(data);
+
   const [displayPopover, setDisplayPopover] = useState({})
+
+  // data.grants = [
+  //   {
+  //     start: "2019-04-15",
+  //     end: "2021-04-15",
+  //     amount: 1000000,
+  //   },
+  // ];
+
+  // data.totals = {
+  //   vested: 300000,
+  //   unvested: 700000,
+  // };
 
   if (!data.grants || data.grants.length === 0) {
     return null
@@ -95,13 +110,13 @@ const VestingBars = ({ user }) => {
 
   return (
     <div className="mb-5">
-      <h2 style={{ marginBottom: '2.5rem' }}>Vesting Progress</h2>
+      <h2 style={{ marginBottom: '2.5rem' }}>Unlocking Progress</h2>
       <div id="vestingBars" style={{ position: 'relative' }}>
         <div
           style={{ position: 'absolute', right: '10px', marginTop: '-1.5rem' }}
         >
           <strong>{Number(total).toLocaleString()}</strong>{' '}
-          <span className="ogn">OGN</span>
+          <span className="ogn">TRU</span>
         </div>
         {grants.map(grant => {
           // Calculate the percentage of the grant that is complete with a
@@ -153,7 +168,7 @@ const VestingBars = ({ user }) => {
                   <div>
                     <strong>Grant</strong>{' '}
                     {Number(grant.amount).toLocaleString()}{' '}
-                    <span className="ogn">OGN</span>
+                    <span className="ogn">TRU</span>
                   </div>
                 </div>
               )}
@@ -193,13 +208,13 @@ const VestingBars = ({ user }) => {
         <div className="col-12 col-sm-6">
           <div className="status-circle bg-green mr-2"></div>
           <span className=" text-muted">
-            {Number(data.totals.vested).toLocaleString()} OGN vested
+            {Number(data.totals.vested).toLocaleString()} TRU unlocked
           </span>
         </div>
         <div className="col-12 col-sm-6">
           <div className="status-circle mr-2"></div>
           <span className=" text-muted">
-            {Number(data.totals.unvested).toLocaleString()} OGN unvested
+            {Number(data.totals.unvested).toLocaleString()} TRU locked
           </span>
         </div>
       </div>

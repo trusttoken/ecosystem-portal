@@ -21,7 +21,7 @@ const BalanceCard = ({ onDisplayBonusModal, onDisplayWithdrawModal }) => {
       datasets: [
         {
           data: [Number(data.totals.balance), Number(data.totals.locked)],
-          backgroundColor: ['#00db8d', '#007cff'],
+          backgroundColor: ['#00db8d', '#061439'],
           borderWidth: 0
         }
       ]
@@ -80,7 +80,7 @@ const BalanceCard = ({ onDisplayBonusModal, onDisplayWithdrawModal }) => {
       <BorderedCard>
         <div className="row header mb-3">
           <div className="col">
-            <h2>My Vested Tokens</h2>
+            <h2>My Unlocked Tokens</h2>
           </div>
         </div>
         <div className="row">
@@ -118,7 +118,7 @@ const BalanceCard = ({ onDisplayBonusModal, onDisplayWithdrawModal }) => {
                     ? 0
                     : Number(data.totals.balance).toLocaleString()}{' '}
                 </div>
-                <span className="ogn">OGN</span>
+                <span className="ogn">TRU</span>
               </div>
               <div className="col-1 text-right">
                 <Dropdown drop={'left'} style={{ display: 'inline' }}>
@@ -143,54 +143,6 @@ const BalanceCard = ({ onDisplayBonusModal, onDisplayWithdrawModal }) => {
                 </Dropdown>
               </div>
             </div>
-            {data.config.lockupsEnabled && (
-              <div className="row mt-2">
-                <div className="col-1 text-right">
-                  <div className="status-circle bg-blue"></div>
-                </div>
-                <div className="col">
-                  <div>
-                    Locked Bonus Tokens{' '}
-                    <a
-                      href="#"
-                      onClick={event => {
-                        event.preventDefault()
-                        setDisplayLockupDescModal(true)
-                      }}
-                      className="ml-md-2"
-                    >
-                      What is this?
-                    </a>
-                  </div>
-                  <div
-                    className="mr-1 mb-2 d-inline-block font-weight-bold"
-                    style={{ fontSize: '32px' }}
-                  >
-                    {Number(
-                      data.totals.locked.plus(data.totals.nextVestLocked)
-                    ).toLocaleString()}
-                  </div>
-                  <span className="ogn">OGN</span>
-                </div>
-                <div className="col-1 text-right">
-                  <Dropdown drop={'left'} style={{ display: 'inline' }}>
-                    <Dropdown.Toggle
-                      as={DropdownDotsToggle}
-                      id="bonus-dropdown"
-                    ></Dropdown.Toggle>
-
-                    <Dropdown.Menu>
-                      <Dropdown.Item onClick={onDisplayBonusModal}>
-                        Earn Bonus Tokens
-                      </Dropdown.Item>
-                      <Dropdown.Item onClick={() => setRedirectTo('/lockup')}>
-                        View Details
-                      </Dropdown.Item>
-                    </Dropdown.Menu>
-                  </Dropdown>
-                </div>
-              </div>
-            )}
           </div>
         </div>
       </BorderedCard>

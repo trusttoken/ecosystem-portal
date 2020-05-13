@@ -15,7 +15,7 @@ const VestingCard = ({ isEmployee, user }) => {
       {data.config.isLocked ? (
         !isEmployee && (
           <>
-            <h2>Revised Vesting Schedule</h2>
+            <h2>Revised Unlocking Schedule</h2>
             <p>
               The purple line shows the proposed amendment to the token release
               schedule.

@@ -23,7 +23,8 @@ router.get(
         'revisedScheduleAgreedAt',
         'revisedScheduleRejected',
         'termsAgreedAt',
-        'investorType'
+        'investorType',
+        'revisedScheduleStatus'
       ])
     )
   })

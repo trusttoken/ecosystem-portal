@@ -31,19 +31,19 @@ const Terms = ({ editUser, userIsEditing }) => {
         <div className="form-group">
           <div className="terms-wrapper">
             The recipient acknowledges that they have been advised that the
-            offers and sales of OGN have not been registered under any country’s
+            offers and sales of TRU have not been registered under any country’s
             securities laws and, therefore, cannot be resold except in
             compliance with the applicable country’s laws. Based on recent
-            guidance from the SEC, it is possible that transfers of OGN would be
+            guidance from the SEC, it is possible that transfers of TRU would be
             deemed to be securities offerings in the United States at launch. We
             plan to work towards meeting the standards set by various
             jurisdictions around the world, including the United States, for
-            transfers of OGN to not be considered offers and sales of securities
+            transfers of TRU to not be considered offers and sales of securities
             in those jurisdictions; however we cannot assure you that those
             standards have been met as of now. In recognition of the foregoing,
             the recipient covenants to the Company that it will comply with all
             applicable laws, including United States securities laws, with
-            respect to any transfer of OGN as if OGN was a security under the
+            respect to any transfer of TRU as if TRU was a security under the
             laws of the United States.
             <br />
             <br />
@@ -63,7 +63,7 @@ const Terms = ({ editUser, userIsEditing }) => {
           <label className="form-check-label mt-0" htmlFor="acceptCheck">
             I have read and agree to the above Terms of Use and the{' '}
             <a
-              href="https://www.originprotocol.com/en/privacy"
+              href="https://www.trusttoken.com/privacy-policy"
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -71,13 +71,13 @@ const Terms = ({ editUser, userIsEditing }) => {
             </a>{' '}
             and{' '}
             <a
-              href="https://www.originprotocol.com/en/tos"
+              href="https://www.trusttoken.com/terms-of-use"
               target="_blank"
               rel="noopener noreferrer"
             >
-              Terms of Service
+              Terms of Use
             </a>{' '}
-            of Origin Protocol Labs.
+            of TrustToken.
           </label>
         </div>
         <button

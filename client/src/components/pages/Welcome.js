@@ -25,15 +25,15 @@ const Welcome = ({ isLoading, user }) => {
       <h1>
         Welcome to the
         <br />
-        Origin Investor Portal
+        TrustToken Purchaser Portal
       </h1>
       <p className="my-4">
         The wait is finally over! You can now start using this portal to manage
-        your OGN investment.
+        your TRU investment.
       </p>
       <hr className="mx-5" />
       <div className="form-group">
-        <label className="mt-0">Investor</label>
+        <label className="mt-0">Purchaser</label>
         <br />
         {user.name}
       </div>

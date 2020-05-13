@@ -55,7 +55,7 @@ const LockupConfirm = props => {
               <br />
               <br />
               <a
-                href="mailto:investor-relations@originprotocol.com?subject=Token Lockup Issue"
+                href="https://support.trusttoken.com"
                 target="_blank"
                 rel="noopener noreferrer"
               >
