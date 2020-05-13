@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux'
 import moment from 'moment'
 import get from 'lodash.get'
 
-import enums from '@origin/token-transfer-server/src/enums'
+import enums from '@trusttoken/token-transfer-server/src/enums'
 
 import { DataContext } from '@/providers/data'
 import { confirmTransfer } from '@/actions/transfer'
@@ -115,7 +115,7 @@ class WithdrawalDetail extends Component {
                 </div>
                 <div className="col text-right">
                   <strong>{Number(transfer.amount).toLocaleString()} </strong>
-                  <span className="ogn">OGN</span>
+                  <span className="ogn">TRU</span>
                 </div>
               </div>
               <div className="row mb-3">

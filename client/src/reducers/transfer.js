@@ -1,4 +1,4 @@
-import { calculateWithdrawn } from '@origin/token-transfer-server/src/shared'
+import { calculateWithdrawn } from '@trusttoken/token-transfer-server/src/shared'
 
 import {
   ADD_TRANSFER_PENDING,

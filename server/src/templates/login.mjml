@@ -13,7 +13,7 @@
             <mj-section background-color="white">
                 <mj-column>
                     <mj-text font-size="28px" font-weight="bold">
-                        Origin <%= portalType %> Portal
+                        TrustToken <%= portalType %> Portal
                     </mj-text>
                 </mj-column>
             </mj-section>
@@ -31,7 +31,7 @@
             <mj-section background-color="white">
                 <mj-column>
                     <mj-button href="<%= url %>" color="white" background-color="#345d7a" border-radius="43px" font-size="18px">
-                        Access the Origin <%= portalType %> Portal
+                        Access the TrustToken <%= portalType %> Portal
                     </mj-button>
                 </mj-column>
             </mj-section>
@@ -44,15 +44,11 @@
 		    Questions or feedback?
 		</mj-text>
 		<mj-text align="center" color="#98a7b4" font-size="18px" line-height="1.67" text-decoration="none">
-		    If you have any questions, reach out to
-		    <a href="mailto:<%= supportEmail %>" style="color: #98a7b4; text-decoration: none;"><%= supportEmail %></a>
-		</mj-text>
-		<mj-text align="center" color="#98a7b4" font-size="12px">
-		    745 Clementina Street, Unit A, San Francisco, CA, 94103
-		</mj-text>
+		    If you have any questions, reach out to <a href="https://support.trusttoken.com" style="color: #98a7b4; text-decoration: none;">https://support.trusttoken.com</a>
+        </mj-text>
 		<mj-text align="center" font-size="12px">
-		    <a href="https://www.originprotocol.com" style="color: #98a7b4; text-decoration: none;">
-			originprotocol.com
+		    <a href="https://www.trusttoken.com" style="color: #98a7b4; text-decoration: none;">
+			trusttoken.com
 		    </a>
 		</mj-text>
 	    </mj-column>

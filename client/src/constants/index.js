@@ -1,8 +1,8 @@
 let pageTitle
 if (window.location.hostname.includes('team')) {
-  pageTitle = 'Origin Team Portal'
+  pageTitle = 'TrustToken Team Portal'
 } else {
-  pageTitle = 'Origin Investor Portal'
+  pageTitle = 'TrustToken Purchaser Portal'
 }
 
 let apiUrl

@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react'
 import { withRouter } from 'react-router-dom'
 import moment from 'moment'
-import BigNumber from 'bignumber.js'
+import BigNumber from 'bignumber'
 
 import { DataContext } from '@/providers/data'
 import BonusModal from '@/components/BonusModal'
@@ -33,7 +33,7 @@ const Lockup = () => {
                   </strong>
                 ) : (
                   <strong>
-                    {Number(lockup.amount).toLocaleString()} OGN Lockup
+                    {Number(lockup.amount).toLocaleString()} TRU Lockup
                   </strong>
                 )}
               </div>
@@ -56,7 +56,7 @@ const Lockup = () => {
                 style={{ marginLeft: '-1.5rem', marginRight: '0.5rem' }}
               ></div>{' '}
               {Number(lockup.amount).toLocaleString()}{' '}
-              <span className="ogn">OGN</span>
+              <span className="ogn">TRU</span>
             </td>
             <td>
               <div
@@ -69,7 +69,7 @@ const Lockup = () => {
                   BigNumber.ROUND_HALF_UP
                 )
               ).toLocaleString()}{' '}
-              <span className="ogn">OGN</span>
+              <span className="ogn">TRU</span>
             </td>
             <td>{lockup.bonusRate}%</td>
           </tr>
@@ -122,13 +122,13 @@ const Lockup = () => {
             {Number(
               data.totals.locked.plus(data.totals.nextVestLocked)
             ).toLocaleString()}{' '}
-            OGN
+            TRU
           </small>
         </div>
         <div className="col-12 col-md-2">
           <small>
             <strong className="mr-2">Total Earned </strong>
-            {Number(data.totals.allEarnings.toLocaleString())} OGN
+            {Number(data.totals.allEarnings.toLocaleString())} TRU
           </small>
         </div>
         {!data.config.isLocked && (

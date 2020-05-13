@@ -59,18 +59,19 @@ const otcMjmlTemplate = template(
  * @returns {{subject: string, html: string, text: string}}
  */
 function _generateEmail(emailType, vars) {
+  logger.info('EYOEYOEYO');
   let subject, text, html, mjml
 
   // Note: We add the templates directory to dynamic vars. It is used to set
   // the path in the mjml-include directives.
   vars.path = templateDir
-  vars.portalType = vars.employee ? 'Team' : 'Investor'
+  vars.portalType = vars.employee ? 'Team' : 'Purchaser'
   // TODO set support email
   vars.supportEmail = null
 
   switch (emailType) {
     case 'welcome':
-      subject = `Welcome to the Origin ${vars.portalType} Portal`
+      subject = `Welcome to the TrustToken ${vars.portalType} Portal`
       text = welcomeTextTemplate(vars)
       mjml = mjml2html(welcomeMjmlTemplate(vars))
       if (mjml.errors.length) {
@@ -79,7 +80,7 @@ function _generateEmail(emailType, vars) {
       html = mjml.html
       break
     case 'login':
-      subject = `Welcome to the Origin ${vars.portalType} Portal`
+      subject = `Welcome to the TrustToken ${vars.portalType} Portal`
       text = loginTextTemplate(vars)
       mjml = mjml2html(loginMjmlTemplate(vars))
       if (mjml.errors.length) {
@@ -88,7 +89,7 @@ function _generateEmail(emailType, vars) {
       html = mjml.html
       break
     case 'transfer':
-      subject = `Confirm Your Origin Token Withdrawal`
+      subject = `Confirm Your TrustToken Withdrawal`
       text = transferTextTemplate(vars)
       mjml = mjml2html(transferMjmlTemplate(vars))
       if (mjml.errors.length) {
@@ -97,7 +98,7 @@ function _generateEmail(emailType, vars) {
       html = mjml.html
       break
     case 'lockup':
-      subject = `Confirm Your Origin Token Lockup`
+      subject = `Confirm Your TrustToken Lockup`
       text = lockupTextTemplate(vars)
       mjml = mjml2html(lockupMjmlTemplate(vars))
       if (mjml.errors.length) {
@@ -157,6 +158,8 @@ async function sendLoginToken(email) {
       encryptionSecret,
       { expiresIn: '30m' }
     )
+
+    logger.info(token);
 
     const vars = {
       url: `${clientUrl}/login_handler/${token}`,

@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react'
 import get from 'lodash.get'
 
-import { getNextVest } from '@origin/token-transfer-server/src/shared'
+import { getNextVest } from '@trusttoken/token-transfer-server/src/shared'
 
 import { DataContext } from '@/providers/data'
 import BalanceCard from '@/components/BalanceCard'
@@ -66,22 +66,6 @@ const Dashboard = props => {
     <>
       {renderModals()}
 
-      {displayFullWidthLockupCta && (
-        <div className="row small-gutter">
-          <div className="col mb-10">
-            <BonusCta
-              fullWidth={true}
-              nextVest={nextVest}
-              lockupBonusRate={
-                data.config.earlyLockupsEnabled
-                  ? data.config.earlyLockupBonusRate
-                  : data.config.lockupBonusRate
-              }
-              onDisplayBonusModal={() => setDisplayBonusModal('early')}
-            />
-          </div>
-        </div>
-      )}
       <div className="row small-gutter">
         <div className={`${data.config.isLocked ? 'col-12' : 'col'} mb-10`}>
           <BalanceCard
@@ -89,43 +73,10 @@ const Dashboard = props => {
             onDisplayWithdrawModal={() => setDisplayWithdrawModal(true)}
           />
         </div>
-        {displayLockupCta && !displayFullWidthLockupCta && (
-          <div className="col mb-10">
-            <BonusCta
-              nextVest={nextVest}
-              lockupBonusRate={
-                data.config.earlyLockupsEnabled
-                  ? data.config.earlyLockupBonusRate
-                  : data.config.lockupBonusRate
-              }
-              onDisplayBonusModal={() => setDisplayBonusModal('early')}
-            />
-          </div>
-        )}
-        {hasLockups && (
-          <div className="col mb-10">
-            <BonusCard onDisplayBonusModal={() => setDisplayBonusModal(true)} />
-          </div>
-        )}
       </div>
       <div className="row small-gutter">
         <div className="col col-xl-6 mb-10">
           <VestingCard user={props.user} isEmployee={isEmployee} />
-        </div>
-        <div className="col col-xl-6">
-          <div className="mb-10">
-            <WithdrawalSummaryCard
-              onDisplayWithdrawModal={() => setDisplayWithdrawModal(true)}
-            />
-          </div>
-          <div className="mb-10">
-            <NewsHeadlinesCard />
-          </div>
-          {!isEmployee && (
-            <div className="mb-10">
-              <GrantDetailCard user={props.user} />
-            </div>
-          )}
         </div>
       </div>
     </>

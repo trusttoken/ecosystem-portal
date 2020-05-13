@@ -50,7 +50,7 @@ const App = () => {
       <Modal appendToId="main" onClose={dismissMobileWarning} closeBtn={true}>
         <h1 className="mb-4">Small Screen</h1>
         <p>
-          The Origin Investor Portal is intended to be used with a larger
+          The TrustToken Purchaser Portal is intended to be used with a larger
           screen. Please access your account from a desktop or laptop computer.
         </p>
         <button

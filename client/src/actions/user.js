@@ -35,6 +35,7 @@ function fetchUserPending() {
 }
 
 function fetchUserSuccess(payload) {
+  console.log(payload);
   return {
     type: FETCH_USER_SUCCESS,
     payload

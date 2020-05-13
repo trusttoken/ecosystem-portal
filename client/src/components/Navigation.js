@@ -11,6 +11,8 @@ import News from '@/assets/news-icon.svg'
 import Security from '@/assets/security-icon.svg'
 import OLogo from '@/assets/0-rigin-logo.svg'
 import OriginLogo from '@/assets/origin-logo.svg'
+import TTSignLogo from '@/assets/tt_logosign_white.svg';
+import TTLogo from '@/assets/tt_logotype_white.svg';
 
 const Navigation = props => {
   const [redirectTo, setRedirectTo] = useState(null)
@@ -35,7 +37,7 @@ const Navigation = props => {
           <OriginLogo />
         </div>
         <div className="d-none d-sm-block">
-          <OLogo />
+          <TTSignLogo />
         </div>
       </div>
       <div
@@ -58,7 +60,7 @@ const Navigation = props => {
               {props.expandSidebar && 'Dashboard'}
             </NavLink>
           </li>
-          <li className="nav-item mb-5">
+          {/*<li className="nav-item mb-5">
             <NavLink to="/news" className="nav-link text">
               <News className="icon" />
               {props.expandSidebar && 'News'}
@@ -84,12 +86,12 @@ const Navigation = props => {
               <Security className="icon" />
               {props.expandSidebar && 'Security'}
             </NavLink>
-          </li>
+          </li>*/}
         </ul>
         <ul className="navbar-nav mt-4 d-md-none">
           <li className="nav-item mt-4 mb-5">
             <a
-              href="mailto:investor-relations@originprotocol.com"
+              href="https://support.trusttoken.com"
               className="nav-link"
             >
               Contact Support

@@ -19,7 +19,7 @@ const LockupCard = ({ lockup }) => {
         </div>
         <div className="col-12 col-lg mb-3 mx-auto">
           <strong style={{ fontSize: '28px' }}>
-            {Number(lockup.amount).toLocaleString()} OGN Lockup
+            {Number(lockup.amount).toLocaleString()} TRU Lockup
           </strong>
           <br />
           Unlocks in {moment(lockup.end).diff(now, 'days')}d{' '}
@@ -39,7 +39,7 @@ const LockupCard = ({ lockup }) => {
           Lockup Amount
           <br />
           <strong>{Number(lockup.amount).toLocaleString()}</strong>{' '}
-          <span className="ogn">OGN</span>
+          <span className="ogn">TRU</span>
         </div>
         <div className="col-12 col-lg mb-3 mx-auto">
           <div
@@ -56,7 +56,7 @@ const LockupCard = ({ lockup }) => {
               )
             ).toLocaleString()}
           </strong>{' '}
-          <span className="ogn">OGN</span>
+          <span className="ogn">TRU</span>
         </div>
       </div>
     </BorderedCard>

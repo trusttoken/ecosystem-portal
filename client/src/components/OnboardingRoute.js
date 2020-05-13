@@ -8,6 +8,7 @@ import { getUser, getIsLoading } from '@/reducers/user'
 import { getSessionExpired } from '@/reducers/session'
 import { setSessionExpired } from '@/actions/session'
 import Logo from '@/assets/origin-logo.svg'
+import TTLogo from '@/assets/tt_logotype_white.svg';
 
 const OnboardingRoute = ({
   component: Component,
@@ -28,8 +29,8 @@ const OnboardingRoute = ({
       {...rest}
       render={props => (
         <div className="not-logged-in">
-          <div className="text-center" style={{ backgroundColor: '#007cff' }}>
-            <Logo className="my-5" style={{ width: '160px' }} />
+          <div className="text-center" style={{ backgroundColor: '#061439' }}>
+            <TTLogo className="my-5" />
           </div>
           {isLoading ? (
             <div className="action-card">

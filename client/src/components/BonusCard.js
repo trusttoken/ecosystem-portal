@@ -29,7 +29,7 @@ const BonusCard = ({ onDisplayBonusModal }) => {
           <h1 className="mt-3 mb-1">Coming Soon</h1>
           <h1>Earn Bonus Tokens</h1>
           <p>
-            Place your vested tokens into lockup periods to earn even more OGN.
+            Place your unlocked tokens into lockup periods to earn even more TRU.
           </p>
         </div>
       </BorderedCard>
@@ -47,7 +47,7 @@ const BonusCard = ({ onDisplayBonusModal }) => {
             <strong style={{ fontSize: '24px' }}>
               {Number(data.totals.allEarnings.toLocaleString())}
             </strong>{' '}
-            <span className="ml-1 ogn">OGN</span>
+            <span className="ml-1 ogn">TRU</span>
           </div>
           <div>
             <div>Locked Up</div>
@@ -56,7 +56,7 @@ const BonusCard = ({ onDisplayBonusModal }) => {
                 data.totals.locked.plus(data.totals.nextVestLocked)
               ).toLocaleString()}
             </strong>{' '}
-            <span className="ml-1 ogn">OGN</span>
+            <span className="ml-1 ogn">TRU</span>
           </div>
         </div>
         <div className="col-12 col-md-6 mt-4 mt-md-0">
@@ -75,7 +75,7 @@ const BonusCard = ({ onDisplayBonusModal }) => {
                   <div className="mb-4 mt-2">
                     <Lock style={{ transform: 'scale(3)' }} />
                   </div>
-                  You don&apos;t have any OGN locked up.
+                  You don&apos;t have any TRU locked up.
                 </div>
               )}
             </div>
@@ -88,7 +88,7 @@ const BonusCard = ({ onDisplayBonusModal }) => {
             className="btn btn-lg btn-primary"
             onClick={onDisplayBonusModal}
           >
-            Earn OGN
+            Earn TRU
           </button>
         </div>
       </div>

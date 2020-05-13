@@ -1,0 +1,13 @@
+FROM node:10 as build
+
+ENV NODE_ENV=production
+
+WORKDIR /app/server
+
+COPY ./server .
+
+RUN yarn install
+
+CMD yarn run start
+
+EXPOSE $PORT

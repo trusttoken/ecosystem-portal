@@ -25,7 +25,7 @@ require('./passport')()
 const SQLiteStore = require('connect-sqlite3')(session)
 const helmet = require('helmet')
 
-const { networkId, port, sessionSecret } = require('./config')
+const { networkId, port, sessionSecret, magic } = require('./config')
 
 // Session setup
 const sessionConfig = {
@@ -63,7 +63,8 @@ if (process.env.HEROKU) {
   // Whitelisted domains
   const corsWhitelist = [
     'https://investor.originprotocol.com',
-    'https://team.originprotocol.com'
+    'https://team.originprotocol.com',
+    'https://tt-ecosystem-portal-web.herokuapp.com'
   ]
 
   app.use(

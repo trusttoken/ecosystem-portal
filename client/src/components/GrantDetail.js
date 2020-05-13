@@ -21,7 +21,7 @@ const GrantDetail = ({ grants, user }) => {
       <div key={grant.id}>
         <div className="row mt-4 mb-2">
           <div className="col">
-            <span className="text-muted">Investor</span>
+            <span className="text-muted">Purchaser</span>
           </div>
           <div className="col font-weight-bold text-right">
             {get(user, 'name', '')}
@@ -52,7 +52,7 @@ const GrantDetail = ({ grants, user }) => {
             <span className="text-muted">Total Purchase</span>
           </div>
           <div className="col font-weight-bold text-right">
-            {Number(grant.amount).toLocaleString()} OGN
+            {Number(grant.amount).toLocaleString()} TRU
           </div>
         </div>
         <div className="row mb-2">

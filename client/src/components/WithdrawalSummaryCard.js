@@ -27,7 +27,7 @@ const WithdrawalSummaryCard = ({ onDisplayWithdrawModal }) => {
         <div className="col text-muted">Vested To Date</div>
         <div className="col text-right">
           <strong>{Number(data.totals.vested).toLocaleString()} </strong>
-          <span className="ogn">OGN</span>
+          <span className="ogn">TRU</span>
         </div>
       </div>
       <div className="row mb-2">
@@ -36,7 +36,7 @@ const WithdrawalSummaryCard = ({ onDisplayWithdrawModal }) => {
         </div>
         <div className="col text-right">
           <strong>{Number(data.totals.withdrawn).toLocaleString()} </strong>
-          <span className="ogn">OGN</span>
+          <span className="ogn">TRU</span>
         </div>
       </div>
       <div className="row mb-2">
@@ -49,7 +49,7 @@ const WithdrawalSummaryCard = ({ onDisplayWithdrawModal }) => {
               data.totals.vested.minus(data.totals.withdrawn)
             ).toLocaleString()}{' '}
           </strong>
-          <span className="ogn">OGN</span>
+          <span className="ogn">TRU</span>
         </div>
       </div>
       <div className="progress mt-4" style={{ height: '5px' }}>

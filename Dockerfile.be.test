@@ -1,0 +1,11 @@
+FROM node:10 as build
+
+WORKDIR /app/server
+
+COPY ./server .
+
+RUN yarn install
+
+CMD yarn run start:development
+
+EXPOSE 5000
