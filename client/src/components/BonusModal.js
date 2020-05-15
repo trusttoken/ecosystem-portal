@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import BigNumber from 'bignumber'
+import BigNumber from 'bignumber.js'
 import get from 'lodash.get'
 import ReactGA from 'react-ga'
 import moment from 'moment'

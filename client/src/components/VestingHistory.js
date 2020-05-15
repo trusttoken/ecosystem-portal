@@ -37,7 +37,7 @@ const VestingHistory = props => {
         </td>
         <td className="d-none d-sm-block">
           <span className="text-muted">
-            {momentDate < moment.now() ? 'vested' : 'unvested'}
+            {momentDate < moment.now() ? 'Unlocked' : 'Locked'}
           </span>
         </td>
         <td className="text-right">{momentDate.format('L')}</td>
