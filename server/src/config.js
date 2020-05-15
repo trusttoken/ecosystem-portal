@@ -37,7 +37,7 @@ if (!sendgridFromEmail) {
 }
 
 // const sendgridApiKey = process.env.SENDGRID_API_KEY
-const sendgridApiKey = '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'
+const sendgridApiKey = process.env.SENDGRID_API_KEY;
 if (!sendgridFromEmail) {
   logger.error('SENDGRID_API_KEY must be set through EnvKey or manually')
   process.exit(1)
