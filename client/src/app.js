@@ -24,6 +24,7 @@ import Otp from '@/components/pages/Otp'
 import Lockup from '@/components/pages/Lockup'
 import LockupConfirm from '@/components/pages/LockupConfirm'
 import Dashboard from '@/components/pages/Dashboard'
+import { TrueRewards } from '@/components/pages/TrueRewards';
 import News from '@/components/pages/News'
 import WithdrawalDetail from '@/components/pages/WithdrawalDetail'
 import WithdrawalHistory from '@/components/pages/WithdrawalHistory'
@@ -85,7 +86,7 @@ const App = () => {
         <OnboardingRoute exact path="/phone" component={Phone} />
         <OnboardingRoute path="/otp/setup" component={OtpSetup} />
         <PrivateRoute path="/dashboard" component={Dashboard} />
-        <PrivateRoute path="/news" component={News} />
+        <PrivateRoute path="/truerewards" component={TrueRewards} />
         <PrivateRoute exact path="/lockup" component={Lockup} />
         <PrivateRoute path="/lockup/:id/:token" component={LockupConfirm} />
         <PrivateRoute exact path="/withdrawal" component={WithdrawalHistory} />
