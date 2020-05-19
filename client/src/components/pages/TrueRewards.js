@@ -1,6 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
 // import { web3 } from '../contracts/web3';
+import { EthService } from '@/contracts/EthService'
 
 const Container = styled.div`
   max-width: 1128px;
@@ -92,24 +93,26 @@ function Switch(props) {
 function TrueRewards(props) {
   const { history } = props;
 
-  const [loadingWeb3State, setLoadingWeb3State] = React.useState(null);
-  const [localWeb3State, setLocalWeb3State] = React.useState({});
+  const [metamaskAccounts, setMetamaskAccounts] = React.useState(null)
 
   const connectWallet = async () => {
     // const web3State = await web3.init();
     // setLocalWeb3State(web3State);
-    setLocalWeb3State({ accounts: []});
+    await EthService.init();
+    console.log(EthService.state);
+    setMetamaskAccounts(EthService.accounts);
+    // setLocalWeb3State({ accounts: []});
   };
 
   return (
     <div>
       <Container>
-        {!localWeb3State.accounts &&
+        {!metamaskAccounts &&
           <div onClick={connectWallet}>
             Connect Wallet
           </div>
         }
-        {localWeb3State.accounts &&
+        {metamaskAccounts &&
           <div>
             <Box>
               <div>img placeholder</div>
