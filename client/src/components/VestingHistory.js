@@ -7,7 +7,6 @@ import { DataContext } from '@/providers/data'
 
 const VestingHistory = props => {
   const data = useContext(DataContext)
-  console.log('wtfmate')
 
   const schedule = {}
   data.grants.forEach(grant => {
