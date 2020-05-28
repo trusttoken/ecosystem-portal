@@ -1,11 +1,15 @@
 import { ethers } from 'ethers';
 
+const TrueUSDControllerAbi = require('./abi/TrueUSDController.abi.json');
+
 const EthService = {
   state: {
     metamaskInstalled: false,
   },
   web3Provider: null,
   accounts: null,
+  wallet: null,
+  TUSDTokenContract: null,
   isMetamaskLocked,
   init,
 };
@@ -37,6 +41,10 @@ function handleMetamaskAccountsChangedEvent() {
   });
 }
 
+function createTokenContracts() {
+  EthService.TUSDTokenContract = new ethers.Contract('0xB36938c51c4f67e5E1112eb11916ed70A772bD75', TrueUSDControllerAbi, EthService.web3Provider);
+}
+
 async function init() {
   const ethereum = window.ethereum;
   if (typeof web3 !== 'undefined') {
@@ -50,12 +58,22 @@ async function init() {
         return false;
       } else {
         handleMetamaskAccountsChangedEvent();
+
         EthService.accounts = enableRes;
-        console.log(EthService.accounts);
+        console.log('EthService.accounts', EthService.accounts);
 
         EthService.web3Provider = new ethers.providers.Web3Provider(window.web3.currentProvider);
+
+        createTokenContracts();
+
+        const balance = await EthService.TUSDTokenContract.balanceOf(EthService.accounts[0]);
+        console.log(balance.toString());
+
+        // const balance = window.web3.eth.getBalance(EthService.accounts[0]);
+        // console.log(balance);
+
         const signer = EthService.web3Provider.getSigner();
-        console.log(signer);
+        console.log('signer', signer);
         // createTokenContracts();
         // console.log(web3);
         // web3.TUSDTokenContract.methods.balanceOf(web3State.accounts[0]).call().then((result) => {
