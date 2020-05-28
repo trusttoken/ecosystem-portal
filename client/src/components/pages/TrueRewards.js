@@ -1,7 +1,9 @@
 import * as React from 'react';
 import styled from 'styled-components';
 // import { web3 } from '../contracts/web3';
-import { EthService } from '@/contracts/EthService'
+import { EthService } from '@/contracts/EthService';
+import TokenStackIcon from '@/assets/token-stack.svg';
+import ClockStackIcon from '@/assets/clock-stack.svg';
 
 const Container = styled.div`
   max-width: 1128px;
@@ -95,12 +97,23 @@ function TrueRewards(props) {
 
   const [metamaskAccounts, setMetamaskAccounts] = React.useState(null)
 
-  const connectWallet = async () => {
-    // const web3State = await web3.init();
-    // setLocalWeb3State(web3State);
+  const initMetamask = async () => {
     await EthService.init();
     console.log(EthService.state);
     setMetamaskAccounts(EthService.accounts);
+  };
+
+  React.useEffect(() => {
+    console.log('effect');
+    if (!EthService.isMetamaskLocked()) {
+      initMetamask();
+    }
+  }, [])
+
+  const connectWallet = async () => {
+    // const web3State = await web3.init();
+    // setLocalWeb3State(web3State);
+    initMetamask();
     // setLocalWeb3State({ accounts: []});
   };
 
@@ -115,7 +128,7 @@ function TrueRewards(props) {
         {metamaskAccounts &&
           <div>
             <Box>
-              <div>img placeholder</div>
+              <div><TokenStackIcon /></div>
               <div>
                 <Label>TrustToken Balance</Label>
                 <Amount>1,000,000<Ticker>TRUST</Ticker></Amount>
@@ -123,12 +136,12 @@ function TrueRewards(props) {
             </Box>
             <Box>
               <BoxInner>
-                <div>img placeholder</div>
+                <div><TokenStackIcon /></div>
                 <div>
                   <Label>TUSD balance</Label>
                   <Amount>1,000,000<Ticker>TUSD</Ticker></Amount>
                 </div>
-                <div>img placeholder</div>
+                <div><ClockStackIcon /></div>
                 <div>
                   <Label>Earnings</Label>
                   <Amount>10.01010101<Ticker>TUSD</Ticker></Amount>
