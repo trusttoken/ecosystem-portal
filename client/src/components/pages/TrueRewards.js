@@ -95,12 +95,14 @@ function Switch(props) {
 function TrueRewards(props) {
   const { history } = props;
 
-  const [metamaskAccounts, setMetamaskAccounts] = React.useState(null)
+  const [metamaskAccounts, setMetamaskAccounts] = React.useState(null);
+  const [TUSDBalance, setTUSDBalance] = React.useState(null);
 
   const initMetamask = async () => {
     await EthService.init();
     console.log(EthService.state);
     setMetamaskAccounts(EthService.accounts);
+    setTUSDBalance(EthService.state.TUSDBalance);
   };
 
   React.useEffect(() => {
@@ -139,7 +141,7 @@ function TrueRewards(props) {
                 <div><TokenStackIcon /></div>
                 <div>
                   <Label>TUSD balance</Label>
-                  <Amount>1,000,000<Ticker>TUSD</Ticker></Amount>
+                  <Amount>{TUSDBalance}<Ticker>TUSD</Ticker></Amount>
                 </div>
                 <div><ClockStackIcon /></div>
                 <div>
