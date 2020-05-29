@@ -11,7 +11,7 @@ function currencyStringToInteger(currencyString) {
 }
 
 function getCsvRecords() {
-  const content = fs.readFileSync(`${__dirname}/ttecopurchasers.csv`, 'utf8');
+  const content = fs.readFileSync(`${__dirname}/../../../ttecopurchasers.csv`, 'utf8');
   const records = parse(content, { columns: true });
   console.log(records[0]);
   return records;

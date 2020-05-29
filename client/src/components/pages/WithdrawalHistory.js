@@ -43,7 +43,7 @@ const WithdrawalHistory = ({ history }) => {
         </div>
         <div className="col-12 col-md-2 text-md-right">
           <small>
-            <strong>Unvested </strong>
+            <strong>Locked </strong>
             <span className="text-nowrap">
               {Number(data.totals.unvested).toLocaleString()} TRU
             </span>

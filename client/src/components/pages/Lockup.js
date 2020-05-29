@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react'
 import { withRouter } from 'react-router-dom'
 import moment from 'moment'
-import BigNumber from 'bignumber'
+import BigNumber from 'bignumber.js'
 
 import { DataContext } from '@/providers/data'
 import BonusModal from '@/components/BonusModal'
