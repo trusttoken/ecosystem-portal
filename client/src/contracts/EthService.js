@@ -1,10 +1,11 @@
-import { ethers } from 'ethers';
+import { ethers, utils as ethUtils } from 'ethers';
 
 const TrueUSDControllerAbi = require('./abi/TrueUSDController.abi.json');
 
 const EthService = {
   state: {
     metamaskInstalled: false,
+    TUSDBalance: null,
   },
   web3Provider: null,
   accounts: null,
@@ -68,9 +69,9 @@ async function init() {
 
         const balance = await EthService.TUSDTokenContract.balanceOf(EthService.accounts[0]);
         console.log(balance.toString());
+        console.log(ethUtils.formatEther(balance.toString()));
+        EthService.state.TUSDBalance = ethUtils.formatEther(balance.toString());
 
-        // const balance = window.web3.eth.getBalance(EthService.accounts[0]);
-        // console.log(balance);
 
         const signer = EthService.web3Provider.getSigner();
         console.log('signer', signer);
