@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react'
 import moment from 'moment'
 import numeral from 'numeral'
-import BigNumber from 'bignumber'
+import BigNumber from 'bignumber.js'
 
 import { DataContext } from '@/providers/data'
 
