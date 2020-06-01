@@ -11,7 +11,7 @@ function currencyStringToInteger(currencyString) {
 }
 
 function getCsvRecords() {
-  const content = fs.readFileSync(`${__dirname}/../../../ttecopurchasers.csv`, 'utf8');
+  const content = fs.readFileSync(`${__dirname}/../../../pii/ttecopurchasers.csv`, 'utf8');
   const records = parse(content, { columns: true });
   console.log(records[0]);
   return records;
@@ -68,6 +68,7 @@ async function updateGrantAmount(user, csvRecord) {
 }
 
 async function importPurchasers() {
+  console.log('this code is to change the docker image');
   const records = getCsvRecords();
   await createUsers(records);
 }
