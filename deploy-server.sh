@@ -1,6 +1,6 @@
 #!/bin/bash
 # Build docker image with correct heroku registry tag
-docker build . -f Dockerfile.be.prod -t registry.heroku.com/tt-ecosystem-portal-api/web
+docker build . -f Dockerfile.be.prod -t registry.heroku.com/tt-ecosystem-portal-api/web --no-cache
 
 # Push image that was just created
 docker push registry.heroku.com/tt-ecosystem-portal-api/web:latest
