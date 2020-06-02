@@ -62,10 +62,9 @@ if (app.get('env') === 'production') {
 if (process.env.HEROKU) {
   // Whitelisted domains
   const corsWhitelist = [
-    'https://investor.originprotocol.com',
-    'https://team.originprotocol.com',
-    'https://tt-ecosystem-portal-web.herokuapp.com'
-  ]
+    'https://tt-ecosystem-portal-web.herokuapp.com',
+    'https://portal.trusttoken.com',
+  ];
 
   app.use(
     cors({
