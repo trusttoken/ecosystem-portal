@@ -69,7 +69,7 @@ class Otp extends Component {
         </div>
         <p className="action-card-help my-5 text-center">
           Unable to verify with your app?{' '}
-          <a href="mailto:investor-relations@originprotocol.com">Contact us.</a>
+          <a href="mailto:support@trusttoken.com">Contact us.</a>
         </p>
       </>
     )
