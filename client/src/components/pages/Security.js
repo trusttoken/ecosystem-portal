@@ -24,7 +24,7 @@ const Security = ({ user }) => {
               </div>
               <div className="col-xl-6 text-xl-right">
                 <a
-                  href="mailto:investor-relations@originprotocol.com?subject=Change Investor Email"
+                  href="mailto:support@trusttoken.com?subject=Change Investor Email"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -54,7 +54,7 @@ const Security = ({ user }) => {
                 </strong>
               </div>
               <div className="col-md-2 text-md-right">
-                <a href="mailto:investor-relations@originprotocol.com?subject=Help with Google Authenticator">
+                <a href="mailto:support@trusttoken.com?subject=Help with Google Authenticator">
                   Help
                 </a>
               </div>
