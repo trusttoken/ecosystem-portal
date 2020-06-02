@@ -77,9 +77,14 @@ const SwitchKnob = styled.div`
 `;
 
 function Switch(props) {
-  const [switchEnabled, setSwitchEnabled] = React.useState(false);
+  const [switchEnabled, setSwitchEnabled] = React.useState(true);
 
   const handleClick = () => {
+    if (!switchEnabled) {
+      props.onEnable();
+    } else {
+      props.onDisable();
+    }
     setSwitchEnabled(!switchEnabled);
   };
 
@@ -150,7 +155,10 @@ function TrueRewards(props) {
                 </div>
                 <div>
                   <Label>Enable Aave Rewards</Label>
-                  <Switch/>
+                  <Switch
+                    onEnable={() => EthService.enableTrueReward()}
+                    onDisable={() => EthService.disableTrueReward()}
+                  />
                 </div>
               </BoxInner>
               <Label>Annual Percentage Rewards</Label>

@@ -13,6 +13,8 @@ const EthService = {
   TUSDTokenContract: null,
   isMetamaskLocked,
   init,
+  enableTrueReward,
+  disableTrueReward,
 };
 
 function isMetamaskLocked() {
@@ -43,7 +45,28 @@ function handleMetamaskAccountsChangedEvent() {
 }
 
 function createTokenContracts() {
-  EthService.TUSDTokenContract = new ethers.Contract('0xB36938c51c4f67e5E1112eb11916ed70A772bD75', TrueUSDControllerAbi, EthService.web3Provider);
+  EthService.TUSDTokenContract = new ethers.Contract('0xB36938c51c4f67e5E1112eb11916ed70A772bD75', TrueUSDControllerAbi, EthService.web3Provider.getSigner());
+  // EthService.TUSDTokenContract.connect(EthService.web3Provider.getSigner());
+}
+
+async function enableTrueReward() {
+  if (!EthService.TUSDTokenContract) { console.log('TUSDTokenContract not initialized.'); }
+  try {
+    const enableTrueRewardRes = await EthService.TUSDTokenContract.enableTrueReward();
+    console.log(enableTrueRewardRes);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+async function disableTrueReward() {
+  if (!EthService.TUSDTokenContract) { console.log('TUSDTokenContract not initialized.'); }
+  try {
+    const disableTrueRewardRes = await EthService.TUSDTokenContract.disableTrueReward();
+    console.log(disableTrueRewardRes);
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 async function init() {
