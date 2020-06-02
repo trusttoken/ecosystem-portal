@@ -156,8 +156,8 @@ const RevisedTerms = ({ editUser, user, userIsEditing }) => {
           <p style={{ textAlign: 'left', fontSize: '12px' }}>
             If you do not agree with the proposed amendment, you can contact
             TrustToken Purchaser Relations at{' '}
-            <a href="mailto:investor-relations@originprotocol.com">
-              investor-relations@originprotocol.com
+            <a href="mailto:support@trusttoken.com">
+              support@trusttoken.com
             </a>{' '}
             to voice your dissent or abstain. Declining to accept the amendment
             will not give you different token release terms from other
