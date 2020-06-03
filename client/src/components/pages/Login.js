@@ -2,11 +2,10 @@ import React, { Component } from 'react'
 import { Redirect } from 'react-router-dom'
 import { Magic } from 'magic-sdk';
 
+import { magic } from '@/lib/magic';
 import { formInput, formFeedback } from '@/utils/formHelpers'
 import { apiUrl } from '@/constants'
 import agent from '@/utils/agent'
-
-const magic = new Magic('pk_test_338A272670C8642F');
 
 class Login extends Component {
   state = {
