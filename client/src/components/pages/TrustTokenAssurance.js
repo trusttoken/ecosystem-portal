@@ -139,7 +139,7 @@ function TrustTokenAssurance(props) {
                 <div><TokenStackIcon /></div>
                 <div>
                   <Label>TrustToken balance</Label>
-                  <Amount>{TrustTokenBalance}<Ticker>TRU</Ticker></Amount>
+                  <Amount>{`${TrustTokenBalance / 100000000}`}<Ticker>TRU</Ticker></Amount>
                 </div>
                 <div><ClockStackIcon /></div>
                 <div>
@@ -154,7 +154,7 @@ function TrustTokenAssurance(props) {
               <div>10</div>
               <div>+1.43434</div>
               <Switch
-                onEnable={() => console.log('enable')}
+                onEnable={() => EthService.depositStakedToken(20)}
                 onDisable={() => console.log(disable)}
               />
             </Box>
