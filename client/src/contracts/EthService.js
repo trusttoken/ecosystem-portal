@@ -1,6 +1,7 @@
 import { ethers, utils as ethUtils } from 'ethers';
 
 const TrueUSDControllerAbi = require('./abi/TrueUSDController.abi.json');
+const TrustTokenControllerAbi = require('./abi/TrustTokenController.abi.json');
 
 const EthService = {
   state: {
@@ -11,6 +12,7 @@ const EthService = {
   accounts: null,
   wallet: null,
   TUSDTokenContract: null,
+  TrustTokenContract: null,
   isMetamaskLocked,
   init,
   enableTrueReward,
@@ -46,6 +48,7 @@ function handleMetamaskAccountsChangedEvent() {
 
 function createTokenContracts() {
   EthService.TUSDTokenContract = new ethers.Contract('0xB36938c51c4f67e5E1112eb11916ed70A772bD75', TrueUSDControllerAbi, EthService.web3Provider.getSigner());
+  EthService.TrustTokenContract = new ethers.Contract('0xC2A3cA255B12769242201db4B91774Cae4caEf69', TrustTokenControllerAbi, EthService.web3Provider.getSigner());
   // EthService.TUSDTokenContract.connect(EthService.web3Provider.getSigner());
 }
 
@@ -90,19 +93,14 @@ async function init() {
 
         createTokenContracts();
 
-        const balance = await EthService.TUSDTokenContract.balanceOf(EthService.accounts[0]);
-        console.log(balance.toString());
-        console.log(ethUtils.formatEther(balance.toString()));
-        EthService.state.TUSDBalance = ethUtils.formatEther(balance.toString());
+        const tusdBalance = await EthService.TUSDTokenContract.balanceOf(EthService.accounts[0]);
+        console.log(tusdBalance.toString());
+        console.log(ethUtils.formatEther(tusdBalance.toString()));
+        EthService.state.TUSDBalance = ethUtils.formatEther(tusdBalance.toString());
 
-
-        const signer = EthService.web3Provider.getSigner();
-        console.log('signer', signer);
-        // createTokenContracts();
-        // console.log(web3);
-        // web3.TUSDTokenContract.methods.balanceOf(web3State.accounts[0]).call().then((result) => {
-        //   console.log(result);
-        // });
+        const trustTokenBalance = await EthService.TrustTokenContract.balanceOf(EthService.accounts[0]);
+        console.log(trustTokenBalance.toString());
+        EthService.state.TrustTokenBalance = trustTokenBalance.toString();
       }
   }
 }
