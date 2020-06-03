@@ -80,7 +80,7 @@ class Login extends Component {
     let messageElement
     if (!error) {
       messageElement = (
-        <p>We will send you a magic link to your email to confirm access ASAP. Test Message: {this.state.testMessage}</p>
+        <p>We will send you a magic link to your email to confirm access ASAP.</p>
       )
     } else if (error === 'expired') {
       messageElement = (
