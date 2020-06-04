@@ -29,7 +29,7 @@ describe('Login HTTP API', () => {
     const encryptedKey = encrypt(this.otpKey)
 
     this.user = await User.create({
-      email: 'user@originprotocol.com',
+      email: 'user@trusttoken.com',
       name: 'User 1',
       otpKey: encryptedKey,
       otpVerified: true,
@@ -38,13 +38,13 @@ describe('Login HTTP API', () => {
     })
 
     this.user2 = await User.create({
-      email: 'user2@originprotocol.com',
+      email: 'user2@trusttoken.com',
       name: 'User 2',
       otpKey: '123'
     })
 
     this.user3 = await User.create({
-      email: 'user3@originprotocol.com',
+      email: 'user3@trusttoken.com',
       name: 'User 3',
       otpVerified: true
     })

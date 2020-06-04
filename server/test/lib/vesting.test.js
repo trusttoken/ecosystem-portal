@@ -26,7 +26,7 @@ describe('Employee vesting', () => {
     beforeEach(async () => {
       await setupDatabase()
       this.user = await User.create({
-        email: 'user+employee@originprotocol.com',
+        email: 'user+employee@trusttoken.com',
         otpKey: '123',
         otpVerified: true,
         employee: true
@@ -144,7 +144,7 @@ describe('Employee vesting', () => {
     beforeEach(async () => {
       await setupDatabase()
       this.user = await User.create({
-        email: 'user+employee@originprotocol.com',
+        email: 'user+employee@trusttoken.com',
         otpKey: '123',
         otpVerified: true,
         employee: true
@@ -276,7 +276,7 @@ describe('Investor vesting', () => {
     beforeEach(async () => {
       await setupDatabase()
       this.user = await User.create({
-        email: 'user+investor@originprotocol.com',
+        email: 'user+investor@trusttoken.com',
         otpKey: '123',
         otpVerified: true
       })
@@ -372,7 +372,7 @@ describe('Investor vesting', () => {
     beforeEach(async () => {
       await setupDatabase()
       this.user = await User.create({
-        email: 'user+investor@originprotocol.com',
+        email: 'user+investor@trusttoken.com',
         otpKey: '123',
         otpVerified: true
       })
