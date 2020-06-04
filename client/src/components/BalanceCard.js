@@ -128,11 +128,6 @@ const BalanceCard = ({ onDisplayBonusModal, onDisplayWithdrawModal }) => {
                   ></Dropdown.Toggle>
 
                   <Dropdown.Menu>
-                    {data.config.lockupsEnabled && (
-                      <Dropdown.Item onClick={onDisplayBonusModal}>
-                        Earn Bonus Tokens
-                      </Dropdown.Item>
-                    )}
                     <Dropdown.Item onClick={onDisplayWithdrawModal}>
                       Withdraw
                     </Dropdown.Item>
