@@ -21,13 +21,13 @@ const RevisedSchedule = (props) => {
       <div className="action-card wide">
         <h1>Revised Token Unlock Schedule</h1>
         <p>
-          Multiple exchanges that we are partnering with to list TrustToken Tokens (TRU)
-          have required us to modify our token release schedule. These amendments
-          have been approved by our largest SAFT purchasers, including Blocktower Capital,
-          a16z crypto, Foundation Capital, Danhua Capital, and dozens of other funds and individuals.
+          The lock-up amendment has been voted through by majority of capital contributed by TRU purchasers,
+          including but not limited to a16z Crypto, BlockTower Capital, Foundation Capital, DHVC,
+          and hundreds of other firms and individuals.
         </p>
         <p>
-          Revised Schedule: 1 token unlocked immediately, followed by a 4-month lockup, then the remainder unlocking quarterly over the next 2 years.
+          Revised Schedule: TRU locked up for 4 months; after the initial lock-up period,
+          the remainder unlocking quarterly over the next 2 years.
         </p>
         <img className="img-fluid my-4" src={VestingScheudle} />
         <h2 className="mb-3">Why is this necessary?</h2>
