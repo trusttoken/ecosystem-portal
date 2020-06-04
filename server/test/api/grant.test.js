@@ -19,14 +19,14 @@ describe('Grant HTTP API', () => {
     await sequelize.sync({ force: true })
 
     this.user = await User.create({
-      email: 'user@originprotocol.com',
+      email: 'user@trusttoken.com',
       name: 'User 1',
       otpKey: '123',
       otpVerified: true
     })
 
     this.user2 = await User.create({
-      email: 'user2@originprotocol.com',
+      email: 'user2@trusttoken.com',
       name: 'User 2'
     })
 
