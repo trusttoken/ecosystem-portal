@@ -56,14 +56,14 @@ class OtpSetup extends Component {
             <div className="d-md-none">
               <h1>Copy Secret Key</h1>
               <p>
-                Open Google Authenticator, add using &quot;Manual Entry&quot;,
+                Open your Two-Factor Authenticator, add using &quot;Manual Entry&quot;,
                 and paste in this key:
               </p>
             </div>
             <div className="d-none d-md-block">
               <h1>Scan QR Code</h1>
               <p>
-                Open Google Authenticator and scan this image. You can also
+                Open a Two-Factor Authenticator and scan this image. You can also
                 manually enter your key.
               </p>
               <img src={this.state.otpQrUrl} style={{ margin: '20px 0' }} />
