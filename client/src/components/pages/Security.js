@@ -54,7 +54,7 @@ const Security = ({ user }) => {
                 </strong>
               </div>
               <div className="col-md-2 text-md-right">
-                <a href="mailto:support@trusttoken.com?subject=Help with Google Authenticator">
+                <a href="mailto:support@trusttoken.com?subject=Help with Two-Factor Authentication">
                   Help
                 </a>
               </div>
