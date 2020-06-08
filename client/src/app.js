@@ -14,6 +14,8 @@ import RevisedSchedule from '@/components/pages/RevisedSchedule'
 import RevisedTerms from '@/components/pages/RevisedTerms'
 import Phone from '@/components/pages/Phone'
 import Terms from '@/components/pages/Terms'
+import TermsOfUse from '@/components/pages/TermsOfUse'
+import PrivacyPolicy from '@/components/pages/PrivacyPolicy'
 import Login from '@/components/pages/Login'
 import CheckEmail from '@/components/pages/CheckEmail'
 import HandleLogin from '@/components/pages/HandleLogin'
@@ -74,6 +76,8 @@ const App = () => {
         <PublicRoute path="/check_email" component={CheckEmail} />
         <PublicRoute path="/login_handler/:token" component={HandleLogin} />
         <PublicRoute path="/otp/explain" component={OtpExplain} />
+        <PublicRoute path="/terms-of-use" component={TermsOfUse} />
+        <PublicRoute path="/privacy-policy" component={PrivacyPolicy} />
         <PublicRoute exact path="/otp" component={Otp} />
         <OnboardingRoute exact path="/welcome" component={Welcome} />
         <OnboardingRoute
