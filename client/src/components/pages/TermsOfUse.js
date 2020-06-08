@@ -1,8 +1,7 @@
 import React, { useState } from 'react'
 import { Redirect } from 'react-router-dom'
 
-import TermsOfUseHtml from './TrueRewardsTERMSOFUSE.html';
-const termsOfUseDoc = {__html: TermsOfUseHtml};
+import TermsOfUseDoc from '@/components/TermsOfUseDoc'
 
 const TermsOfUse = ({ isLoading, user }) => {
 
@@ -18,7 +17,7 @@ const TermsOfUse = ({ isLoading, user }) => {
 
   return (
     <div className="terms-wrapper-full-screen">
-        <div dangerouslySetInnerHTML={termsOfUseDoc} />
+        <TermsOfUseDoc />
     </div>
   )
 }
