@@ -9,8 +9,7 @@ import { editUser } from '@/actions/user'
 import { getIsEditing as getUserIsEditing } from '@/reducers/user'
 import { getNextOnboardingPage } from '@/utils'
 
-import TermsOfUseHtml from './TrueRewardsTERMSOFUSE.html';
-const termsOfUseDoc = {__html: TermsOfUseHtml};
+import TermsOfUseDoc from '@/components/TermsOfUseDoc';
 
 const Terms = ({ editUser, userIsEditing }) => {
   const [accepted, setAccepted] = useState(false)
@@ -34,7 +33,7 @@ const Terms = ({ editUser, userIsEditing }) => {
         <p>Please agree to our terms below and click Continue to proceed.</p>
         <div className="form-group">
           <div className="terms-wrapper">
-            <div dangerouslySetInnerHTML={termsOfUseDoc} />
+            <TermsOfUseDoc />
           </div>
         </div>
 

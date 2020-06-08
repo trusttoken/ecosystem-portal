@@ -1,8 +1,7 @@
 import React, { useState } from 'react'
 import { Redirect } from 'react-router-dom'
 
-import PrivacyPolicyHtml from './TrueRewardsPRIVACY_POLICY.html';
-const privacyPolicyDoc = {__html: PrivacyPolicyHtml};
+import PrivacyPolicyDoc from '@/components/PrivacyPolicyDoc'
 
 const PrivacyPolicy = ({ isLoading, user }) => {
 
@@ -18,7 +17,7 @@ const PrivacyPolicy = ({ isLoading, user }) => {
 
   return (
     <div className="terms-wrapper-full-screen">
-        <div dangerouslySetInnerHTML={privacyPolicyDoc} />
+        <PrivacyPolicyDoc />
     </div>
   )
 }
