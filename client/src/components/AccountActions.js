@@ -26,7 +26,8 @@ const AccountActions = props => {
         <div className="mx-3 d-inline-block">|</div>
         <a
           className="text-muted"
-          href="https://support.trusttoken.com"
+          target="_blank"
+          href="https://forum.trusttoken.com/c/tru-ecosystem-portal-support-updates/12"
         >
           Contact Support
         </a>
