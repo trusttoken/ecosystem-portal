@@ -91,7 +91,8 @@ const Navigation = props => {
         <ul className="navbar-nav mt-4 d-md-none">
           <li className="nav-item mt-4 mb-5">
             <a
-              href="https://support.trusttoken.com"
+              target="_blank"
+              href="https://forum.trusttoken.com/c/tru-ecosystem-portal-support-updates/12"
               className="nav-link"
             >
               Contact Support
