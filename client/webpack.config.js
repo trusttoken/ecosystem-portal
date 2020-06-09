@@ -99,7 +99,7 @@ const webpackConfig = {
           // Compiles Sass to CSS
           'sass-loader',
         ],
-      },
+      }
     ]
   },
   resolve: {
