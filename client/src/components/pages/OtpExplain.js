@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Redirect } from 'react-router-dom'
 
-import GoogleAuthenticatorIcon from '@/assets/google-authenticator.svg'
+import TwoFactorAuthenticatorIcon from '@/assets/2fa.svg'
 
 const OtpExplain = () => {
   const [redirectTo, setRedirectTo] = useState(null)
@@ -14,7 +14,7 @@ const OtpExplain = () => {
     <div className="action-card">
       <h1>Set Up Two-Factor Authenticator (2FA)</h1>
       <div className="mb-4 mx-auto" style={{ maxWidth: '150px' }}>
-        <GoogleAuthenticatorIcon width="100%" height="100%" />
+        <TwoFactorAuthenticatorIcon width="100%" height="100%" />
       </div>
       <p className="mb-3">
         A Two-Factor Authenticator will generate a unique, time-sensitive security

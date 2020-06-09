@@ -2,7 +2,7 @@ import React from 'react'
 
 import { formInput, formFeedback } from '@/utils/formHelpers'
 import ModalStep from '@/components/ModalStep'
-import GoogleAuthenticatorIcon from '@/assets/google-authenticator.svg'
+import TwoFactorAuthenticatorIcon from '@/assets/2fa.svg'
 
 const TwoFactorStep = ({
   formState,
@@ -22,7 +22,7 @@ const TwoFactorStep = ({
 
   return (
     <>
-      <GoogleAuthenticatorIcon
+      <TwoFactorAuthenticatorIcon
         className="my-5"
         width="74"
         height="74"
