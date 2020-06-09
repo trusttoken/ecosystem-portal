@@ -29,7 +29,7 @@ const Welcome = ({ isLoading, user }) => {
       </h1>
       <p className="my-4">
         The wait is finally over! You can now start using this portal to manage
-        your TRU investment.
+        your TRU purchase.
       </p>
       <hr className="mx-5" />
       <div className="form-group">
