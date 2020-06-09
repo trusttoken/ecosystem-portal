@@ -3,7 +3,7 @@ import get from 'lodash.get'
 
 import { DataContext } from '@/providers/data'
 import BorderedCard from '@/components/BorderedCard'
-import GoogleAuthenticatorIcon from '@/assets/google-authenticator.svg'
+import TwoFactorAuthenticatorIcon from '@/assets/2fa.svg'
 import AccountTable from '@/components/AccountTable'
 import SessionTable from '@/components/SessionTable'
 
@@ -46,11 +46,11 @@ const Security = ({ user }) => {
                   maxHeight: '60px'
                 }}
               >
-                <GoogleAuthenticatorIcon width="100%" height="100%" />
+                <TwoFactorAuthenticatorIcon width="100%" height="100%" />
               </div>
               <div className="col-md-8">
                 <strong style={{ fontSize: '18px' }}>
-                  Google Authenticator
+                  2FA Authenticator
                 </strong>
               </div>
               <div className="col-md-2 text-md-right">
