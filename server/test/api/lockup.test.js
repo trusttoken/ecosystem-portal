@@ -42,7 +42,7 @@ describe('Lockup HTTP API', () => {
     const encryptedKey = encrypt(this.otpKey)
 
     this.user = await User.create({
-      email: 'user@originprotocol.com',
+      email: 'user@trusttoken.com',
       name: 'User 1',
       otpKey: encryptedKey,
       otpVerified: true
