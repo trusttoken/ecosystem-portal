@@ -19,12 +19,12 @@ describe('Account HTTP API', () => {
     await sequelize.sync({ force: true })
 
     this.user = await User.create({
-      email: 'user@originprotocol.com',
+      email: 'user@trusttoken.com',
       name: 'User 1'
     })
 
     this.user2 = await User.create({
-      email: 'user2@originprotocol.com',
+      email: 'user2@trusttoken.com',
       name: 'User 2'
     })
 
