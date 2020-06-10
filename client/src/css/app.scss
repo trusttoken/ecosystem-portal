@@ -471,6 +471,15 @@ input, select {
   text-align: left;
 }
 
+.terms-wrapper-full-screen {
+  background-color: var(--accent);
+  border-radius: 10px;
+  padding: 20px;
+  margin: 40px 0;
+  font-size: 14px;
+  text-align: left;
+}
+
 .ogn {
   color: var(--secondary-text);
   font-weight: bold;

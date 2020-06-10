@@ -26,7 +26,7 @@ describe('Shared library', () => {
     await sequelize.sync({ force: true })
 
     this.user = await User.create({
-      email: 'user@originprotocol.com',
+      email: 'user@trusttoken.com',
       name: 'User 1',
       otpKey: '123',
       otpVerified: true,

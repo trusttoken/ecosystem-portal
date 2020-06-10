@@ -28,7 +28,7 @@ export function fetchNews() {
   return dispatch => {
     dispatch(fetchNewsPending())
 
-    const mediumUrl = 'https://medium.com/feed/originprotocol'
+    const mediumUrl = 'https://blog.trusttoken.com/'
     request
       .get(`https://api.rss2json.com/v1/api.json?rss_url=${mediumUrl}`)
       .then(response => dispatch(fetchNewsSuccess(response.body.items)))
