@@ -116,6 +116,7 @@ const webpackConfig = {
     headers: {
       'Access-Control-Allow-Origin': '*'
     },
+    historyApiFallback: true,
     contentBase: [
       path.join(__dirname, 'public'),
       path.join(__dirname, 'src/css')
