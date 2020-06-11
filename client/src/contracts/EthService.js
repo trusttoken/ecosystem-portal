@@ -22,7 +22,15 @@ const EthService = {
   enableTrueReward,
   disableTrueReward,
   depositStakedToken,
+  getMagicLinkWalletAddress,
 };
+
+async function getMagicLinkWalletAddress() {
+  const magicProvider = new ethers.providers.Web3Provider(magic.rpcProvider);
+  const magicSigner = magicProvider.getSigner();
+  const magicAddress = await magicSigner.getAddress();
+  return magicAddress;
+}
 
 function isMetamaskLocked() {
   console.log(window.web3.eth.accounts);

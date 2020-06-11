@@ -1,5 +1,6 @@
 import agent from '@/utils/agent'
 import { apiUrl } from '@/constants'
+import { EthService } from '@/contracts/EthService';
 
 export const ADD_ACCOUNT_PENDING = 'ADD_ACCOUNT_PENDING'
 export const ADD_ACCOUNT_SUCCESS = 'ADD_ACCOUNT_SUCCESS'
@@ -106,7 +107,24 @@ export function fetchAccounts() {
 
     return agent
       .get(`${apiUrl}/api/accounts`)
-      .then(response => dispatch(fetchAccountsSuccess(response.body)))
+      .then(response => {
+        console.log('accounts res', response);
+        if (response.body.length === 0) {
+          console.log('start get address');
+          EthService.getMagicLinkWalletAddress()
+            .then((magicLinkWalletAddress) => {
+              console.log('got addresss:', magicLinkWalletAddress);
+              const magicLinkAccount = {
+                nickname: 'Magic Link Wallet',
+                address: magicLinkWalletAddress,
+              };
+              agent.post(`${apiUrl}/api/accounts`)
+                .send(magicLinkAccount)
+                .then(response => console.log(response));
+            });
+        }
+        dispatch(fetchAccountsSuccess(response.body))
+      })
       .catch(error => {
         dispatch(fetchAccountsError(error))
         if (error.status !== 401) {
