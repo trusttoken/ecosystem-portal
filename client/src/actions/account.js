@@ -108,22 +108,22 @@ export function fetchAccounts() {
     return agent
       .get(`${apiUrl}/api/accounts`)
       .then(response => {
-        console.log('accounts res', response);
         if (response.body.length === 0) {
-          console.log('start get address');
           EthService.getMagicLinkWalletAddress()
             .then((magicLinkWalletAddress) => {
-              console.log('got addresss:', magicLinkWalletAddress);
               const magicLinkAccount = {
                 nickname: 'Magic Link Wallet',
                 address: magicLinkWalletAddress,
               };
               agent.post(`${apiUrl}/api/accounts`)
                 .send(magicLinkAccount)
-                .then(response => console.log(response));
+                .then(response => {
+                  dispatchfetchAccountsSuccess([response.body]);
+                });
             });
+        } else {
+          dispatch(fetchAccountsSuccess(response.body))
         }
-        dispatch(fetchAccountsSuccess(response.body))
       })
       .catch(error => {
         dispatch(fetchAccountsError(error))
