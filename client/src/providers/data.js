@@ -30,7 +30,6 @@ import {
   getIsLoading as getTransferIsLoading,
   getWithdrawn
 } from '@/reducers/transfer'
-import { EthService } from '@/contracts/EthService';
 
 export const DataContext = createContext()
 
@@ -40,8 +39,7 @@ const _DataProvider = ({ children, ...rest }) => {
       rest.fetchConfig(),
       rest.fetchGrants(),
       rest.fetchLockups(),
-      rest.fetchTransfers(),
-      EthService.init('magic')
+      rest.fetchTransfers()
   }, [])
 
   if (
