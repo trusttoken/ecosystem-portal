@@ -118,7 +118,7 @@ export function fetchAccounts() {
               agent.post(`${apiUrl}/api/accounts`)
                 .send(magicLinkAccount)
                 .then(response => {
-                  dispatchfetchAccountsSuccess([response.body]);
+                  dispatch(fetchAccountsSuccess([response.body]);
                 });
             });
         } else {
