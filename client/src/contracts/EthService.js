@@ -1,6 +1,8 @@
 import { ethers, utils as ethUtils } from 'ethers';
 
 import { magic } from '@/lib/magic';
+import { getEthNetwork } from '@/lib/eth';
+import { TRUSTTOKEN_CONTRACT_ADDRESSES } from '@/constants/contracts';
 
 const TrueUSDControllerAbi = require('./abi/TrueUSDController.abi.json');
 const TrustTokenControllerAbi = require('./abi/TrustTokenController.abi.json');
@@ -34,10 +36,14 @@ async function getMagicLinkWalletAddress() {
 }
 
 async function getMagicLinkWalletTrustTokenBalance(address) {
+  const network = getEthNetwork();
+  console.log(`working on ${network}`);
+  const trustTokenContractAddress = TRUSTTOKEN_CONTRACT_ADDRESSES[network];
+
   const magicProvider = new ethers.providers.Web3Provider(magic.rpcProvider);
   const magicSigner = magicProvider.getSigner();
 
-  const TrustTokenContract = new ethers.Contract('0xC2A3cA255B12769242201db4B91774Cae4caEf69', TrustTokenControllerAbi, magicSigner);
+  const TrustTokenContract = new ethers.Contract(trustTokenContractAddress, TrustTokenControllerAbi, magicSigner);
   const trustTokenBalance = await TrustTokenContract.balanceOf(address);
   return trustTokenBalance.toString();
 }
