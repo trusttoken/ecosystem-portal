@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { Redirect } from 'react-router-dom'
 import get from 'lodash.get'
 import styled from 'styled-components';
@@ -6,7 +6,11 @@ import styled from 'styled-components';
 import { apiUrl } from '@/constants'
 import agent from '@/utils/agent'
 import ThemeToggle from '@/components/ThemeToggle'
-import Dropdown from 'react-bootstrap/Dropdown'
+import { EthAccountDropdown } from '@/components/EthAccountDropdown';
+
+import { shortenAddress } from '@/lib/account';
+
+import { DataContext } from '@/providers/data'
 
 const DropdownContainer = styled.div`
   display: inline;
@@ -14,7 +18,14 @@ const DropdownContainer = styled.div`
 `;
 
 const AccountActions = props => {
+  const data = useContext(DataContext);
   const [redirectTo, setRedirectTo] = useState(false)
+  const [dropdownToggleText, setDropdownToggleText] = useState('');
+
+  if (!dropdownToggleText && data.accounts && data.accounts[0]) {
+    const shortenedAddress = shortenAddress(data.accounts[0].address, 6, 4);
+    setDropdownToggleText(`${data.accounts[0].nickname} ${shortenedAddress}`);
+  }
 
   const handleLogout = async () => {
     await agent.post(`${apiUrl}/api/logout`)
@@ -29,17 +40,7 @@ const AccountActions = props => {
     <div>
       <div className="text-right" style={{ color: '#638298' }}>
         <DropdownContainer>
-          <Dropdown>
-            <Dropdown.Toggle variant="success" id="dropdown-basic">
-              Dropdown Button
-            </Dropdown.Toggle>
-
-            <Dropdown.Menu>
-              <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
-              <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
-              <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown>
+          <EthAccountDropdown />
         </DropdownContainer>
         <ThemeToggle />
         <small>
