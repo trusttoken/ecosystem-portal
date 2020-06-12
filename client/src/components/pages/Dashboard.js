@@ -14,6 +14,7 @@ import BonusModal from '@/components/BonusModal'
 import BonusCta from '@/components/BonusCta'
 import WithdrawModal from '@/components/WithdrawModal'
 import OtcRequestModal from '@/components/OtcRequestModal'
+import { EthService } from '@/contracts/EthService';
 
 const Dashboard = props => {
   const data = useContext(DataContext)
@@ -29,6 +30,10 @@ const Dashboard = props => {
     data.config.earlyLockupsEnabled && !data.config.isLocked
   const displayFullWidthLockupCta = displayLockupCta && hasLockups
   const isEarlyLockup = displayBonusModal === 'early'
+
+  // React.useEffect(() => {
+  //   EthService.init('magic');
+  // }, []);
 
   const renderModals = () => (
     <>

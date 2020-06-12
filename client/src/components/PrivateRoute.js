@@ -63,7 +63,7 @@ const PrivateRoute = ({
                     />
                     <div id="main" className={expandSidebar ? 'd-none' : ''}>
                       <div className="d-none d-md-block">
-                        {user && <AccountActions user={user} />}
+                        {user && <DataProvider><AccountActions user={user} /></DataProvider>}
                       </div>
                       <div className="mt-md-4">
                         <DataProvider>

@@ -34,7 +34,7 @@ const Navigation = props => {
     >
       <div className="nav-logo text-center">
         <div className="d-sm-none">
-          <OriginLogo />
+          <TTSignLogo />
         </div>
         <div className="d-none d-sm-block">
           <TTSignLogo />
@@ -60,33 +60,6 @@ const Navigation = props => {
               {props.expandSidebar && 'Dashboard'}
             </NavLink>
           </li>
-          {/*<li className="nav-item mb-5">
-            <NavLink to="/news" className="nav-link text">
-              <News className="icon" />
-              {props.expandSidebar && 'News'}
-            </NavLink>
-          </li>
-          <li className="nav-item mb-5">
-            <NavLink to="/lockup" className="nav-link text">
-              <Earn
-                className="icon"
-                style={{ transform: 'rotate(-90deg)', marginTop: '-10px' }}
-              />
-              {props.expandSidebar && 'Bonus Tokens'}
-            </NavLink>
-          </li>
-          <li className="nav-item mb-5">
-            <NavLink to="/withdrawal" className="nav-link text">
-              <History className="icon" />
-              {props.expandSidebar && 'Withdrawal History'}
-            </NavLink>
-          </li>
-          <li className="nav-item mb-5">
-            <NavLink to="/security" className="nav-link text">
-              <Security className="icon" />
-              {props.expandSidebar && 'Security'}
-            </NavLink>
-          </li>*/}
         </ul>
         <ul className="navbar-nav mt-4 d-md-none">
           <li className="nav-item mt-4 mb-5">
@@ -95,7 +68,7 @@ const Navigation = props => {
               href="https://forum.trusttoken.com/c/tru-ecosystem-portal-support-updates/12"
               className="nav-link"
             >
-              Contact Support
+              Contact Support? hi there
             </a>
           </li>
           <li className="nav-item">
@@ -104,7 +77,7 @@ const Navigation = props => {
               style={{ cursor: 'pointer' }}
               className="nav-link"
             >
-              Logout
+              Logout test test test
             </a>
           </li>
         </ul>

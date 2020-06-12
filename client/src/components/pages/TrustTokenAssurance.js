@@ -77,7 +77,7 @@ const SwitchKnob = styled.div`
 `;
 
 function Switch(props) {
-  const [switchEnabled, setSwitchEnabled] = React.useState(true);
+  const [switchEnabled, setSwitchEnabled] = React.useState(false);
 
   const handleClick = () => {
     if (!switchEnabled) {
@@ -97,17 +97,17 @@ function Switch(props) {
   );
 }
 
-function TrueRewards(props) {
+function TrustTokenAssurance(props) {
   const { history } = props;
 
   const [metamaskAccounts, setMetamaskAccounts] = React.useState(null);
-  const [TUSDBalance, setTUSDBalance] = React.useState(null);
+  const [TrustTokenBalance, setTrustTokenBalance] = React.useState(null);
 
   const initMetamask = async () => {
     await EthService.init();
     console.log(EthService.state);
     setMetamaskAccounts(EthService.accounts);
-    setTUSDBalance(EthService.state.TUSDBalance);
+    setTrustTokenBalance(EthService.state.TrustTokenBalance);
   };
 
   React.useEffect(() => {
@@ -138,24 +138,25 @@ function TrueRewards(props) {
               <BoxInner>
                 <div><TokenStackIcon /></div>
                 <div>
-                  <Label>TUSD balance</Label>
-                  <Amount>{TUSDBalance}<Ticker>TUSD</Ticker></Amount>
+                  <Label>TrustToken balance</Label>
+                  <Amount>{`${TrustTokenBalance / 100000000}`}<Ticker>TRU</Ticker></Amount>
                 </div>
                 <div><ClockStackIcon /></div>
                 <div>
-                  <Label>Earnings</Label>
-                  <Amount>10.01010101<Ticker>TUSD</Ticker></Amount>
-                </div>
-                <div>
-                  <Label>Enable Aave Rewards</Label>
-                  <Switch
-                    onEnable={() => EthService.enableTrueReward()}
-                    onDisable={() => EthService.disableTrueReward()}
-                  />
+                  <Label>Total Earnings</Label>
+                  <Amount>10.01010101<Ticker>TRU</Ticker></Amount>
                 </div>
               </BoxInner>
-              <Label>Annual Percentage Rewards</Label>
-              <Amount>4.0%</Amount>
+            </Box>
+            <Box>
+              <div>Aave<span>Learn More</span></div>
+              <div>0.75%</div>
+              <div>10</div>
+              <div>+1.43434</div>
+              <Switch
+                onEnable={() => EthService.depositStakedToken(20)}
+                onDisable={() => console.log(disable)}
+              />
             </Box>
           </div>
         }
@@ -164,4 +165,4 @@ function TrueRewards(props) {
   );
 }
 
-export { TrueRewards };
+export { TrustTokenAssurance };
