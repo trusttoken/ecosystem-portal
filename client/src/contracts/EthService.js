@@ -23,6 +23,7 @@ const EthService = {
   disableTrueReward,
   depositStakedToken,
   getMagicLinkWalletAddress,
+  getMagicLinkWalletTrustTokenBalance,
 };
 
 async function getMagicLinkWalletAddress() {
@@ -30,6 +31,15 @@ async function getMagicLinkWalletAddress() {
   const magicSigner = magicProvider.getSigner();
   const magicAddress = await magicSigner.getAddress();
   return magicAddress;
+}
+
+async function getMagicLinkWalletTrustTokenBalance(address) {
+  const magicProvider = new ethers.providers.Web3Provider(magic.rpcProvider);
+  const magicSigner = magicProvider.getSigner();
+
+  const TrustTokenContract = new ethers.Contract('0xC2A3cA255B12769242201db4B91774Cae4caEf69', TrustTokenControllerAbi, magicSigner);
+  const trustTokenBalance = await TrustTokenContract.balanceOf(address);
+  return trustTokenBalance.toString();
 }
 
 function isMetamaskLocked() {
