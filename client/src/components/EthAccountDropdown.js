@@ -2,6 +2,7 @@ import React, { useContext, useState, useEffect } from 'react';
 import Dropdown from 'react-bootstrap/Dropdown';
 import Tooltip from 'react-bootstrap/Tooltip';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import copy from 'copy-to-clipboard';
 
 import { EthService } from '@/contracts/EthService';
 
@@ -33,8 +34,9 @@ function EthAccountDropdownItem(props) {
       });
   }, []);
 
-  const handleClick = (e) => {
-    e.preventDefault();
+  const handleClick = (e, address) => {
+    e.stopPropagation();
+    copy(address);
     setTooltipText('Copied!');
     setTimeout(() => {
       setTooltipText('Copy to clipboard');
@@ -51,7 +53,7 @@ function EthAccountDropdownItem(props) {
         </Tooltip>
       }
     >
-      <Dropdown.Item onClick={handleClick}>
+      <Dropdown.Item onClick={(e) => handleClick(e, account.address)}>
         <div>{account.nickname}</div>
         <div>{account.address}</div>
         <div>
@@ -69,6 +71,7 @@ function EthAccountDropdown(props) {
 
   const [dropdownToggleText, setDropdownToggleText] = useState('');
   const [balancesLoading, setBalancesLoading] = useState(true);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   const loadAccountBalances = async () => {
     for (let i = 0; i < accounts.length; i++) {
@@ -87,8 +90,13 @@ function EthAccountDropdown(props) {
     setDropdownToggleText(`${data.accounts[0].nickname} ${shortenedAddress}`);
   }
 
+  const handleToggle = (newValue, event, {source}) => {
+    if (source === 'select') { return; }
+    setMenuOpen(newValue);
+  };
+
   return (
-    <Dropdown onSelect={(e) => e.stopPropagation()}>
+    <Dropdown onToggle={handleToggle} show={menuOpen}>
       <Dropdown.Toggle
         variant="success"
         id="dropdown-basic"
