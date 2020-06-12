@@ -1,11 +1,7 @@
 import { Magic } from 'magic-sdk';
+import { getEthNetwork } from '@/lib/eth';
 
-let network;
-if (process.env.NODE_ENV === 'production') {
-  network = 'mainnet';
-} else {
-  network = 'ropsten'
-}
+const network = getEthNetwork();
 
 console.log('we on network', network);
 

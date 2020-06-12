@@ -8,8 +8,6 @@ import { DataContext } from '@/providers/data'
 const VestingBars = ({ user }) => {
   const data = useContext(DataContext)
 
-  console.log(data);
-
   const [displayPopover, setDisplayPopover] = useState({})
 
   // data.grants = [
