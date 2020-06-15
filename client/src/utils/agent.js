@@ -6,10 +6,9 @@ import { setSessionExpired } from '@/actions/session'
 const agent = request
   .agent()
   .withCredentials(true)
-  .on('error', error => {
-    if (error.status === 401) {
-      store.dispatch(setSessionExpired(true))
-    }
+  .ok(res => {
+    store.dispatch(setSessionExpired(res.status === 401));
+    return res.status < 400;
   })
 
 export default agent
