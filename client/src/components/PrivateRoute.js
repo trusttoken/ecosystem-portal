@@ -24,8 +24,6 @@ const PrivateRoute = ({
 }) => {
   const [expandSidebar, setExpandSidebar] = useState(false)
 
-  setSessionExpired(false)
-
   useEffect(rest.fetchUser, [])
 
   useEffect(
