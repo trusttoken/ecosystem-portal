@@ -16,8 +16,6 @@ const OnboardingRoute = ({
   user,
   ...rest
 }) => {
-  setSessionExpired(false)
-
   useEffect(rest.fetchUser, [])
 
   if (rest.sessionExpired && !isLoading) {
