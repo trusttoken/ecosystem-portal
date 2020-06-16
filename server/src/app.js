@@ -48,10 +48,10 @@ if (app.get('env') === 'production') {
   app.set('trust proxy', 1) // trust first proxy
   sessionConfig.cookie.secure = true // serve secure cookies in production
 } else {
-  // CORS configuration for local development
+  // CORS configuration for local development and test deployments in the cloud (CI)
   app.use(
     cors({
-      origin: 'http://localhost:3000',
+      origin: process.env.DEPLOYMENT_URL || 'http://localhost:3000',
       credentials: true,
       exposedHeaders: ['X-Authenticated-Email']
     })
@@ -64,7 +64,7 @@ if (process.env.HEROKU) {
   const corsWhitelist = [
     'https://tt-ecosystem-portal-web.herokuapp.com',
     'https://portal.trusttoken.com',
-  ];
+  ].concat(process.env.CLIENT_URL ? [process.env.CLIENT_URL] : []);
 
   app.use(
     cors({

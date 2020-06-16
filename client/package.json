@@ -84,6 +84,7 @@
   },
   "scripts": {
     "build": "NODE_ENV=production webpack --loglevel notice",
+    "buildtest": "NODE_ENV=test webpack --loglevel notice",
     "lint": "eslint '**/*.js' && npm run prettier:check",
     "prettier": "prettier --write \"src/**/*.js\" \"test/**/*.js\"",
     "prettier:check": "prettier -c \"src/**/*.js\" \"test/**/*.js\"",

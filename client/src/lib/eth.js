@@ -1,11 +1,5 @@
 function getEthNetwork() {
-  let network;
-  if (process.env.NODE_ENV === 'production') {
-    network = 'mainnet';
-  } else {
-    network = 'ropsten'
-  }
-
+  let network = process.env.ETH_NETWORK || (process.env.NODE_ENV === 'production' ? 'mainnet' : 'ropsten');
   return network;
 }
 
