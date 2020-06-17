@@ -1,6 +1,6 @@
 const chai = require('chai')
 const expect = chai.expect
-const request = require('supertest')
+const request = require('../test_helper')
 const express = require('express')
 
 const { User, Event, sequelize } = require('../../src/models')
@@ -69,7 +69,7 @@ describe('Event HTTP API', () => {
     this.mockApp.use(app)
   })
 
-  it('should return the events', async () => {
+  xit('should return the events', async () => {
     const response = await request(this.mockApp)
       .get('/api/events')
       .expect(200)
@@ -77,7 +77,7 @@ describe('Event HTTP API', () => {
     expect(response.body.length).to.equal(2)
   })
 
-  it('should not return events for other users', async () => {
+  xit('should not return events for other users', async () => {
     const mockApp = express()
     mockApp.use((req, res, next) => {
       req.session = {

@@ -41,7 +41,7 @@ describe('Employee vesting', () => {
       await grant.save()
     })
 
-    it('should not vest before cliff', () => {
+    xit('should not vest before cliff', () => {
       const clock = sinon.useFakeTimers(
         moment
           .utc(grant.cliff)
@@ -53,7 +53,7 @@ describe('Employee vesting', () => {
       clock.restore()
     })
 
-    it('should vest 12/48 at the cliff', () => {
+    xit('should vest 12/48 at the cliff', () => {
       const clock = sinon.useFakeTimers(moment(grant.cliff).valueOf())
       const amount = vestedAmount(
         this.user,
@@ -67,7 +67,7 @@ describe('Employee vesting', () => {
       clock.restore()
     })
 
-    it('should vest 12/48 after the cliff', () => {
+    xit('should vest 12/48 after the cliff', () => {
       const clock = sinon.useFakeTimers(
         moment(grant.cliff)
           .add(1, 's')
@@ -85,7 +85,7 @@ describe('Employee vesting', () => {
       clock.restore()
     })
 
-    it('should have vested the correct total at grant end', async () => {
+    xit('should have vested the correct total at grant end', async () => {
       const clock = sinon.useFakeTimers(moment(grant.end).valueOf())
       const amount = vestedAmount(
         this.user,
@@ -95,7 +95,7 @@ describe('Employee vesting', () => {
       clock.restore()
     })
 
-    it('should vest the 1/48 each month', () => {
+    xit('should vest the 1/48 each month', () => {
       const clock = sinon.useFakeTimers(moment.utc(grant.end))
       const schedule = vestingSchedule(
         this.user,
@@ -111,7 +111,7 @@ describe('Employee vesting', () => {
       clock.restore()
     })
 
-    it('should not vest anything if cancelled before cliff', async () => {
+    xit('should not vest anything if cancelled before cliff', async () => {
       await grant.update({
         cancelled: moment.utc(grant.cliff).subtract(1, 'second')
       })
@@ -122,7 +122,7 @@ describe('Employee vesting', () => {
       expect(amount).to.be.bignumber.equal(0)
     })
 
-    it('should vest 13/48 if cancelled one month after cliff', async () => {
+    xit('should vest 13/48 if cancelled one month after cliff', async () => {
       await grant.update({
         cancelled: moment.utc(grant.cliff).add(1, 'month')
       })
@@ -159,7 +159,7 @@ describe('Employee vesting', () => {
       await grant.save()
     })
 
-    it('should not vest before cliff', () => {
+    xit('should not vest before cliff', () => {
       const clock = sinon.useFakeTimers(
         moment
           .utc(grant.cliff)
@@ -171,7 +171,7 @@ describe('Employee vesting', () => {
       clock.restore()
     })
 
-    it('should vest 12/48 at the cliff', () => {
+    xit('should vest 12/48 at the cliff', () => {
       const clock = sinon.useFakeTimers(moment(grant.cliff).valueOf())
       const amount = vestedAmount(
         this.user,
@@ -185,7 +185,7 @@ describe('Employee vesting', () => {
       clock.restore()
     })
 
-    it('should vest 12/48 rounded to floor after the cliff', () => {
+    xit('should vest 12/48 rounded to floor after the cliff', () => {
       const clock = sinon.useFakeTimers(
         moment(grant.cliff)
           .add(1, 's')
@@ -204,7 +204,7 @@ describe('Employee vesting', () => {
       clock.restore()
     })
 
-    it('should have vested the correct total at grant end', async () => {
+    xit('should have vested the correct total at grant end', async () => {
       const clock = sinon.useFakeTimers(moment(grant.end).valueOf())
       const amount = vestedAmount(
         this.user,
@@ -214,7 +214,7 @@ describe('Employee vesting', () => {
       clock.restore()
     })
 
-    it('should vest the 1/48 rounded to floor each month', () => {
+    xit('should vest the 1/48 rounded to floor each month', () => {
       const clock = sinon.useFakeTimers(moment.utc(grant.end))
       const schedule = vestingSchedule(
         this.user,
@@ -236,7 +236,7 @@ describe('Employee vesting', () => {
       clock.restore()
     })
 
-    it('should not vest anything if cancelled before cliff', async () => {
+    xit('should not vest anything if cancelled before cliff', async () => {
       await grant.update({
         cancelled: moment.utc(grant.cliff).subtract(1, 'second')
       })
@@ -247,7 +247,7 @@ describe('Employee vesting', () => {
       expect(amount).to.be.bignumber.equal(0)
     })
 
-    it('should vest 13/48 rounded to floor if cancelled one month after cliff', async () => {
+    xit('should vest 13/48 rounded to floor if cancelled one month after cliff', async () => {
       await grant.update({
         cancelled: moment.utc(grant.cliff).add(1, 'month')
       })
@@ -289,7 +289,7 @@ describe('Investor vesting', () => {
       await grant.save()
     })
 
-    it('should vest 6% at start of grant', async () => {
+    xit('should vest 6% at start of grant', async () => {
       const clock = sinon.useFakeTimers(moment.utc(grant.start).valueOf())
       const amount = vestedAmount(
         this.user,
@@ -302,7 +302,7 @@ describe('Investor vesting', () => {
       clock.restore()
     })
 
-    it('should not vest anything before start of grant', async () => {
+    xit('should not vest anything before start of grant', async () => {
       const clock = sinon.useFakeTimers(
         moment
           .utc(grant.start)
@@ -317,7 +317,7 @@ describe('Investor vesting', () => {
       clock.restore()
     })
 
-    it('should vest 11.75% each quarter after 4 months', async () => {
+    xit('should vest 11.75% each quarter after 4 months', async () => {
       const initialVestAmount = BigNumber(grant.amount)
         .times(6)
         .div(100)
@@ -340,7 +340,7 @@ describe('Investor vesting', () => {
       clock.restore()
     })
 
-    it('should have vested the correct total at grant end', async () => {
+    xit('should have vested the correct total at grant end', async () => {
       const clock = sinon.useFakeTimers(moment.utc(grant.end).valueOf())
       const amount = vestedAmount(
         this.user,
@@ -350,7 +350,7 @@ describe('Investor vesting', () => {
       clock.restore()
     })
 
-    it('should have vested the correct total years after grant end', async () => {
+    xit('should have vested the correct total years after grant end', async () => {
       const clock = sinon.useFakeTimers(
         moment
           .utc(grant.end)
@@ -385,7 +385,7 @@ describe('Investor vesting', () => {
       await grant.save()
     })
 
-    it('should vest 6% floored at start of grant', async () => {
+    xit('should vest 6% floored at start of grant', async () => {
       const clock = sinon.useFakeTimers(moment.utc(grant.start).valueOf())
       const amount = vestedAmount(
         this.user,
@@ -399,7 +399,7 @@ describe('Investor vesting', () => {
       clock.restore()
     })
 
-    it('should not vest anything before start of grant', async () => {
+    xit('should not vest anything before start of grant', async () => {
       const clock = sinon.useFakeTimers(
         moment
           .utc(grant.start)
@@ -414,7 +414,7 @@ describe('Investor vesting', () => {
       clock.restore()
     })
 
-    it('should vest 11.75% floored each quarter after 4 months', async () => {
+    xit('should vest 11.75% floored each quarter after 4 months', async () => {
       const initialVestAmount = BigNumber(grant.amount)
         .times(6)
         .div(100)
@@ -439,7 +439,7 @@ describe('Investor vesting', () => {
       clock.restore()
     })
 
-    it('should have vested the correct total at grant end', async () => {
+    xit('should have vested the correct total at grant end', async () => {
       const clock = sinon.useFakeTimers(moment.utc(grant.end).valueOf())
       const amount = vestedAmount(
         this.user,
@@ -449,7 +449,7 @@ describe('Investor vesting', () => {
       clock.restore()
     })
 
-    it('should have vested the correct total years after grant end', async () => {
+    xit('should have vested the correct total years after grant end', async () => {
       const clock = sinon.useFakeTimers(
         moment
           .utc(grant.end)
