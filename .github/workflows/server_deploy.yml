@@ -1,0 +1,71 @@
+# This workflow will do a clean install of node dependencies, build the source code and run tests across different versions of node
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
+
+name: server test deployment
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        fail-fast: [false]
+        node-version: [10.x]
+
+    env:
+        HEROKU_APP_NAME_API: peter-tt-ecosystem-portal-api
+        API_URL: https://peter-tt-ecosystem-portal-api.herokuapp.com
+        APP_URL: https://peter-tt-ecosystem-portal-web.herokuapp.com
+        DOCKER_FILE: /home/runner/Dockerfile
+        ENV_FILE: /home/runner/work/ecosystem-portal/ecosystem-portal/server/.env.test
+    steps:
+    - uses: actions/checkout@v2
+    - run: echo 'FROM node:10 as build'                                   >${DOCKER_FILE}
+    - run: echo 'ENV NODE_ENV=test'                                      >>${DOCKER_FILE}
+    - run: echo 'WORKDIR /app/server'                                    >>${DOCKER_FILE}
+    - run: echo 'COPY ./work/ecosystem-portal/ecosystem-portal/server .' >>${DOCKER_FILE}
+    - run: echo 'RUN yarn install'                                       >>${DOCKER_FILE}
+    - run: echo 'CMD yarn run start'                                     >>${DOCKER_FILE}
+    - run: echo 'EXPOSE $PORT'                                           >>${DOCKER_FILE}
+    - run: ls -lrt ${DOCKER_FILE}
+    - run: cat ${DOCKER_FILE}
+
+    - run: echo  NODE_ENV=test                                            >${ENV_FILE}
+    - run: echo  HEROKU=true                                             >>${ENV_FILE}
+    - run: echo  DEPLOYMENT_URL=${API_URL}                               >>${ENV_FILE}
+    - run: echo  SESSION_SECRET=${{ secrets.SESSION_SECRET }}            >>${ENV_FILE}
+    - run: echo  ENCRYPTION_SECRET=${{ secrets.ENCRYPTION_SECRET }}      >>${ENV_FILE}
+    - run: echo  LOCKUPS_ENABLED=true                                    >>${ENV_FILE}
+    - run: echo  EARLY_LOCKUPS_ENABLED_UNTIL=2020-04-15                  >>${ENV_FILE}
+    - run: echo  CLIENT_URL=${APP_URL}                                   >>${ENV_FILE}
+    - run: echo  UNLOCK_DATE=2019-01-01                                  >>${ENV_FILE}
+    - run: echo  LOG_LEVEL=DEBUG                                         >>${ENV_FILE}
+    - run: echo  DATABASE_URL=${{ secrets.TEST_DATABASE_URL }}           >>${ENV_FILE}
+    - run: echo  MAGIC_SECRET_KEY=${{ secrets.MAGIC_SECRET_KEY }}        >>${ENV_FILE}
+    - run: ls -lrt ${ENV_FILE}
+    - run: cat ${ENV_FILE}
+
+    - name: Build, Push and Deploy to Heroku
+      id: heroku
+      uses: jctaveras/heroku-deploy@v1.0.0  # use the latest version of the action
+      with:
+        email: ${{ secrets.TEST_HEROKU_EMAIL }} # your heroku email
+        api_key: ${{ secrets.TEST_HEROKU_API_KEY }} # your heroku api key
+        app_name: ${HEROKU_APP_NAME_API}  # you aplication name
+        dockerfile_path: '/home/runner/work/ecosystem-portal/ecosystem-portal' # set the path to the folder where the Dokerfile is located (doesn't really work)
+        options: '' # Docker Build Options
+
+    - run: heroku config:set NODE_ENV=test                -a ${HEROKU_APP_NAME_API}
+    - run: heroku config:set UNLOCK_DATE=2019-01-01       -a ${HEROKU_APP_NAME_API}
+    - run: heroku config:set TEAM_API_URL=${API_URL}      -a ${HEROKU_APP_NAME_API}
+    - run: heroku config:set INVESTOR_API_URL=${API_URL}  -a ${HEROKU_APP_NAME_API}
+    - run: heroku config:set ETH_NETWORK=ropsten          -a ${HEROKU_APP_NAME_API}
+
+    - run: heroku restart                                 -a ${HEROKU_APP_NAME_API}
+

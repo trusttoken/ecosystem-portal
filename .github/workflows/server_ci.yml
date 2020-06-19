@@ -1,0 +1,50 @@
+# This workflow will do a clean install of node dependencies, build the source code and run tests across different versions of node
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
+
+name: server CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: server
+
+    strategy:
+      matrix:
+        fail-fast: [false]
+        node-version: [10.x]
+
+    env:
+        API_URL: https://peter-tt-ecosystem-portal-api.herokuapp.com
+        APP_URL: https://peter-tt-ecosystem-portal-web.herokuapp.com
+        DOTENV_FILE: .env.test
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    - run: echo NODE_ENV=test                                       >${DOTENV_FILE}
+    - run: echo DEPLOYMENT_URL=${API_URL}                          >>${DOTENV_FILE}
+    - run: echo SESSION_SECRET=${{ secrets.SESSION_SECRET }}       >>${DOTENV_FILE}
+    - run: echo ENCRYPTION_SECRET=${{ secrets.ENCRYPTION_SECRET }} >>${DOTENV_FILE}
+    - run: echo LOCKUPS_ENABLED=true                               >>${DOTENV_FILE}
+    - run: echo EARLY_LOCKUPS_ENABLED_UNTIL=2020-04-15             >>${DOTENV_FILE}
+    - run: echo CLIENT_URL=${APP_URL}                              >>${DOTENV_FILE}
+    - run: echo UNLOCK_DATE=2019-01-01                             >>${DOTENV_FILE}
+    - run: echo DATABASE_URL=${{ secrets.TEST_DATABASE_URL }}      >>${DOTENV_FILE}
+    - run: echo MAGIC_SECRET_KEY=${{ secrets.MAGIC_SECRET_KEY }}   >>${DOTENV_FILE}
+    - run: echo LOG_LEVEL=DEBUG                                    >>${DOTENV_FILE}
+
+    - run: npm ci
+    - run: npm run build --if-present
+    - run: npm test
