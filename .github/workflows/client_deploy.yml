@@ -21,8 +21,8 @@ jobs:
     env:
         DOCKER_FILE: /home/runner/Dockerfile
         DOTENV_FILE: /home/runner/work/ecosystem-portal/ecosystem-portal/client/.env.test
-        API_URL: https://peter-tt-ecosystem-portal-api.herokuapp.com
-        HEROKU_APP_NAME_WEB: peter-tt-ecosystem-portal-web
+        API_URL: https://tt-ecosystem-portal-api.herokuapp.com
+        HEROKU_APP_NAME_WEB: tt-ecosystem-portal-web
 
     steps:
     - uses: actions/checkout@v2

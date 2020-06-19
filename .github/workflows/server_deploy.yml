@@ -19,9 +19,9 @@ jobs:
         node-version: [10.x]
 
     env:
-        HEROKU_APP_NAME_API: peter-tt-ecosystem-portal-api
-        API_URL: https://peter-tt-ecosystem-portal-api.herokuapp.com
-        APP_URL: https://peter-tt-ecosystem-portal-web.herokuapp.com
+        HEROKU_APP_NAME_API: tt-ecosystem-portal-api
+        API_URL: https://tt-ecosystem-portal-api.herokuapp.com
+        APP_URL: https://tt-ecosystem-portal-web.herokuapp.com
         DOCKER_FILE: /home/runner/Dockerfile
         ENV_FILE: /home/runner/work/ecosystem-portal/ecosystem-portal/server/.env.test
     steps:

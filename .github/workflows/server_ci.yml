@@ -23,8 +23,8 @@ jobs:
         node-version: [10.x]
 
     env:
-        API_URL: https://peter-tt-ecosystem-portal-api.herokuapp.com
-        APP_URL: https://peter-tt-ecosystem-portal-web.herokuapp.com
+        API_URL: https://tt-ecosystem-portal-api.herokuapp.com
+        APP_URL: https://tt-ecosystem-portal-web.herokuapp.com
         DOTENV_FILE: .env.test
     steps:
     - uses: actions/checkout@v2
