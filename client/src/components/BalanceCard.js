@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState, useEffect } from 'react';
 import { Redirect } from 'react-router-dom'
 import { Doughnut } from 'react-chartjs-2'
 import Dropdown from 'react-bootstrap/Dropdown'
@@ -8,12 +8,28 @@ import { DataContext } from '@/providers/data'
 import BorderedCard from '@/components/BorderedCard'
 import DropdownDotsToggle from '@/components/DropdownDotsToggle'
 import LockupDescModal from '@/components/modal/LockupDescModal'
+import { EthService } from '@/contracts/EthService';
 
 const BalanceCard = ({ onDisplayBonusModal, onDisplayWithdrawModal }) => {
   const data = useContext(DataContext)
+  const account = data.accounts[0];
 
   const [redirectTo, setRedirectTo] = useState(false)
   const [displayLockupDescModal, setDisplayLockupDescModal] = useState(false)
+
+  const [truBalance, setTruBalance] = useState(null);
+  const [tooltipText, setTooltipText] = useState('Copy to clipboard');
+
+  useEffect(() => {
+    if (!account) { return; }
+
+    EthService.getMagicLinkWalletTrustTokenBalance(account.address)
+      .then((balance) => {
+        if (truBalance === null) {
+          setTruBalance(balance);
+        }
+      });
+  }, []);
 
   const doughnutData = () => {
     return {
@@ -39,7 +55,7 @@ const BalanceCard = ({ onDisplayBonusModal, onDisplayWithdrawModal }) => {
         <div className="row">
           {data.config.unlockDate &&
           moment(data.config.unlockDate).isValid() ? (
-            <>
+            <div>
               <div className="col-12 col-lg-6 my-4">
                 <h1 className="mb-1">Your tokens are almost here!</h1>
                 <span style={{ fontSize: '18px' }}>
@@ -53,7 +69,7 @@ const BalanceCard = ({ onDisplayBonusModal, onDisplayWithdrawModal }) => {
                   {moment(data.config.unlockDate).diff(now, 'minutes') % 60}m
                 </div>
               </div>
-            </>
+            </div>
           ) : (
             <div className="col">
               <div className="bluebox p-2 text-center">
@@ -67,7 +83,7 @@ const BalanceCard = ({ onDisplayBonusModal, onDisplayWithdrawModal }) => {
   }
 
   return (
-    <>
+    <div>
       {displayLockupDescModal && (
         <LockupDescModal
           handleModalClose={() => setDisplayLockupDescModal(false)}
@@ -91,6 +107,7 @@ const BalanceCard = ({ onDisplayBonusModal, onDisplayWithdrawModal }) => {
                 style={{ maxWidth: '200px' }}
               >
                 <div style={{ position: 'relative' }}>
+                  <div>hihihi</div>
                   <Doughnut
                     height={100}
                     width={100}
@@ -114,9 +131,7 @@ const BalanceCard = ({ onDisplayBonusModal, onDisplayWithdrawModal }) => {
                   className="mr-1 mb-3 d-inline-block font-weight-bold"
                   style={{ fontSize: '32px' }}
                 >
-                  {data.config.isLocked
-                    ? 0
-                    : Number(data.totals.balance).toLocaleString()}{' '}
+                  {truBalance / 100000000}
                 </div>
                 <span className="ogn">TRU</span>
               </div>
@@ -141,7 +156,7 @@ const BalanceCard = ({ onDisplayBonusModal, onDisplayWithdrawModal }) => {
           </div>
         </div>
       </BorderedCard>
-    </>
+    </div>
   )
 }
 

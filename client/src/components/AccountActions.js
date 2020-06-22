@@ -10,7 +10,7 @@ import { EthAccountDropdown } from '@/components/EthAccountDropdown';
 
 import { shortenAddress } from '@/lib/account';
 
-import { DataContext } from '@/providers/data'
+import { DataContext } from '@/providers/data';
 
 const DropdownContainer = styled.div`
   display: inline;
