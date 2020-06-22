@@ -15,6 +15,8 @@ import BonusCta from '@/components/BonusCta'
 import WithdrawModal from '@/components/WithdrawModal'
 import OtcRequestModal from '@/components/OtcRequestModal'
 import { EthService } from '@/contracts/EthService';
+import Footer from '@/components/Footer';
+
 
 const Dashboard = props => {
   const data = useContext(DataContext)
@@ -70,7 +72,6 @@ const Dashboard = props => {
   return (
     <>
       {renderModals()}
-
       <div className="row small-gutter">
         <div className={`${data.config.isLocked ? 'col-12' : 'col'} mb-10`}>
           <BalanceCard
@@ -84,6 +85,9 @@ const Dashboard = props => {
           <VestingCard user={props.user} isEmployee={isEmployee} />
         </div>
       </div>
+
+      <Footer/>
+
     </>
   )
 }
