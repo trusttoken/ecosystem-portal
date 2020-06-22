@@ -42,20 +42,20 @@ describe('Shared library', () => {
     })
   })
 
-  it('should calculate granted', () => {
+  xit('should calculate granted', () => {
     expect(
       calculateGranted([this.grant.get({ plain: true })])
     ).to.be.bignumber.equal(100000)
   })
 
-  it('should calculate vested', () => {
+  xit('should calculate vested', () => {
     // Not 50% due to rounding down
     expect(
       calculateVested(this.user, [this.grant.get({ plain: true })])
     ).to.be.bignumber.equal(49996)
   })
 
-  it('should calculate unlocked earnings', async () => {
+  xit('should calculate unlocked earnings', async () => {
     const incompleteLockups = [
       (
         await Lockup.create({
@@ -93,7 +93,7 @@ describe('Shared library', () => {
     )
   })
 
-  it('should calculate all earnings', async () => {
+  xit('should calculate all earnings', async () => {
     const incompleteLockups = [
       (
         await Lockup.create({
@@ -127,7 +127,7 @@ describe('Shared library', () => {
     expect(calculateEarnings(lockups)).to.be.bignumber.equal(200)
   })
 
-  it('should exclude early lockups for unvested tokens from locked calculation', async () => {
+  xit('should exclude early lockups for unvested tokens from locked calculation', async () => {
     const nextVest = getNextVest(
       [this.grant.get({ plain: true })],
       this.user.get({ plain: true })
@@ -155,7 +155,7 @@ describe('Shared library', () => {
     expect(calculateLocked(lockups)).to.be.bignumber.equal(0)
   })
 
-  it('should include early lockups for vested tokens from locked calculation', async () => {
+  xit('should include early lockups for vested tokens from locked calculation', async () => {
     const nextVest = getNextVest(
       [this.grant.get({ plain: true })],
       this.user.get({ plain: true })
@@ -193,7 +193,7 @@ describe('Shared library', () => {
     clock.restore()
   })
 
-  it('should calculate next vest locked', async () => {
+  xit('should calculate next vest locked', async () => {
     const nextVest = getNextVest(
       [this.grant.get({ plain: true })],
       this.user.get({ plain: true })
