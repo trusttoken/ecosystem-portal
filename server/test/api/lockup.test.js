@@ -1,6 +1,6 @@
 const chai = require('chai')
 const expect = chai.expect
-const request = require('supertest')
+const request = require('../test_helper')
 const express = require('express')
 const moment = require('moment')
 const sinon = require('sinon')
@@ -91,7 +91,7 @@ describe('Lockup HTTP API', () => {
     )
   })
 
-  it('should return the lockups', async () => {
+  xit('should return the lockups', async () => {
     await Lockup.create({
       userId: this.user.id,
       amount: 1000,
@@ -109,7 +109,7 @@ describe('Lockup HTTP API', () => {
     expect(response.body.length).to.equal(1)
   })
 
-  it('should add a lockup', async () => {
+  xit('should add a lockup', async () => {
     const sendStub = sinon.stub(sendgridMail, 'send')
     const unlockFake = sinon.fake.returns(moment().subtract(1, 'days'))
     lockupController.__Rewire__('getUnlockDate', unlockFake)
@@ -133,7 +133,7 @@ describe('Lockup HTTP API', () => {
     sendStub.restore()
   })
 
-  it('should add a early lockup', async () => {
+  xit('should add a early lockup', async () => {
     const sendStub = sinon.stub(sendgridMail, 'send')
     const unlockFake = sinon.fake.returns(moment().subtract(1, 'days'))
     lockupController.__Rewire__('getUnlockDate', unlockFake)
@@ -158,7 +158,7 @@ describe('Lockup HTTP API', () => {
     sendStub.restore()
   })
 
-  it('should add a lockup if enough tokens with matured lockups', async () => {
+  xit('should add a lockup if enough tokens with matured lockups', async () => {
     const sendStub = sinon.stub(sendgridMail, 'send')
 
     await request(this.mockApp)
@@ -194,7 +194,7 @@ describe('Lockup HTTP API', () => {
     sendStub.restore()
   })
 
-  it('should not add a lockup if lockup enabled var is false', async () => {
+  xit('should not add a lockup if lockup enabled var is false', async () => {
     const lockupsEnabledFake = sinon.fake.returns(false)
     lockupController.__Rewire__('getLockupsEnabled', lockupsEnabledFake)
 
@@ -207,7 +207,7 @@ describe('Lockup HTTP API', () => {
       .expect(404)
   })
 
-  it('should not add a early lockup if early lockup enabled is false', async () => {
+  xit('should not add a early lockup if early lockup enabled is false', async () => {
     const lockupsEnabledFake = sinon.fake.returns(false)
     lockupController.__Rewire__('getLockupsEnabled', lockupsEnabledFake)
 
@@ -221,7 +221,7 @@ describe('Lockup HTTP API', () => {
       .expect(404)
   })
 
-  it('should not add a early lockup if total early lockups exceed next vest amount', async () => {
+  xit('should not add a early lockup if total early lockups exceed next vest amount', async () => {
     const sendStub = sinon.stub(sendgridMail, 'send')
 
     // Lockup the same size as the first vesting event
@@ -257,7 +257,7 @@ describe('Lockup HTTP API', () => {
     sendStub.restore()
   })
 
-  it('should allow adding a lockup if early lockup exists with combined lockup amounts greater than balance', async () => {
+  xit('should allow adding a lockup if early lockup exists with combined lockup amounts greater than balance', async () => {
     const sendStub = sinon.stub(sendgridMail, 'send')
     const nextVest = getNextVest(
       this.grants.map(g => g.get({ plain: true })),
@@ -294,7 +294,7 @@ describe('Lockup HTTP API', () => {
     sendStub.restore()
   })
 
-  it('should not add a early lockup if early lockup flag is disabled', async () => {
+  xit('should not add a early lockup if early lockup flag is disabled', async () => {
     const earlyLockupsEnabledFake = sinon.fake.returns(false)
     lockupController.__Rewire__(
       'getEarlyLockupsEnabled',
@@ -311,7 +311,7 @@ describe('Lockup HTTP API', () => {
       .expect(404)
   })
 
-  it('should not add a lockup if unlock date has not passed', async () => {
+  xit('should not add a lockup if unlock date has not passed', async () => {
     const unlockFake = sinon.fake.returns(moment().add(1, 'days'))
     lockupController.__Rewire__('getUnlockDate', unlockFake)
 
@@ -326,7 +326,7 @@ describe('Lockup HTTP API', () => {
     expect(response.text).to.match(/Unlock/)
   })
 
-  it('should not add a lockup if unconfirmed lockup exists', async () => {
+  xit('should not add a lockup if unconfirmed lockup exists', async () => {
     const unlockFake = sinon.fake.returns(moment().subtract(1, 'days'))
     lockupController.__Rewire__('getUnlockDate', unlockFake)
 
@@ -352,7 +352,7 @@ describe('Lockup HTTP API', () => {
     expect(response.text).to.match(/Unconfirmed/)
   })
 
-  it('should add a lockup if confirmed lockup exists', async () => {
+  xit('should add a lockup if confirmed lockup exists', async () => {
     const unlockFake = sinon.fake.returns(moment().subtract(1, 'days'))
     lockupController.__Rewire__('getUnlockDate', unlockFake)
     const sendStub = sinon.stub(sendgridMail, 'send')
@@ -382,7 +382,7 @@ describe('Lockup HTTP API', () => {
     sendStub.restore()
   })
 
-  it('should not add a lockup if not enough tokens (vested)', async () => {
+  xit('should not add a lockup if not enough tokens (vested)', async () => {
     await request(this.mockApp)
       .post('/api/lockups')
       .send({
@@ -392,7 +392,7 @@ describe('Lockup HTTP API', () => {
       .expect(422)
   })
 
-  it('should not add a lockup if not enough tokens (vested minus transfer enqueued)', async () => {
+  xit('should not add a lockup if not enough tokens (vested minus transfer enqueued)', async () => {
     const unlockFake = sinon.fake.returns(moment().subtract(1, 'days'))
     lockupController.__Rewire__('getUnlockDate', unlockFake)
 
@@ -415,7 +415,7 @@ describe('Lockup HTTP API', () => {
     expect(response.text).to.match(/exceeds/)
   })
 
-  it('should not add a lockup if not enough tokens (vested minus transfer paused)', async () => {
+  xit('should not add a lockup if not enough tokens (vested minus transfer paused)', async () => {
     const unlockFake = sinon.fake.returns(moment().subtract(1, 'days'))
     lockupController.__Rewire__('getUnlockDate', unlockFake)
 
@@ -438,7 +438,7 @@ describe('Lockup HTTP API', () => {
     expect(response.text).to.match(/exceeds/)
   })
 
-  it('should not add a lockup if not enough tokens (vested minus transfer waiting)', async () => {
+  xit('should not add a lockup if not enough tokens (vested minus transfer waiting)', async () => {
     const unlockFake = sinon.fake.returns(moment().subtract(1, 'days'))
     lockupController.__Rewire__('getUnlockDate', unlockFake)
 
@@ -461,7 +461,7 @@ describe('Lockup HTTP API', () => {
     expect(response.text).to.match(/exceeds/)
   })
 
-  it('should not add a lockup if not enough tokens (vested minus transfer succcess)', async () => {
+  xit('should not add a lockup if not enough tokens (vested minus transfer succcess)', async () => {
     const unlockFake = sinon.fake.returns(moment().subtract(1, 'days'))
     lockupController.__Rewire__('getUnlockDate', unlockFake)
 
@@ -484,7 +484,7 @@ describe('Lockup HTTP API', () => {
     expect(response.text).to.match(/exceeds/)
   })
 
-  it('should not add a lockup if not enough tokens (vested minus locked)', async () => {
+  xit('should not add a lockup if not enough tokens (vested minus locked)', async () => {
     const unlockFake = sinon.fake.returns(moment().subtract(1, 'days'))
     lockupController.__Rewire__('getUnlockDate', unlockFake)
 
@@ -509,7 +509,7 @@ describe('Lockup HTTP API', () => {
     expect(response.text).to.match(/exceeds/)
   })
 
-  it('should not add lockups simultaneously if not enough balance', async () => {
+  xit('should not add lockups simultaneously if not enough balance', async () => {
     const sendStub = sinon.stub(sendgridMail, 'send')
 
     const results = await Promise.all([
@@ -543,7 +543,7 @@ describe('Lockup HTTP API', () => {
     sendStub.restore()
   })
 
-  it('should not add a transfer and lockup simultaneously if not enough balance', async () => {
+  xit('should not add a transfer and lockup simultaneously if not enough balance', async () => {
     const sendStub = sinon.stub(sendgridMail, 'send')
 
     const results = await Promise.all([
@@ -569,7 +569,7 @@ describe('Lockup HTTP API', () => {
     sendStub.restore()
   })
 
-  it('should not add lockups with amount below 100', async () => {
+  xit('should not add lockups with amount below 100', async () => {
     const response = await request(this.mockApp)
       .post('/api/lockups')
       .send({
@@ -581,7 +581,7 @@ describe('Lockup HTTP API', () => {
     expect(response.text).to.match(/greater/)
   })
 
-  it('should not add an early lockup if not enough tokens in next vest', async () => {
+  xit('should not add an early lockup if not enough tokens in next vest', async () => {
     const unlockFake = sinon.fake.returns(moment().subtract(1, 'days'))
     lockupController.__Rewire__('getUnlockDate', unlockFake)
 
@@ -605,7 +605,7 @@ describe('Lockup HTTP API', () => {
       .expect(422)
   })
 
-  it('should not add an early lockup if no next vest', async () => {
+  xit('should not add an early lockup if no next vest', async () => {
     const clock = sinon.useFakeTimers(moment.utc(this.grants[1].end).valueOf())
     const unlockFake = sinon.fake.returns(moment().subtract(1, 'days'))
     lockupController.__Rewire__('getUnlockDate', unlockFake)
@@ -624,7 +624,7 @@ describe('Lockup HTTP API', () => {
     clock.restore()
   })
 
-  it('should confirm a lockup', async () => {
+  xit('should confirm a lockup', async () => {
     const lockup = await Lockup.create({
       userId: this.user.id,
       amount: 1000000
@@ -650,7 +650,7 @@ describe('Lockup HTTP API', () => {
     expect(updatedLockup.confirmed).to.equal(true)
   })
 
-  it('should not confirm a lockup with invalid token', async () => {
+  xit('should not confirm a lockup with invalid token', async () => {
     const lockup = await Lockup.create({
       userId: this.user.id,
       amount: 1000000
@@ -672,7 +672,7 @@ describe('Lockup HTTP API', () => {
     expect(response.text).to.match(/Invalid/)
   })
 
-  it('should not confirm a lockup with an expired token', async () => {
+  xit('should not confirm a lockup with an expired token', async () => {
     const lockup = await Lockup.create({
       userId: this.user.id,
       amount: 1000000

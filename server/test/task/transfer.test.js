@@ -54,7 +54,7 @@ describe('Execute transfers', () => {
     ]
   })
 
-  it('should not run if outstanding tasks exist', async () => {
+  xit('should not run if outstanding tasks exist', async () => {
     await TransferTask.create({
       start: moment.utc()
     })
@@ -65,7 +65,7 @@ describe('Execute transfers', () => {
     }
   })
 
-  it('should not run if processing transfers exist', async () => {
+  xit('should not run if processing transfers exist', async () => {
     await Transfer.create({
       userId: this.user.id,
       status: enums.TransferStatuses.Processing,
@@ -81,7 +81,7 @@ describe('Execute transfers', () => {
     }
   })
 
-  it('should execute a small transfer immediately', async () => {
+  xit('should execute a small transfer immediately', async () => {
     const transfer = await Transfer.create({
       userId: this.user.id,
       status: enums.TransferStatuses.Enqueued,
@@ -101,7 +101,7 @@ describe('Execute transfers', () => {
     expect(transfer.transferTaskId).to.equal(transferTasks[0].id)
   })
 
-  it('should not execute a large transfer before cutoff time', async () => {
+  xit('should not execute a large transfer before cutoff time', async () => {
     const transfer = await Transfer.create({
       userId: this.user.id,
       status: enums.TransferStatuses.Enqueued,
@@ -130,7 +130,7 @@ describe('Execute transfers', () => {
     clock.restore()
   })
 
-  it('should execute a large transfer after the cutoff time', async () => {
+  xit('should execute a large transfer after the cutoff time', async () => {
     const transfer = await Transfer.create({
       userId: this.user.id,
       status: enums.TransferStatuses.Enqueued,
@@ -160,7 +160,7 @@ describe('Execute transfers', () => {
     clock.restore()
   })
 
-  it('should record transfer failure on failure to credit', async () => {
+  xit('should record transfer failure on failure to credit', async () => {
     const creditFake = sinon.fake.throws(
       new Error('Supplier balance is too low')
     )
@@ -195,11 +195,11 @@ describe('Execute transfers', () => {
   })
 
   // TODO
-  it('should record success when checking block confirmation', async () => {})
+  xit('should record success when checking block confirmation', async () => {})
 
   // TODO
-  it('should record failure when checking block confirmation', async () => {})
+  xit('should record failure when checking block confirmation', async () => {})
 
   // TODO
-  it('should record timeout when checking block confirmation', async () => {})
+  xit('should record timeout when checking block confirmation', async () => {})
 })
