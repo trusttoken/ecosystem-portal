@@ -5,7 +5,18 @@ const Header = () => {
   return (
       <div>
         <small>
-          <div className="text-right" style={{ color: '#638298' }}>
+            <div className="text-right" style={{ color: '#638298' }}>
+
+              <span style={{ float: 'left' }}>
+                  <a
+                    href="https://www.trusttoken.com/"
+                    target="_blank"
+                    className="text-muted"
+                  >
+                    TrustToken
+                  </a>
+              </span>
+
               <a
                 href="https://www.trusttoken.com/currencies"
                 target="_blank"
@@ -43,7 +54,8 @@ const Header = () => {
               >
                Get TrueUSD
               </a>
-          </div>
+            </div>
+
           <hr/>
 
           <div className="text-right" style={{ color: '#638298' }}>
