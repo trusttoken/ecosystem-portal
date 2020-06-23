@@ -52,7 +52,9 @@ const Header = () => {
                 target="_blank"
                 href="https://app.trusttoken.com/signup-or-signin"
               >
-               Get TrueUSD
+                <button className="get-tusd-button">
+                  Get TrueUSD
+                </button>
               </a>
             </div>
 
