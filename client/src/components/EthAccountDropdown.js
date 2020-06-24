@@ -1,4 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react';
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
 import Dropdown from 'react-bootstrap/Dropdown';
 import Tooltip from 'react-bootstrap/Tooltip';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
@@ -10,6 +12,9 @@ import { EthService } from '@/contracts/EthService';
 import { shortenAddress } from '@/lib/account';
 
 import { DataContext } from '@/providers/data';
+
+import { addAccount, deleteAccount } from '@/actions/account'
+import { getError, getIsAdding, getIsLoading } from '@/reducers/account'
 
 const GreenDot = styled.div`
   display: inline-block;
@@ -76,6 +81,62 @@ function renderTooltip(props) {
   );
 }
 
+function EnableMetaMaskDropdownItem(props) {
+  const [tooltipText, setTooltipText] = useState('Use MetaMask wallet');
+
+  const handleClick = (e) => {
+    e.stopPropagation();
+
+    console.log("EthService.state.metamaskInstalled: " + EthService.state.metamaskInstalled);
+    if (! EthService.state.metamaskInstalled) {
+        (async () => {
+            const enableRes = await EthService.enableMetamask();
+            if (enableRes.code === 4001) {
+                setTooltipText("MetaMask NOT enabled.");
+            } else {
+              setTooltipText("MetaMask enabled!");
+
+              console.log(window.web3.eth.accounts);
+              const accounts = window.web3.eth.accounts;
+              console.log('accounts length', accounts.length);
+
+              if (accounts.length === 0) {
+                console.log("No MetaMask account!?");
+              } else {
+                console.log("Adding MetaMask account " + JSON.stringify(accounts[0]));
+                const result = await props.parentprops.addAccount({
+                  nickname: "MetaMask Wallet",
+                  address: accounts[0]
+                });
+              }
+          }
+        })();
+    }
+
+    setTooltipText(EthService.state.metamaskInstalled ? 'Detected MetaMask.' : 'Install MetaMask plugin.');
+    setTimeout(() => {
+      setTooltipText(EthService.state.metamaskInstalled ? 'Use your MetaMask wallet' : 'Go to MetaMask installation page');
+    }, 2500);
+  }
+
+  return (
+    <OverlayTrigger
+      key="enable MetaMask"
+      placement="right"
+      overlay={
+        <Tooltip id="button-tooltip" {...props}>
+          {tooltipText}
+        </Tooltip>
+      }
+    >
+      <Dropdown.Item onClick={e => handleClick(e)}>
+        <div>Connect to MetaMask wallet</div>
+      </Dropdown.Item>
+    </OverlayTrigger>
+  );
+}
+
+
 function EthAccountDropdownItem(props) {
   const account = props.account;
 
@@ -83,12 +144,14 @@ function EthAccountDropdownItem(props) {
   const [tooltipText, setTooltipText] = useState('Copy to clipboard');
 
   useEffect(() => {
-    EthService.getMagicLinkWalletTrustTokenBalance(account.address)
-      .then((balance) => {
-        if (truBalance === null) {
-          setTruBalance(balance);
-        }
-      });
+    if (account.nickname === "MagicLink Wallet") {
+      EthService.getMagicLinkWalletTrustTokenBalance(account.address)
+        .then((balance) => {
+          if (truBalance === null) {
+            setTruBalance(balance);
+          }
+        });
+    } // TODO: handle MetaMask
   }, []);
 
   const handleClick = (e, address) => {
@@ -121,7 +184,8 @@ function EthAccountDropdownItem(props) {
   );
 }
 
-function EthAccountDropdown(props) {
+
+function _EthAccountDropdown(props) {
   const data = useContext(DataContext);
   const accounts = data.accounts;
 
@@ -131,6 +195,7 @@ function EthAccountDropdown(props) {
 
   const loadAccountBalances = async () => {
     for (let i = 0; i < accounts.length; i++) {
+      // TODO: One of the accounts may be not MagicLinkWallet account, but, e.g. MetaMask
       const balance = await EthService.getMagicLinkWalletTrustTokenBalance(accounts[i].address);
       accounts[i].balance = balance;
     }
@@ -151,6 +216,7 @@ function EthAccountDropdown(props) {
     setMenuOpen(newValue);
   };
 
+
   return (
     <Dropdown onToggle={handleToggle} show={menuOpen}>
       <Dropdown.Toggle
@@ -163,14 +229,38 @@ function EthAccountDropdown(props) {
       </Dropdown.Toggle>
 
       <Dropdown.Menu>
-        {accounts && accounts.map((account) => {
+
+        {accounts && accounts.map(account => {
           return (
             <EthAccountDropdownItem key={account.address} account={account} />
           );
         })}
+
+        {accounts && accounts.filter(account => account.nickname == "MetaMask Wallet").length == 0
+          &&  <EnableMetaMaskDropdownItem parentprops={props} />}
+
       </Dropdown.Menu>
     </Dropdown>
   );
 }
+
+const mapStateToProps = ({ account }) => {
+  return {
+    isAdding: getIsAdding(account),
+    isLoading: getIsLoading(account),
+    error: getError(account)
+  }
+}
+
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    {
+      addAccount: addAccount,
+      deleteAccount: deleteAccount
+    },
+    dispatch
+  )
+
+const EthAccountDropdown = connect(mapStateToProps, mapDispatchToProps)(_EthAccountDropdown);
 
 export { EthAccountDropdown };

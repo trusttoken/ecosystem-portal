@@ -58,6 +58,19 @@ function fetchAccountsPending() {
   }
 }
 
+function uniqueAccounts(accounts) {
+  let addresses = new Set();
+  let uniqueAccounts = [];
+
+  accounts.map(account => {
+    if (! addresses.has(account.address)) {
+       addresses.add(account.address);
+       uniqueAccounts.push(account);
+    }
+  });
+  return uniqueAccounts;
+}
+
 function fetchAccountsSuccess(payload) {
   return {
     type: FETCH_ACCOUNTS_SUCCESS,
@@ -101,6 +114,21 @@ export function deleteAccount(id) {
   }
 }
 
+function _enableMagicLinkWalletAddress(dispatch) {
+  EthService.getMagicLinkWalletAddress()
+    .then((magicLinkWalletAddress) => {
+      const magicLinkAccount = {
+        nickname: 'Magic Link Wallet',
+        address: magicLinkWalletAddress,
+      };
+      agent.post(`${apiUrl}/api/accounts`)
+        .send(magicLinkAccount)
+        .then(response => {
+          dispatch(fetchAccountsSuccess([response.body]));
+        });
+    });
+}
+
 export function fetchAccounts() {
   return dispatch => {
     dispatch(fetchAccountsPending())
@@ -109,20 +137,12 @@ export function fetchAccounts() {
       .get(`${apiUrl}/api/accounts`)
       .then(response => {
         if (response.body.length === 0) {
-          EthService.getMagicLinkWalletAddress()
-            .then((magicLinkWalletAddress) => {
-              const magicLinkAccount = {
-                nickname: 'Magic Link Wallet',
-                address: magicLinkWalletAddress,
-              };
-              agent.post(`${apiUrl}/api/accounts`)
-                .send(magicLinkAccount)
-                .then(response => {
-                  dispatch(fetchAccountsSuccess([response.body]));
-                });
-            });
+            _enableMagicLinkWalletAddress(dispatch);
         } else {
-          dispatch(fetchAccountsSuccess(response.body))
+          // I was getting duplicated accounts from server so calling
+          // uniqueAccounts here fixed the problem.
+          // TODO: We should check in /api/accounts POST endpoint for duplicated accounts.
+          dispatch(fetchAccountsSuccess(uniqueAccounts(response.body)));
         }
       })
       .catch(error => {
