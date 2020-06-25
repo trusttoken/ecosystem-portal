@@ -1,7 +1,6 @@
-import React, { useState } from 'react'
-import { Redirect } from 'react-router-dom'
-
-import PrivacyPolicyDoc from '@/components/PrivacyPolicyDoc'
+import React from 'react';
+import Header from '@/components/Header';
+import PrivacyPolicyDoc from '@/components/PrivacyPolicyDoc';
 
 const PrivacyPolicy = ({ isLoading, user }) => {
 
@@ -17,6 +16,8 @@ const PrivacyPolicy = ({ isLoading, user }) => {
 
   return (
     <div className="terms-wrapper-full-screen">
+        <Header />
+
         <PrivacyPolicyDoc />
     </div>
   )
