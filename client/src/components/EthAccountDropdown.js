@@ -161,6 +161,7 @@ function EthAccountDropdownItem(props) {
     setTimeout(() => {
       setTooltipText('Copy to clipboard');
     }, 2500);
+    //props.activate(account);
   }
 
   return (
@@ -168,12 +169,12 @@ function EthAccountDropdownItem(props) {
       key={account.address}
       placement="right"
       overlay={
-        <Tooltip id="button-tooltip" {...props}>
+        <Tooltip id="button-tooltip" key={props.key} account={props.account}>
           {tooltipText}
         </Tooltip>
       }
     >
-      <Dropdown.Item onClick={(e) => handleClick(e, account.address)}>
+      <Dropdown.Item onClick={(e) => handleClick(e, account.address)} onSelect={(e) => props.activate(account)} >
         <div>{account.nickname}</div>
         <div>{account.address}</div>
         <div>
@@ -192,6 +193,7 @@ function _EthAccountDropdown(props) {
   const [dropdownToggleText, setDropdownToggleText] = useState('');
   const [balancesLoading, setBalancesLoading] = useState(true);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [selectedAccount, setSelectedAccount] = useState(accounts && accounts[0]);
 
   const loadAccountBalances = async () => {
     for (let i = 0; i < accounts.length; i++) {
@@ -206,9 +208,13 @@ function _EthAccountDropdown(props) {
     loadAccountBalances();
   });
 
-  if (!dropdownToggleText && accounts && accounts[0]) {
-    const shortenedAddress = shortenAddress(accounts[0].address, 6, 4);
-    setDropdownToggleText(`${data.accounts[0].nickname} ${shortenedAddress}`);
+  function showSelectedAccount() {
+    const shortenedAddress = shortenAddress(selectedAccount.address, 6, 4);
+    setDropdownToggleText(`${selectedAccount.nickname} ${shortenedAddress}`);
+  }
+
+  if (!dropdownToggleText && selectedAccount) {
+    showSelectedAccount();
   }
 
   const handleToggle = (newValue, event, {source}) => {
@@ -232,7 +238,14 @@ function _EthAccountDropdown(props) {
 
         {accounts && accounts.map(account => {
           return (
-            <EthAccountDropdownItem key={account.address} account={account} />
+            <EthAccountDropdownItem
+              key={account.address}
+              account={account}
+              activate={account => {
+                  setSelectedAccount(account);
+                  showSelectedAccount();
+              }}
+            />
           );
         })}
 
