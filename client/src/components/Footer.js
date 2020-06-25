@@ -14,7 +14,7 @@ const Footer = () => {
             Terms of Use
           </Link>
 
-          <div className="mx-3 d-inline-block">|</div>
+          <div className="mx-3 d-inline-block">&nbsp;</div>
 
           <Link
             to="/privacy-policy"
@@ -24,7 +24,7 @@ const Footer = () => {
             Privacy Policy
           </Link>
 
-          <div className="mx-3 d-inline-block">|</div>
+          <div className="mx-3 d-inline-block">&nbsp;</div>
 
           <a
             className="text-muted"

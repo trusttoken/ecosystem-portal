@@ -22,10 +22,13 @@ def txt_file_to_html(file_name):
 
 CENTERED="""TRU Purchaser Portal,Terms of Use,TRU Privacy Policy,Purchaser Portal""".split(',')
 
+PP_DISCLAIMER="""While using TRU Purchase Portal you agree that you are familiar <br/> with Privacy Policy of our service and accept it. """
+TOU_DISCLAIMER="""While using TRU Purchase Portal you agree that you are familiar <br/> with Terms of Use of our service and accept it."""
+
 H3 = """Theft and Loss,Market Value,Liquidation Risk""".split(',')
 
 # Last modified:
-DATE="Jun 1, 2020"
+DATE="June 5, 2020"
 
 
 REPLACEMENTS = [
@@ -54,7 +57,18 @@ def is_heading(line):
 
 def heading(line):
     if '[DATE]' in line:
-        return f'<p style={{{{textAlign: "center"}}}}>{line.replace("[DATE]", DATE)}</p>'
+        return ''
+
+    if line == "Purchaser Portal":
+        return f'<h1 style={{{{textAlign: "center"}}}}>{line}</h1>' +\
+               f'<p style={{{{textAlign: "center"}}}}>{PP_DISCLAIMER}</p>' +\
+               f'<p style={{{{textAlign: "center"}}}}> Last modified: {DATE}</p>'
+
+    if line == "Terms of Use":
+        return f'<h1 style={{{{textAlign: "center"}}}}>{line}</h1>' +\
+               f'<p style={{{{textAlign: "center"}}}}>{TOU_DISCLAIMER}</p>' +\
+               f'<p style={{{{textAlign: "center"}}}}> Last modified: {DATE}</p>'
+
     if line in CENTERED:
         return f'<h1 style={{{{textAlign: "center"}}}}>{line}</h1>'
     if line in H3:

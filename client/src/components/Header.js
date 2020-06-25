@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
+import TTLogo from '@/assets/tt_logotype_small_color.png';
 
 const Header = () => {
   return (
@@ -13,7 +14,7 @@ const Header = () => {
                     target="_blank"
                     className="text-muted"
                   >
-                    TrustToken
+                   <img src={TTLogo} />
                   </a>
               </span>
 
@@ -25,7 +26,7 @@ const Header = () => {
                 Products
               </a>
 
-              <div className="mx-3 d-inline-block">|</div>
+              <div className="mx-3 d-inline-block">&nbsp;</div>
 
               <a
                 href="https://www.trusttoken.com/company"
@@ -35,7 +36,7 @@ const Header = () => {
                 Company
               </a>
 
-              <div className="mx-3 d-inline-block">|</div>
+              <div className="mx-3 d-inline-block">&nbsp;</div>
 
               <a
                 className="text-muted"
@@ -45,7 +46,7 @@ const Header = () => {
                Careers
               </a>
 
-              <div className="mx-3 d-inline-block">|</div>
+              <div className="mx-3 d-inline-block">&nbsp;</div>
 
               <a
                 className="text-muted"
@@ -70,7 +71,7 @@ const Header = () => {
                 Privacy Policy
               </Link>
 
-              <div className="mx-3 d-inline-block">|</div>
+              <div className="mx-3 d-inline-block">&nbsp;</div>
 
               <Link
                 to="/terms-of-use"
