@@ -1,10 +1,11 @@
-import React, { createContext, useEffect } from 'react'
+import React, { createContext, useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
 import { fetchAccounts } from '@/actions/account'
 import {
   getAccounts,
+  getActiveAccount,
   getIsLoading as getAccountIsLoading
 } from '@/reducers/account'
 import { fetchConfig } from '@/actions/config'
@@ -33,7 +34,19 @@ import {
 
 export const DataContext = createContext()
 
+function initialAccount() {
+  const dummyAccount = {nickname: "", address: "", balance: ""};
+  let acc = dummyAccount;
+  try {
+      acc = JSON.parse(window.localStorage.activeAccount);
+  } catch (SyntaxError) {
+      console.log("Could not parse window.localStorage.activeAccount: " + window.localStorage.activeAccount);
+  }
+  return acc;
+}
+
 const _DataProvider = ({ children, ...rest }) => {
+  const [activeAccount, setActiveAccount] = useState(initialAccount());
   useEffect(() => {
     rest.fetchAccounts(),
       rest.fetchConfig(),
@@ -70,6 +83,8 @@ const _DataProvider = ({ children, ...rest }) => {
     : {}
 
   const value = {
+    activeAccount: rest.activeAccount || activeAccount,
+    setActiveAccount,
     accounts: rest.accounts,
     config: {
       ...rest.config,
@@ -98,6 +113,7 @@ const mapStateToProps = ({
   user
 }) => {
   return {
+    activeAccount: getActiveAccount(account),
     accounts: getAccounts(account),
     config: getConfig(config),
     grants: getGrants(grant),

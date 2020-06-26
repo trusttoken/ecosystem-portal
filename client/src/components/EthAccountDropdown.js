@@ -12,6 +12,8 @@ import { EthService } from '@/contracts/EthService';
 import { shortenAddress } from '@/lib/account';
 
 import { DataContext } from '@/providers/data';
+//import { ActiveAccountContext } from '@/providers/activeaccountcontext';
+
 
 import { addAccount, deleteAccount } from '@/actions/account'
 import { getError, getIsAdding, getIsLoading } from '@/reducers/account'
@@ -98,7 +100,7 @@ function EnableMetaMaskDropdownItem(props) {
 
               console.log(window.web3.eth.accounts);
               const accounts = window.web3.eth.accounts;
-              console.log('accounts length', accounts.length);
+              console.log('MetaMask accounts:', JSON.stringify(accounts));
 
               if (accounts.length === 0) {
                 console.log("No MetaMask account!?");
@@ -143,15 +145,13 @@ function EthAccountDropdownItem(props) {
   const [truBalance, setTruBalance] = useState(null);
   const [tooltipText, setTooltipText] = useState('Copy to clipboard');
 
+  const { activeAccount, setActiveAccount } = useContext(DataContext);
+
   useEffect(() => {
-    if (account.nickname === "MagicLink Wallet") {
       EthService.getMagicLinkWalletTrustTokenBalance(account.address)
         .then((balance) => {
-          if (truBalance === null) {
             setTruBalance(balance);
-          }
         });
-    } // TODO: handle MetaMask
   }, []);
 
   const handleClick = (e, address) => {
@@ -161,7 +161,8 @@ function EthAccountDropdownItem(props) {
     setTimeout(() => {
       setTooltipText('Copy to clipboard');
     }, 2500);
-    //props.activate(account);
+    props.select(account);
+    setActiveAccount(account);
   }
 
   return (
@@ -174,7 +175,7 @@ function EthAccountDropdownItem(props) {
         </Tooltip>
       }
     >
-      <Dropdown.Item onClick={(e) => handleClick(e, account.address)} onSelect={(e) => props.activate(account)} >
+      <Dropdown.Item onClick={(e) => handleClick(e, account.address)}  >
         <div>{account.nickname}</div>
         <div>{account.address}</div>
         <div>
@@ -187,34 +188,36 @@ function EthAccountDropdownItem(props) {
 
 
 function _EthAccountDropdown(props) {
-  const data = useContext(DataContext);
-  const accounts = data.accounts;
+  const { accounts, activeAccount, setActiveAccount } = useContext(DataContext);
+  console.log("==== activeAccount " + JSON.stringify(activeAccount));
 
   const [dropdownToggleText, setDropdownToggleText] = useState('');
   const [balancesLoading, setBalancesLoading] = useState(true);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [selectedAccount, setSelectedAccount] = useState(accounts && accounts[0]);
 
   const loadAccountBalances = async () => {
     for (let i = 0; i < accounts.length; i++) {
-      // TODO: One of the accounts may be not MagicLinkWallet account, but, e.g. MetaMask
       const balance = await EthService.getMagicLinkWalletTrustTokenBalance(accounts[i].address);
       accounts[i].balance = balance;
     }
     setBalancesLoading(false);
+    if (! activeAccount || ! activeAccount.address) {
+        setActiveAccount(accounts[0]);
+        showActiveAccount(accounts[0]);
+    }
   };
 
   useEffect(() => {
     loadAccountBalances();
   });
 
-  function showSelectedAccount() {
-    const shortenedAddress = shortenAddress(selectedAccount.address, 6, 4);
-    setDropdownToggleText(`${selectedAccount.nickname} ${shortenedAddress}`);
+  function showActiveAccount(account) {
+    const shortenedAddress = shortenAddress(account.address, 6, 4);
+    setDropdownToggleText(`${account.nickname} ${shortenedAddress}`);
   }
 
-  if (!dropdownToggleText && selectedAccount) {
-    showSelectedAccount();
+  if (!dropdownToggleText && activeAccount) {
+    showActiveAccount(activeAccount);
   }
 
   const handleToggle = (newValue, event, {source}) => {
@@ -241,10 +244,7 @@ function _EthAccountDropdown(props) {
             <EthAccountDropdownItem
               key={account.address}
               account={account}
-              activate={account => {
-                  setSelectedAccount(account);
-                  showSelectedAccount();
-              }}
+              select={showActiveAccount}
             />
           );
         })}

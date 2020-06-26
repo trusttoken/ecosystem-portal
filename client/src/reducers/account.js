@@ -83,6 +83,7 @@ export default function accountsReducer(state = initialState, action) {
   }
 }
 
+export const getActiveAccount = state => state.activeAccount
 export const getAccounts = state => state.accounts
 export const getError = state => state.error
 export const getIsAdding = state => state.isAdding

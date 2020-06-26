@@ -4,15 +4,15 @@ import { Doughnut } from 'react-chartjs-2'
 import Dropdown from 'react-bootstrap/Dropdown'
 import moment from 'moment'
 
-import { DataContext } from '@/providers/data'
+import { DataContext } from '@/providers/data';
 import BorderedCard from '@/components/BorderedCard'
 import DropdownDotsToggle from '@/components/DropdownDotsToggle'
 import LockupDescModal from '@/components/modal/LockupDescModal'
 import { EthService } from '@/contracts/EthService';
 
 const BalanceCard = ({ onDisplayBonusModal, onDisplayWithdrawModal }) => {
-  const data = useContext(DataContext)
-  const account = data.accounts[0];
+  const data = useContext(DataContext);
+  const { activeAccount } = useContext(DataContext);
 
   const [redirectTo, setRedirectTo] = useState(false)
   const [displayLockupDescModal, setDisplayLockupDescModal] = useState(false)
@@ -21,9 +21,9 @@ const BalanceCard = ({ onDisplayBonusModal, onDisplayWithdrawModal }) => {
   const [tooltipText, setTooltipText] = useState('Copy to clipboard');
 
   useEffect(() => {
-    if (!account) { return; }
+    if (! activeAccount || ! activeAccount.address) { return; }
 
-    EthService.getMagicLinkWalletTrustTokenBalance(account.address)
+    EthService.getMagicLinkWalletTrustTokenBalance(activeAccount.address)
       .then((balance) => {
         if (truBalance === null) {
           setTruBalance(balance);
@@ -131,7 +131,7 @@ const BalanceCard = ({ onDisplayBonusModal, onDisplayWithdrawModal }) => {
                   className="mr-1 mb-3 d-inline-block font-weight-bold"
                   style={{ fontSize: '32px' }}
                 >
-                  {truBalance / 100000000}
+                  { truBalance / 100000000 }
                 </div>
                 <span className="ogn">TRU</span>
               </div>
