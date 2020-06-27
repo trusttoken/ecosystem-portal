@@ -19,17 +19,7 @@ const _BalanceCard = ({ activeAccount, onDisplayBonusModal, onDisplayWithdrawMod
   const data = useContext(DataContext);
   const [redirectTo, setRedirectTo] = useState(false)
   const [displayLockupDescModal, setDisplayLockupDescModal] = useState(false)
-  const [truBalance, setTruBalance] = useState(null);
   const [tooltipText, setTooltipText] = useState('Copy to clipboard');
-
-  useEffect(() => {
-    EthService.getMagicLinkWalletTrustTokenBalance(activeAccount.address)
-      .then((balance) => {
-        if (truBalance === null) {
-          setTruBalance(balance);
-         }
-      });
-  }, []);
 
   const doughnutData = () => {
     return {

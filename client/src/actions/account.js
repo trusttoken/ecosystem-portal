@@ -151,8 +151,15 @@ export function fetchAccounts() {
           // uniqueAccounts here fixed the problem.
           // TODO: We should check in /api/accounts POST endpoint for duplicated accounts.
           const accounts = uniqueAccounts(response.body);
-          dispatch(fetchAccountsSuccess(accounts));
-          dispatch(selectAccountSuccess(accounts[0]));
+          // Fetch balance of the first account, so we can show it immediately.
+          const selectedAccount = accounts[0];
+          EthService
+            .getMagicLinkWalletTrustTokenBalance(selectedAccount.address)
+            .then(balance => {
+              selectedAccount.balance = balance;
+              dispatch(selectAccountSuccess(selectedAccount));
+              dispatch(fetchAccountsSuccess(accounts));
+            });
         }
       })
       .catch(error => {

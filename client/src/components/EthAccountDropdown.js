@@ -12,8 +12,6 @@ import { EthService } from '@/contracts/EthService';
 import { shortenAddress } from '@/lib/account';
 
 import { DataContext } from '@/providers/data';
-//import { ActiveAccountContext } from '@/providers/activeaccountcontext';
-
 
 import { addAccount, deleteAccount, selectAccount } from '@/actions/account'
 import { getError, getIsAdding, getIsLoading } from '@/reducers/account'
@@ -146,7 +144,7 @@ function EthAccountDropdownItem(props) {
   const [truBalance, setTruBalance] = useState(null);
   const [tooltipText, setTooltipText] = useState('Copy to clipboard');
 
-  const { activeAccount, setActiveAccount } = useContext(DataContext);
+  const { activeAccount } = useContext(DataContext);
 
   useEffect(() => {
       EthService.getMagicLinkWalletTrustTokenBalance(account.address)
@@ -163,7 +161,6 @@ function EthAccountDropdownItem(props) {
       setTooltipText('Copy to clipboard');
     }, 2500);
     props.select(account);
-    setActiveAccount(account);
   }
 
   return (
@@ -189,38 +186,24 @@ function EthAccountDropdownItem(props) {
 
 
 function _EthAccountDropdown(props) {
-  const { accounts, activeAccount, setActiveAccount } = useContext(DataContext);
+  const { accounts, activeAccount } = useContext(DataContext);
   console.log("==== activeAccount " + JSON.stringify(activeAccount));
 
-  const [dropdownToggleText, setDropdownToggleText] = useState('');
   const [balancesLoading, setBalancesLoading] = useState(true);
   const [menuOpen, setMenuOpen] = useState(false);
 
   const loadAccountBalances = async () => {
     for (let i = 0; i < accounts.length; i++) {
-      const balance = await EthService.getMagicLinkWalletTrustTokenBalance(accounts[i].address);
-      accounts[i].balance = balance;
+      accounts[i].balance = await EthService.getMagicLinkWalletTrustTokenBalance(accounts[i].address);
     }
     setBalancesLoading(false);
-    if (! activeAccount || ! activeAccount.address) {
-        setActiveAccount(accounts[0]);
-        props.selectAccount(accounts[0]);
-        showActiveAccount(accounts[0]);
-    }
   };
 
   useEffect(() => {
     loadAccountBalances();
   });
 
-  function showActiveAccount(account) {
-    const shortenedAddress = shortenAddress(account.address, 6, 4);
-    setDropdownToggleText(`${account.nickname} ${shortenedAddress}`);
-  }
-
-  if (!dropdownToggleText && activeAccount) {
-    showActiveAccount(activeAccount);
-  }
+  const showActiveAccount = (account) => `${account.nickname} ${shortenAddress(account.address, 6, 4)}`;
 
   const handleToggle = (newValue, event, {source}) => {
     if (source === 'select') { return; }
@@ -236,7 +219,7 @@ function _EthAccountDropdown(props) {
         id="dropdown-basic"
         disabled={balancesLoading}
       >
-        {balancesLoading ? 'Loading...' : <div><GreenDot/>{dropdownToggleText}<DownArrow/></div>}
+        {balancesLoading ? 'Loading...' : <div><GreenDot/>{showActiveAccount(activeAccount)}<DownArrow/></div>}
       </Dropdown.Toggle>
 
       <Dropdown.Menu>
@@ -248,7 +231,6 @@ function _EthAccountDropdown(props) {
               account={account}
               select={account => {
                 props.selectAccount(account);
-                showActiveAccount(account);
               }}
             />
           );

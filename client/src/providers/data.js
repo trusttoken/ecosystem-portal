@@ -34,19 +34,7 @@ import {
 
 export const DataContext = createContext()
 
-function initialAccount() {
-  const dummyAccount = {nickname: "", address: "", balance: ""};
-  let acc = dummyAccount;
-  try {
-      acc = JSON.parse(window.localStorage.activeAccount);
-  } catch (SyntaxError) {
-      //console.log("Could not parse window.localStorage.activeAccount: " + window.localStorage.activeAccount);
-  }
-  return acc;
-}
-
 const _DataProvider = ({ children, ...rest }) => {
-  const [activeAccount, setActiveAccount] = useState(initialAccount());
   useEffect(() => {
     rest.fetchAccounts(),
       rest.fetchConfig(),
@@ -83,8 +71,7 @@ const _DataProvider = ({ children, ...rest }) => {
     : {}
 
   const value = {
-    activeAccount: rest.activeAccount || activeAccount,
-    setActiveAccount,
+    activeAccount: rest.activeAccount,
     accounts: rest.accounts,
     config: {
       ...rest.config,
