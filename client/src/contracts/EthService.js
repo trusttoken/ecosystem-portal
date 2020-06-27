@@ -38,7 +38,7 @@ async function getMagicLinkWalletAddress() {
 
 async function getMagicLinkWalletTrustTokenBalance(address) {
   const network = getEthNetwork();
-  console.log(`checking TRU balance of address ${address} on ${network}`);
+  //console.log(`checking TRU balance of address ${address} on ${network}`);
   const trustTokenContractAddress = TRUSTTOKEN_CONTRACT_ADDRESSES[network];
 
   const magicProvider = new ethers.providers.Web3Provider(magic.rpcProvider);

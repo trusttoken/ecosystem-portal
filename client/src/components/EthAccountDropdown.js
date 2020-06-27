@@ -15,7 +15,7 @@ import { DataContext } from '@/providers/data';
 //import { ActiveAccountContext } from '@/providers/activeaccountcontext';
 
 
-import { addAccount, deleteAccount } from '@/actions/account'
+import { addAccount, deleteAccount, selectAccount } from '@/actions/account'
 import { getError, getIsAdding, getIsLoading } from '@/reducers/account'
 
 const GreenDot = styled.div`
@@ -107,6 +107,7 @@ function EnableMetaMaskDropdownItem(props) {
               } else {
                 console.log("Adding MetaMask account " + JSON.stringify(accounts[0]));
                 const result = await props.parentprops.addAccount({
+                  // TODO: user id, etc
                   nickname: "MetaMask Wallet",
                   address: accounts[0]
                 });
@@ -203,6 +204,7 @@ function _EthAccountDropdown(props) {
     setBalancesLoading(false);
     if (! activeAccount || ! activeAccount.address) {
         setActiveAccount(accounts[0]);
+        props.selectAccount(accounts[0]);
         showActiveAccount(accounts[0]);
     }
   };
@@ -244,7 +246,10 @@ function _EthAccountDropdown(props) {
             <EthAccountDropdownItem
               key={account.address}
               account={account}
-              select={showActiveAccount}
+              select={account => {
+                props.selectAccount(account);
+                showActiveAccount(account);
+              }}
             />
           );
         })}
@@ -269,7 +274,8 @@ const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
       addAccount: addAccount,
-      deleteAccount: deleteAccount
+      deleteAccount: deleteAccount,
+      selectAccount: selectAccount
     },
     dispatch
   )

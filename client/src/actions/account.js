@@ -11,6 +11,7 @@ export const DELETE_ACCOUNT_ERROR = 'DELETE_ACCOUNT_ERROR'
 export const FETCH_ACCOUNTS_PENDING = 'FETCH_ACCOUNTS_PENDING'
 export const FETCH_ACCOUNTS_SUCCESS = 'FETCH_ACCOUNTS_SUCCESS'
 export const FETCH_ACCOUNTS_ERROR = 'FETCH_ACCOUNTS_ERROR'
+export const SELECT_ACCOUNT_SUCCESS = 'SELECT_ACCOUNT_SUCCESS'
 
 function addAccountPending() {
   return {
@@ -74,6 +75,13 @@ function uniqueAccounts(accounts) {
 function fetchAccountsSuccess(payload) {
   return {
     type: FETCH_ACCOUNTS_SUCCESS,
+    payload
+  }
+}
+
+function selectAccountSuccess(payload) {
+  return {
+    type: SELECT_ACCOUNT_SUCCESS,
     payload
   }
 }
@@ -142,7 +150,9 @@ export function fetchAccounts() {
           // I was getting duplicated accounts from server so calling
           // uniqueAccounts here fixed the problem.
           // TODO: We should check in /api/accounts POST endpoint for duplicated accounts.
-          dispatch(fetchAccountsSuccess(uniqueAccounts(response.body)));
+          const accounts = uniqueAccounts(response.body);
+          dispatch(fetchAccountsSuccess(accounts));
+          dispatch(selectAccountSuccess(accounts[0]));
         }
       })
       .catch(error => {
@@ -153,3 +163,10 @@ export function fetchAccounts() {
       })
   }
 }
+
+export function selectAccount(account) {
+  return dispatch => {
+    dispatch(selectAccountSuccess(account))
+  }
+}
+

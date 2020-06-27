@@ -40,7 +40,7 @@ function initialAccount() {
   try {
       acc = JSON.parse(window.localStorage.activeAccount);
   } catch (SyntaxError) {
-      console.log("Could not parse window.localStorage.activeAccount: " + window.localStorage.activeAccount);
+      //console.log("Could not parse window.localStorage.activeAccount: " + window.localStorage.activeAccount);
   }
   return acc;
 }

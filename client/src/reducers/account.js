@@ -7,7 +7,8 @@ import {
   DELETE_ACCOUNT_ERROR,
   FETCH_ACCOUNTS_PENDING,
   FETCH_ACCOUNTS_SUCCESS,
-  FETCH_ACCOUNTS_ERROR
+  FETCH_ACCOUNTS_ERROR,
+  SELECT_ACCOUNT_SUCCESS
 } from '../actions/account'
 
 const initialState = {
@@ -15,6 +16,7 @@ const initialState = {
   isDeleting: false,
   isLoading: true,
   accounts: [],
+  activeAccount: null,
   error: null
 }
 
@@ -70,6 +72,13 @@ export default function accountsReducer(state = initialState, action) {
         ...state,
         isLoading: false,
         accounts: action.payload,
+        activeAccount: action.payload.length && action.payload[0],
+        error: null
+      }
+    case SELECT_ACCOUNT_SUCCESS:
+      return {
+        ...state,
+        activeAccount: action.payload,
         error: null
       }
     case FETCH_ACCOUNTS_ERROR:
