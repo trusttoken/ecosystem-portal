@@ -15,7 +15,7 @@ import { shortenAddress } from '@/lib/account';
 
 import { DataContext } from '@/providers/data';
 
-import { addAccount, deleteAccount, selectAccount } from '@/actions/account'
+import { addAccount, deleteAccount, selectAccount, fetchAccounts } from '@/actions/account'
 import { getError, getIsAdding, getIsLoading } from '@/reducers/account'
 
 const GreenDot = styled.div`
@@ -98,7 +98,6 @@ function EnableMetaMaskDropdownItem(props) {
             } else {
               setTooltipText("MetaMask enabled!");
 
-              console.log(window.web3.eth.accounts);
               const accounts = window.web3.eth.accounts;
               console.log('MetaMask accounts:', JSON.stringify(accounts));
 
@@ -107,19 +106,21 @@ function EnableMetaMaskDropdownItem(props) {
               } else {
                 console.log("Adding MetaMask account " + JSON.stringify(accounts[0]));
                 const result = await props.parentprops.addAccount({
-                  // TODO: user id, etc
                   nickname: "MetaMask Wallet",
                   address: accounts[0]
                 });
+               await props.parentprops.fetchAccounts();
               }
           }
         })();
     }
 
     setTooltipText(EthService.state.metamaskInstalled ? 'Detected MetaMask.' : 'Install MetaMask plugin.');
-    setTimeout(() => {
-      setTooltipText(EthService.state.metamaskInstalled ? 'Use your MetaMask wallet' : 'Go to MetaMask installation page');
-    }, 2500);
+    if (EthService.state.metamaskInstalled) {
+      setTimeout(() => {
+        setTooltipText('Use your MetaMask wallet');
+      }, 2500);
+    }
   }
 
   return (
@@ -191,10 +192,10 @@ function EthAccountDropdownItem(props) {
           </Tooltip>
         }
       >
-        <Dropdown.Item onClick={(e) => handleClick(e, account.address)}>
+        <Dropdown.Item onClick={(e) => handleClick(e, account.address)} key={account.address}>
           <Block>
             <div>
-              { account.nickname.indexOf('MetaMask') !== -1 
+              { account.nickname.indexOf('MetaMask') === -1 
                   ? <img src={EmailWalletLogo} />
                   : <img src={MetaMaskLogo}/>
               }
@@ -204,7 +205,9 @@ function EthAccountDropdownItem(props) {
               <span style={{ float: 'right' }}>
                 <input
                   type="radio"
+                  key={account.address}
                   checked={account.address == activeAccount.address}
+                  readOnly
                 />
               </span>
 
@@ -235,7 +238,6 @@ function EthAccountDropdownItem(props) {
 
 function _EthAccountDropdown(props) {
   const { accounts, activeAccount } = useContext(DataContext);
-  console.log("==== activeAccount " + JSON.stringify(activeAccount));
 
   const [balancesLoading, setBalancesLoading] = useState(true);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -272,21 +274,20 @@ function _EthAccountDropdown(props) {
 
       <Dropdown.Menu>
 
-        {accounts && accounts.map(account => {
+        {accounts && accounts.map((account, index) => {
           return (
-            <>
+            <div key={index}>
               <EthAccountDropdownItem
-                key={account.address}
                 account={account}
                 select={account => {
                   props.selectAccount(account);
                 }}
               />
-            </>
+            </div>
           );
         })}
 
-        {accounts && accounts.filter(account => account.nickname.indexOf('MetaMask')).length == 0
+        {accounts && accounts.filter(account => account.nickname.indexOf('MetaMask') !== -1).length == 0
          && <EnableMetaMaskDropdownItem parentprops={props} />}
 
       </Dropdown.Menu>
@@ -307,7 +308,8 @@ const mapDispatchToProps = dispatch =>
     {
       addAccount: addAccount,
       deleteAccount: deleteAccount,
-      selectAccount: selectAccount
+      selectAccount: selectAccount,
+      fetchAccounts: fetchAccounts
     },
     dispatch
   )

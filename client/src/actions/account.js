@@ -100,7 +100,21 @@ export function addAccount(account) {
     return agent
       .post(`${apiUrl}/api/accounts`)
       .send(account)
-      .then(response => dispatch(addAccountSuccess(response.body)))
+      .then(response => {
+          const newAccount = response.body;
+
+          console.log("Added account: " + JSON.stringify(newAccount))
+
+          EthService
+            .getMagicLinkWalletTrustTokenBalance(newAccount.address)
+            .then(balance => {
+              newAccount.balance = balance;
+              dispatch(addAccountSuccess(newAccount));
+            })
+            .catch(error => {
+                console.log("Account " + account.address + " added but failed to retrieve balance: " + JSON.stringify(error));
+            })
+      })
       .catch(error => {
         dispatch(addAccountError(error))
         throw error
@@ -122,34 +136,38 @@ export function deleteAccount(id) {
   }
 }
 
-function _enableMagicLinkWalletAddress(dispatch) {
-  EthService.getMagicLinkWalletAddress()
-    .then((magicLinkWalletAddress) => {
-      const magicLinkAccount = {
-        nickname: 'Magic Link Wallet',
-        address: magicLinkWalletAddress,
-      };
-      agent.post(`${apiUrl}/api/accounts`)
-        .send(magicLinkAccount)
-        .then(response => {
-          dispatch(fetchAccountsSuccess([response.body]));
-        });
-    });
-}
-
 export function fetchAccounts() {
   return dispatch => {
     dispatch(fetchAccountsPending())
-
     return agent
       .get(`${apiUrl}/api/accounts`)
       .then(response => {
         if (response.body.length === 0) {
-            _enableMagicLinkWalletAddress(dispatch);
+          console.log("Adding Email Wallet...");
+          EthService.getMagicLinkWalletAddress()
+            .then((magicLinkWalletAddress) => {
+              const magicLinkAccount = {
+                nickname: 'Email Wallet',
+                address: magicLinkWalletAddress,
+              };
+              agent.post(`${apiUrl}/api/accounts`)
+                .send(magicLinkAccount)
+                .then(response => {
+                  console.log("Successfully added Email Wallet:" + JSON.stringify(response));
+                  const newAccount = response.body;
+                  EthService
+                    .getMagicLinkWalletTrustTokenBalance(newAccount.address)
+                    .then(balance => {
+                      newAccount.balance = balance;
+                      dispatch(selectAccountSuccess(newAccount));
+                      dispatch(fetchAccountsSuccess([newAccount]));
+                    });
+                })
+                .catch(error => {
+                  console.log("Error adding Email Account:" + JSON.stringify(error));
+                });
+            });
         } else {
-          // I was getting duplicated accounts from server so calling
-          // uniqueAccounts here fixed the problem.
-          // TODO: We should check in /api/accounts POST endpoint for duplicated accounts.
           const accounts = uniqueAccounts(response.body);
           // Fetch balance of the first account, so we can show it immediately.
           const selectedAccount = accounts[0];

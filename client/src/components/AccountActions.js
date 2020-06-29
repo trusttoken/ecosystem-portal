@@ -10,7 +10,7 @@ import { EthAccountDropdown } from '@/components/EthAccountDropdown';
 
 import { shortenAddress } from '@/lib/account';
 
-import { DataContext } from '@/providers/data';
+//import { DataContext } from '@/providers/data';
 
 const DropdownContainer = styled.div`
   display: inline;
@@ -18,14 +18,14 @@ const DropdownContainer = styled.div`
 `;
 
 const AccountActions = props => {
-  const data = useContext(DataContext);
+  //const data = useContext(DataContext);
   const [redirectTo, setRedirectTo] = useState(false)
-  const [dropdownToggleText, setDropdownToggleText] = useState('');
+  //const [dropdownToggleText, setDropdownToggleText] = useState('');
 
-  if (!dropdownToggleText && data.accounts && data.accounts[0]) {
-    const shortenedAddress = shortenAddress(data.accounts[0].address, 6, 4);
-    setDropdownToggleText(`${data.accounts[0].nickname} ${shortenedAddress}`);
-  }
+  //if (!dropdownToggleText && data.accounts && data.accounts[0]) {
+  //  const shortenedAddress = shortenAddress(data.accounts[0].address, 6, 4);
+  //  setDropdownToggleText(`${data.accounts[0].nickname} ${shortenedAddress}`);
+  //}
 
   const handleLogout = async () => {
     await agent.post(`${apiUrl}/api/logout`)
