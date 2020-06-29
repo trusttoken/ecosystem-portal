@@ -6,6 +6,8 @@ import Tooltip from 'react-bootstrap/Tooltip';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import styled from 'styled-components';
 import copy from 'copy-to-clipboard';
+import MetaMaskLogo from '@/assets/metamask_small.png';
+import EmailWalletLogo from '@/assets/email_wallet_small.png';
 
 import { EthService } from '@/contracts/EthService';
 
@@ -130,28 +132,43 @@ function EnableMetaMaskDropdownItem(props) {
         </Tooltip>
       }
     >
-      <Dropdown.Item onClick={e => handleClick(e)}>
-        <div>Connect to MetaMask wallet</div>
+      <Dropdown.Item >
+        <div>
+          Connect to more wallets
+          <div
+            style={{border: '1px solid #CCC'}}
+            onClick={e => handleClick(e)}
+          >
+            <img src={MetaMaskLogo} />
+            &nbsp;
+            Connect to MetaMask wallet
+              <span style={{ float: 'right' }}>
+                &#x2192;
+                &nbsp;
+              </span>
+          </div>
+        </div>
       </Dropdown.Item>
     </OverlayTrigger>
   );
 }
 
+const Block = styled.div`
+  display: block;
+`;
 
 function EthAccountDropdownItem(props) {
-  const account = props.account;
-
-  const [truBalance, setTruBalance] = useState(null);
   const [tooltipText, setTooltipText] = useState('Copy to clipboard');
-
   const { activeAccount } = useContext(DataContext);
 
-  useEffect(() => {
-      EthService.getMagicLinkWalletTrustTokenBalance(account.address)
-        .then((balance) => {
-            setTruBalance(balance);
-        });
-  }, []);
+  const account = props.account;
+
+  //useEffect(() => {
+  //    EthService.getMagicLinkWalletTrustTokenBalance(account.address)
+  //      .then((balance) => {
+  //          setTruBalance(balance);
+  //      });
+  //}, []);
 
   const handleClick = (e, address) => {
     e.stopPropagation();
@@ -164,23 +181,54 @@ function EthAccountDropdownItem(props) {
   }
 
   return (
-    <OverlayTrigger
-      key={account.address}
-      placement="right"
-      overlay={
-        <Tooltip id="button-tooltip" key={props.key} account={props.account}>
-          {tooltipText}
-        </Tooltip>
-      }
-    >
-      <Dropdown.Item onClick={(e) => handleClick(e, account.address)}  >
-        <div>{account.nickname}</div>
-        <div>{account.address}</div>
-        <div>
-          {account.balance / 100000000} TRU
-        </div>
-      </Dropdown.Item>
-    </OverlayTrigger>
+    <div style={{borderBottom: '1px solid #CCC'}}>
+      <OverlayTrigger
+        key={account.address}
+        placement="right"
+        overlay={
+          <Tooltip id="button-tooltip" key={props.key} account={props.account}>
+            {tooltipText}
+          </Tooltip>
+        }
+      >
+        <Dropdown.Item onClick={(e) => handleClick(e, account.address)}>
+          <Block>
+            <div>
+              { account.nickname.indexOf('MetaMask') !== -1 
+                  ? <img src={EmailWalletLogo} />
+                  : <img src={MetaMaskLogo}/>
+              }
+              &nbsp;
+              {account.nickname}
+
+              <span style={{ float: 'right' }}>
+                <input
+                  type="radio"
+                  checked={account.address == activeAccount.address}
+                />
+              </span>
+
+            </div>
+          </Block>
+        
+          <Block>
+            <div>
+              {account.address}
+            </div>
+          </Block>
+
+          <Block>
+            <div>
+              &nbsp;
+              <span style={{ float: 'right' }}>
+                {account.balance / 100000000} TRU
+              </span>
+            </div>
+          </Block>
+
+        </Dropdown.Item>
+      </OverlayTrigger>
+    </div>
   );
 }
 
@@ -226,18 +274,20 @@ function _EthAccountDropdown(props) {
 
         {accounts && accounts.map(account => {
           return (
-            <EthAccountDropdownItem
-              key={account.address}
-              account={account}
-              select={account => {
-                props.selectAccount(account);
-              }}
-            />
+            <>
+              <EthAccountDropdownItem
+                key={account.address}
+                account={account}
+                select={account => {
+                  props.selectAccount(account);
+                }}
+              />
+            </>
           );
         })}
 
-        {accounts && accounts.filter(account => account.nickname == "MetaMask Wallet").length == 0
-          &&  <EnableMetaMaskDropdownItem parentprops={props} />}
+        {accounts && accounts.filter(account => account.nickname.indexOf('MetaMask')).length == 0
+         && <EnableMetaMaskDropdownItem parentprops={props} />}
 
       </Dropdown.Menu>
     </Dropdown>
