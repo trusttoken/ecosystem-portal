@@ -99,23 +99,6 @@ const VestingBars = ({ user }) => {
         dayLabel: dateAndDay.day,
       };
     });
-    // const interim = firstStartDate.clone()
-    // const intermediateMonths = []
-    // while (
-    //   lastEndDate > interim ||
-    //   interim.format('M') === lastEndDate.format('M')
-    // ) {
-    //   intermediateMonths.push(interim.format('YYYY-MM'))
-    //   interim.add(1, 'month')
-    // }
-    // console.log(intermediateMonths);
-    // const months = intermediateMonths.filter((e, i, arr) => {
-    //   return (
-    //     i !== 0 &&
-    //     i !== arr.length - 1 &&
-    //     i % Math.floor(arr.length / maxMarkers) === 0
-    //   )
-    // })
 
     return months.map(month => {
       return {
@@ -155,12 +138,6 @@ const VestingBars = ({ user }) => {
     <div className="mb-5">
       <h2 style={{ marginBottom: '2.5rem' }}>Unlocking Progress</h2>
       <div id="vestingBars" style={{ position: 'relative' }}>
-        <div
-          style={{ position: 'absolute', right: '10px', marginTop: '-1.5rem' }}
-        >
-          <strong>{Number(total).toLocaleString()}</strong>{' '}
-          <span className="ogn">TRU</span>
-        </div>
         {grants.map(grant => {
           // Calculate the percentage of the grant that is complete with a
           // upper bound of 100
@@ -249,7 +226,7 @@ const VestingBars = ({ user }) => {
       </div>
       <div
         className="row"
-        style={{ marginTop: `${3 + 0.5 * grants.length}rem` }}
+        style={{ marginTop: `${5 * grants.length}rem` }}
       >
         <div className="col-12 col-sm-4">
           <div className="status-circle bg-green mr-2"></div>
