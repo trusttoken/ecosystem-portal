@@ -11,7 +11,6 @@ const VestingHistory = props => {
   const schedule = {}
   data.grants.forEach(grant => {
     vestingSchedule(props.user, grant).forEach(vest => {
-      console.log(vest);
       const dateKey = vest.date.format()
       schedule[dateKey] = schedule[dateKey]
         ? schedule[dateKey].plus(vest.amount)

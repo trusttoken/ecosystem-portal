@@ -80,7 +80,7 @@ const Dashboard = props => {
         </div>
       </div>
       <div className="row small-gutter">
-        <div className="col col-xl-6 mb-10">
+        <div className="col col-xl-12 mb-10">
           <VestingCard user={props.user} isEmployee={isEmployee} />
         </div>
       </div>
