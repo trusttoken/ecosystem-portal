@@ -27,6 +27,16 @@ const GreenDot = styled.div`
   margin-right: 8px;
 `;
 
+
+const GrayDot = styled.div`
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #E0E9EE;
+`;
+
+
 const DownArrow = styled.div`
   position: relative;
   top: -1px;
@@ -135,9 +145,24 @@ function EnableMetaMaskDropdownItem(props) {
       >
         <Dropdown.Item >
           <div>
-            Connect to more wallets
+            <div style={{
+                fontStyle: 'normal',
+                fontWeight: 'normal',
+                fontSize: '12px',
+                lineHeight: '18px',
+                display: 'flex',
+                alignItems: 'center',
+                color: '#638298'
+             }}>
+              Connect to more wallets
+            </div>
             <div
-              style={{border: '1px solid #CCC'}}
+              style={{
+                background: '#FFFFFF',
+                border: '1px solid #E0E9EE',
+                boxSizing: 'border-box',
+                borderRadius: '2px'
+              }}
               onClick={e => handleClick(e)}
             >
               <img src={MetaMaskLogo} />
@@ -188,13 +213,13 @@ function EthAccountDropdownItem(props) {
       >
         <Dropdown.Item onClick={(e) => handleClick(e, account.address)} key={account.address}>
           <Block>
-            <div>
+            <div style={{fontWeight: 500, fontSize: '16px', color: '#212529'}}>
               { account.nickname.indexOf('MetaMask') === -1 
                   ? <img src={EmailWalletLogo} />
                   : <img src={MetaMaskLogo}/>
               }
               &nbsp;
-              {account.nickname}
+                {account.nickname}
 
               <span style={{ float: 'right' }}>
                 <input
@@ -209,13 +234,19 @@ function EthAccountDropdownItem(props) {
           </Block>
         
           <Block>
-            <div>
+            <div style={{fontSize: '12px', color: '#638298'}}>
               {account.address}
             </div>
           </Block>
 
           <Block>
-            <div>
+            <div style={{ background: '#F7FBFD', borderRadius: '2px', }}>
+
+              &nbsp;
+              <span style={{ float: 'left' }}>
+                <GrayDot/>
+              </span>
+
               &nbsp;
               <span style={{ float: 'right' }}>
                 {account.balance / 100000000} TRU
