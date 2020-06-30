@@ -110,6 +110,8 @@ export function addAccount(account) {
             .then(balance => {
               newAccount.balance = balance;
               dispatch(addAccountSuccess(newAccount));
+              // Once we add an account we automatically select it / make it active.
+              dispatch(selectAccountSuccess(newAccount));
             })
             .catch(error => {
                 console.log("Account " + account.address + " added but failed to retrieve balance: " + JSON.stringify(error));

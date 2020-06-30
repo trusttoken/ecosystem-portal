@@ -109,7 +109,6 @@ function EnableMetaMaskDropdownItem(props) {
                   nickname: "MetaMask Wallet",
                   address: accounts[0]
                 });
-               await props.parentprops.fetchAccounts();
               }
           }
         })();
