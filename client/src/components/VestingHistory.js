@@ -12,9 +12,7 @@ const VestingHistory = props => {
   data.grants.forEach(grant => {
     vestingSchedule(props.user, grant).forEach(vest => {
       const dateKey = vest.date.format()
-      schedule[dateKey] = schedule[dateKey]
-        ? schedule[dateKey].plus(vest.amount)
-        : vest.amount
+      schedule[dateKey] = vest.day;
     })
   })
 
@@ -38,7 +36,7 @@ const VestingHistory = props => {
             {momentDate < moment.now() ? 'Unlocked' : 'Locked'}
           </span>
         </td>
-        <td className="text-right">{momentDate.format('L')}</td>
+        <td className="text-right">Day {schedule[date]}</td>
       </tr>
     )
   }

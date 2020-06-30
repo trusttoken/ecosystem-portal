@@ -159,6 +159,7 @@ function investorVestingSchedule(grantObj) {
       grantId: grantObj.id,
       amount: grant.amount / 8,
       date: vestingDate.clone(),
+      day: vestingDelaysInDays[i],
       vested: hasVested(vestingDate, grant),
     });
   }

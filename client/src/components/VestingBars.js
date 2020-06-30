@@ -16,6 +16,21 @@ const DateAndDayLabel = styled.div`
   ${({ i }) => i === 8 && `margin-left: -100%;`};
 `;
 
+const Amount = styled.div`
+  font-style: normal;
+  font-weight: 500;
+  font-size: 28px;
+  line-height: 40px;
+  color: #061439;
+`;
+
+const Ticker = styled.div`
+  display: inline;
+  font-size: 16px;
+  color: #7A859E;
+  padding-left: 4px;
+`;
+
 const VestingBars = ({ user }) => {
   const data = useContext(DataContext)
 
@@ -236,16 +251,25 @@ const VestingBars = ({ user }) => {
         className="row"
         style={{ marginTop: `${3 + 0.5 * grants.length}rem` }}
       >
-        <div className="col-12 col-sm-6">
+        <div className="col-12 col-sm-4">
           <div className="status-circle bg-green mr-2"></div>
           <span className=" text-muted">
-            {Number(data.totals.vested).toLocaleString()} TRU unlocked
+            Purchased TrustTokens
+            <Amount>{Number(grants[0].amount).toLocaleString()} <Ticker>TRU</Ticker></Amount>
           </span>
         </div>
-        <div className="col-12 col-sm-6">
+        <div className="col-12 col-sm-4">
+          <div className="status-circle bg-green mr-2"></div>
+          <span className="text-muted">
+            Unlocked
+            <Amount>{Number(data.totals.vested).toLocaleString()} <Ticker>TRU</Ticker></Amount>
+          </span>
+        </div>
+        <div className="col-12 col-sm-4">
           <div className="status-circle mr-2"></div>
           <span className=" text-muted">
-            {Number(data.totals.unvested).toLocaleString()} TRU locked
+            Locked
+            <Amount>{Number(data.totals.unvested).toLocaleString()} <Ticker>TRU</Ticker></Amount>
           </span>
         </div>
       </div>
