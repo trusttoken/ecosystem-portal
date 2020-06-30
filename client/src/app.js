@@ -6,6 +6,7 @@ import ScrollToTop from '@/components/ScrollToTop'
 import OnboardingRoute from '@/components/OnboardingRoute'
 import PrivateRoute from '@/components/PrivateRoute'
 import PublicRoute from '@/components/PublicRoute'
+import PublicRouteNoLogo from '@/components/PublicRouteNoLogo'
 import withTracker from '@/hoc/withTracker'
 
 // Public routes
@@ -77,9 +78,9 @@ const App = () => {
         <PublicRoute path="/check_email" component={CheckEmail} />
         <PublicRoute path="/login_handler/:token" component={HandleLogin} />
         <PublicRoute path="/otp/explain" component={OtpExplain} />
-        <PublicRoute path="/terms-of-use" component={TermsOfUse} />
-        <PublicRoute path="/privacy-policy" component={PrivacyPolicy} />
         <PublicRoute exact path="/otp" component={Otp} />
+        <PublicRouteNoLogo path="/terms-of-use" component={TermsOfUse} />
+        <PublicRouteNoLogo path="/privacy-policy" component={PrivacyPolicy} />
         <OnboardingRoute exact path="/welcome" component={Welcome} />
         <OnboardingRoute
           exact

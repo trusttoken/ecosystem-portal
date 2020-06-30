@@ -1,7 +1,6 @@
-import React, { useState } from 'react'
-import { Redirect } from 'react-router-dom'
-
-import TermsOfUseDoc from '@/components/TermsOfUseDoc'
+import React from 'react';
+import Header from '@/components/Header';
+import TermsOfUseDoc from '@/components/TermsOfUseDoc';
 
 const TermsOfUse = ({ isLoading, user }) => {
 
@@ -17,6 +16,8 @@ const TermsOfUse = ({ isLoading, user }) => {
 
   return (
     <div className="terms-wrapper-full-screen">
+        <Header />
+
         <TermsOfUseDoc />
     </div>
   )

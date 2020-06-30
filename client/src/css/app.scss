@@ -472,10 +472,10 @@ input, select {
 }
 
 .terms-wrapper-full-screen {
-  background-color: var(--accent);
+  background-color: white;
   border-radius: 10px;
   padding: 20px;
-  margin: 40px 0;
+  margin: 0px 0;
   font-size: 14px;
   text-align: left;
 }
@@ -724,4 +724,17 @@ input, select {
   font-weight: 900;
   border-top-right-radius: 10px;
   border-bottom-left-radius: 10px;
+}
+
+.get-tusd-button {
+  background-color: #1253FA;
+  color: #FFFFFF;
+  height: 20px;
+  left: 0px;
+  right: 0px;
+  top: 0px;
+  border-radius: 2px;
+  border: none;
+  margin: 0px 0px;
+  padding: 0px 4px;
 }
