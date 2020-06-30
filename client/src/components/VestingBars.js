@@ -1,30 +1,43 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState } from 'react';
+import styled from 'styled-components';
 import moment from 'moment'
 import numeral from 'numeral'
 import BigNumber from 'bignumber.js'
 
-import { DataContext } from '@/providers/data'
+import { DataContext } from '@/providers/data';
+
+const DateAndDayLabel = styled.div`
+  margin-top: 4px;
+  margin-left: -50%;
+  line-height: 8px;
+  font-size: 12px;
+
+  ${({ i }) => i === 0 && `margin-left: 0;`};
+  ${({ i }) => i === 8 && `margin-left: -100%;`};
+`;
+
+const Amount = styled.div`
+  font-style: normal;
+  font-weight: 500;
+  font-size: 28px;
+  line-height: 40px;
+  color: #061439;
+`;
+
+const Ticker = styled.div`
+  display: inline;
+  font-size: 16px;
+  color: #7A859E;
+  padding-left: 4px;
+`;
 
 const VestingBars = ({ user }) => {
   const data = useContext(DataContext)
 
   const [displayPopover, setDisplayPopover] = useState({})
 
-  // data.grants = [
-  //   {
-  //     start: "2019-04-15",
-  //     end: "2021-04-15",
-  //     amount: 1000000,
-  //   },
-  // ];
-
-  // data.totals = {
-  //   vested: 300000,
-  //   unvested: 700000,
-  // };
-
   if (!data.grants || data.grants.length === 0) {
-    return null
+    return null;
   }
 
   const now = moment()
@@ -44,33 +57,48 @@ const VestingBars = ({ user }) => {
   const totalDuration = lastEndDate - firstStartDate
 
   const generateMarkers = () => {
-    const maxMarkers = 4
-    if (grants.length > 1 || user.employee) {
-      return generateMonthMarkers(maxMarkers)
-    } else {
-      return generateAmountMarkers(maxMarkers)
+    const maxMarkers = 8;
+
+    const monthMarkers = generateMonthMarkers(maxMarkers);
+    const amountMarkers = generateAmountMarkers(maxMarkers);
+
+    const markers = [];
+    for (let i = 0; i < maxMarkers; i++) {
+      markers.push({
+        amountLabel: amountMarkers[i].label,
+        dayLabel: monthMarkers[i].dayLabel,
+        left: amountMarkers[i].left,
+      });
     }
+    markers.push({
+      amountLabel: grants[0].amount,
+      dayLabel: 750,
+      left: 100,
+    });
+    return markers;
   }
 
   const generateMonthMarkers = maxMarkers => {
     // Extract x points (months) across the duration to display between first
     // start date and last end date to display
-    const interim = firstStartDate.clone()
-    const intermediateMonths = []
-    while (
-      lastEndDate > interim ||
-      interim.format('M') === lastEndDate.format('M')
-    ) {
-      intermediateMonths.push(interim.format('YYYY-MM'))
-      interim.add(1, 'month')
-    }
-    const months = intermediateMonths.filter((e, i, arr) => {
-      return (
-        i !== 0 &&
-        i !== arr.length - 1 &&
-        i % Math.floor(arr.length / maxMarkers) === 0
-      )
-    })
+    const startDateAndDay = { date: firstStartDate.clone(), day: 0};
+    const intervals = [120, 90, 90, 90, 90, 90, 90, 90];
+    const datesAndDays = [startDateAndDay];
+
+    let interimDate = startDateAndDay.date;
+    let interimDay = startDateAndDay.day;
+    intervals.forEach((interval) => {
+      interimDate = interimDate.clone().add(interval, 'days');
+      interimDay = interimDay += interval;
+      datesAndDays.push({ date: interimDate, day: interimDay });
+    });
+
+    return datesAndDays.map((dateAndDay) => {
+      return {
+        dateLabel: dateAndDay.date.format('MM/DD/YYYY'),
+        dayLabel: dateAndDay.day,
+      };
+    });
 
     return months.map(month => {
       return {
@@ -110,12 +138,6 @@ const VestingBars = ({ user }) => {
     <div className="mb-5">
       <h2 style={{ marginBottom: '2.5rem' }}>Unlocking Progress</h2>
       <div id="vestingBars" style={{ position: 'relative' }}>
-        <div
-          style={{ position: 'absolute', right: '10px', marginTop: '-1.5rem' }}
-        >
-          <strong>{Number(total).toLocaleString()}</strong>{' '}
-          <span className="ogn">TRU</span>
-        </div>
         {grants.map(grant => {
           // Calculate the percentage of the grant that is complete with a
           // upper bound of 100
@@ -153,15 +175,15 @@ const VestingBars = ({ user }) => {
                     onClick={event => handleTogglePopover(event, grant.id)}
                   />
                   <div>
-                    <strong>Start</strong> {grant.start.format('L')}
+                    <strong>Start</strong> Day 0
                   </div>
                   {grant.cliff && (
                     <div>
-                      <strong>Cliff</strong> {grant.cliff.format('L')}
+                      <strong>Cliff</strong> Day 120
                     </div>
                   )}
                   <div>
-                    <strong>End</strong> {grant.end.format('L')}
+                    <strong>End</strong> Day 750
                   </div>
                   <div>
                     <strong>Grant</strong>{' '}
@@ -174,7 +196,7 @@ const VestingBars = ({ user }) => {
           )
         })}
 
-        {generateMarkers().map(marker => {
+        {generateMarkers().map((marker, index) => {
           const style = {
             position: 'absolute',
             left: `${marker.left}%`,
@@ -184,7 +206,7 @@ const VestingBars = ({ user }) => {
             pointerEvents: 'none' // Stop absolute positioning from stealing clicks
           }
           return (
-            <div key={marker.label} style={style}>
+            <div key={index} style={style}>
               <div
                 style={{
                   borderLeft: '1px solid #dbe6eb',
@@ -192,27 +214,39 @@ const VestingBars = ({ user }) => {
                   width: 0
                 }}
               ></div>
-              <div style={{ marginLeft: '-50%' }}>
-                <small className="text-muted">{marker.label}</small>
-              </div>
+              <DateAndDayLabel i={index}>
+                <small className="text-muted">
+                  {marker.amountLabel}<br/>
+                  Day {marker.dayLabel}
+                </small>
+              </DateAndDayLabel>
             </div>
           )
         })}
       </div>
       <div
         className="row"
-        style={{ marginTop: `${3 + 0.5 * grants.length}rem` }}
+        style={{ marginTop: `${5 * grants.length}rem` }}
       >
-        <div className="col-12 col-sm-6">
+        <div className="col-12 col-sm-4">
           <div className="status-circle bg-green mr-2"></div>
           <span className=" text-muted">
-            {Number(data.totals.vested).toLocaleString()} TRU unlocked
+            Purchased TrustTokens
+            <Amount>{Number(grants[0].amount).toLocaleString()} <Ticker>TRU</Ticker></Amount>
           </span>
         </div>
-        <div className="col-12 col-sm-6">
+        <div className="col-12 col-sm-4">
+          <div className="status-circle bg-green mr-2"></div>
+          <span className="text-muted">
+            Unlocked
+            <Amount>{Number(data.totals.vested).toLocaleString()} <Ticker>TRU</Ticker></Amount>
+          </span>
+        </div>
+        <div className="col-12 col-sm-4">
           <div className="status-circle mr-2"></div>
           <span className=" text-muted">
-            {Number(data.totals.unvested).toLocaleString()} TRU locked
+            Locked
+            <Amount>{Number(data.totals.unvested).toLocaleString()} <Ticker>TRU</Ticker></Amount>
           </span>
         </div>
       </div>
