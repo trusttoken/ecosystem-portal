@@ -1,10 +1,11 @@
-import React, { createContext, useEffect } from 'react'
+import React, { createContext, useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
 import { fetchAccounts } from '@/actions/account'
 import {
   getAccounts,
+  getActiveAccount,
   getIsLoading as getAccountIsLoading
 } from '@/reducers/account'
 import { fetchConfig } from '@/actions/config'
@@ -70,6 +71,7 @@ const _DataProvider = ({ children, ...rest }) => {
     : {}
 
   const value = {
+    activeAccount: rest.activeAccount,
     accounts: rest.accounts,
     config: {
       ...rest.config,
@@ -98,6 +100,7 @@ const mapStateToProps = ({
   user
 }) => {
   return {
+    activeAccount: getActiveAccount(account),
     accounts: getAccounts(account),
     config: getConfig(config),
     grants: getGrants(grant),

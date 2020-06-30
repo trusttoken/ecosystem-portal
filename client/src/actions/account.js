@@ -11,6 +11,7 @@ export const DELETE_ACCOUNT_ERROR = 'DELETE_ACCOUNT_ERROR'
 export const FETCH_ACCOUNTS_PENDING = 'FETCH_ACCOUNTS_PENDING'
 export const FETCH_ACCOUNTS_SUCCESS = 'FETCH_ACCOUNTS_SUCCESS'
 export const FETCH_ACCOUNTS_ERROR = 'FETCH_ACCOUNTS_ERROR'
+export const SELECT_ACCOUNT_SUCCESS = 'SELECT_ACCOUNT_SUCCESS'
 
 function addAccountPending() {
   return {
@@ -58,9 +59,29 @@ function fetchAccountsPending() {
   }
 }
 
+function uniqueAccounts(accounts) {
+  let addresses = new Set();
+  let uniqueAccounts = [];
+
+  accounts.map(account => {
+    if (! addresses.has(account.address)) {
+       addresses.add(account.address);
+       uniqueAccounts.push(account);
+    }
+  });
+  return uniqueAccounts;
+}
+
 function fetchAccountsSuccess(payload) {
   return {
     type: FETCH_ACCOUNTS_SUCCESS,
+    payload
+  }
+}
+
+function selectAccountSuccess(payload) {
+  return {
+    type: SELECT_ACCOUNT_SUCCESS,
     payload
   }
 }
@@ -79,7 +100,23 @@ export function addAccount(account) {
     return agent
       .post(`${apiUrl}/api/accounts`)
       .send(account)
-      .then(response => dispatch(addAccountSuccess(response.body)))
+      .then(response => {
+          const newAccount = response.body;
+
+          console.log("Added account: " + JSON.stringify(newAccount))
+
+          EthService
+            .getMagicLinkWalletTrustTokenBalance(newAccount.address)
+            .then(balance => {
+              newAccount.balance = balance;
+              dispatch(addAccountSuccess(newAccount));
+              // Once we add an account we automatically select it / make it active.
+              dispatch(selectAccountSuccess(newAccount));
+            })
+            .catch(error => {
+                console.log("Account " + account.address + " added but failed to retrieve balance: " + JSON.stringify(error));
+            })
+      })
       .catch(error => {
         dispatch(addAccountError(error))
         throw error
@@ -104,25 +141,45 @@ export function deleteAccount(id) {
 export function fetchAccounts() {
   return dispatch => {
     dispatch(fetchAccountsPending())
-
     return agent
       .get(`${apiUrl}/api/accounts`)
       .then(response => {
         if (response.body.length === 0) {
+          console.log("Adding Email Wallet...");
           EthService.getMagicLinkWalletAddress()
             .then((magicLinkWalletAddress) => {
               const magicLinkAccount = {
-                nickname: 'Magic Link Wallet',
+                nickname: 'Email Wallet',
                 address: magicLinkWalletAddress,
               };
               agent.post(`${apiUrl}/api/accounts`)
                 .send(magicLinkAccount)
                 .then(response => {
-                  dispatch(fetchAccountsSuccess([response.body]));
+                  console.log("Successfully added Email Wallet:" + JSON.stringify(response));
+                  const newAccount = response.body;
+                  EthService
+                    .getMagicLinkWalletTrustTokenBalance(newAccount.address)
+                    .then(balance => {
+                      newAccount.balance = balance;
+                      dispatch(selectAccountSuccess(newAccount));
+                      dispatch(fetchAccountsSuccess([newAccount]));
+                    });
+                })
+                .catch(error => {
+                  console.log("Error adding Email Account:" + JSON.stringify(error));
                 });
             });
         } else {
-          dispatch(fetchAccountsSuccess(response.body))
+          const accounts = uniqueAccounts(response.body);
+          // Fetch balance of the first account, so we can show it immediately.
+          const selectedAccount = accounts[0];
+          EthService
+            .getMagicLinkWalletTrustTokenBalance(selectedAccount.address)
+            .then(balance => {
+              selectedAccount.balance = balance;
+              dispatch(selectAccountSuccess(selectedAccount));
+              dispatch(fetchAccountsSuccess(accounts));
+            });
         }
       })
       .catch(error => {
@@ -133,3 +190,10 @@ export function fetchAccounts() {
       })
   }
 }
+
+export function selectAccount(account) {
+  return dispatch => {
+    dispatch(selectAccountSuccess(account))
+  }
+}
+

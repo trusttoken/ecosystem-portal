@@ -1,35 +1,25 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect, useRef } from 'react';
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
 import { Redirect } from 'react-router-dom'
 import { Doughnut } from 'react-chartjs-2'
 import Dropdown from 'react-bootstrap/Dropdown'
 import moment from 'moment'
 
-import { DataContext } from '@/providers/data'
+import { DataContext } from '@/providers/data';
 import BorderedCard from '@/components/BorderedCard'
 import DropdownDotsToggle from '@/components/DropdownDotsToggle'
 import LockupDescModal from '@/components/modal/LockupDescModal'
 import { EthService } from '@/contracts/EthService';
 
-const BalanceCard = ({ onDisplayBonusModal, onDisplayWithdrawModal }) => {
-  const data = useContext(DataContext)
-  const account = data.accounts[0];
+import { selectAccount } from '@/actions/account'
+import { getActiveAccount } from '@/reducers/account'
 
+const _BalanceCard = ({ activeAccount, onDisplayBonusModal, onDisplayWithdrawModal }) => {
+  const data = useContext(DataContext);
   const [redirectTo, setRedirectTo] = useState(false)
   const [displayLockupDescModal, setDisplayLockupDescModal] = useState(false)
-
-  const [truBalance, setTruBalance] = useState(null);
   const [tooltipText, setTooltipText] = useState('Copy to clipboard');
-
-  useEffect(() => {
-    if (!account) { return; }
-
-    EthService.getMagicLinkWalletTrustTokenBalance(account.address)
-      .then((balance) => {
-        if (truBalance === null) {
-          setTruBalance(balance);
-        }
-      });
-  }, []);
 
   const doughnutData = () => {
     return {
@@ -131,7 +121,8 @@ const BalanceCard = ({ onDisplayBonusModal, onDisplayWithdrawModal }) => {
                   className="mr-1 mb-3 d-inline-block font-weight-bold"
                   style={{ fontSize: '32px' }}
                 >
-                  {truBalance / 100000000}
+                  { activeAccount && activeAccount.balance && (activeAccount.balance / 100000000) }
+
                 </div>
                 <span className="ogn">TRU</span>
               </div>
@@ -160,4 +151,20 @@ const BalanceCard = ({ onDisplayBonusModal, onDisplayWithdrawModal }) => {
   )
 }
 
+
+const mapStateToProps = ({ account }) => {
+  return {
+    activeAccount: getActiveAccount(account),
+  }
+}
+
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    {
+      selectAccount: selectAccount,
+    },
+    dispatch
+  )
+
+const BalanceCard = connect(mapStateToProps, mapDispatchToProps)(_BalanceCard);
 export default BalanceCard

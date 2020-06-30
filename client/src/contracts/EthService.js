@@ -26,6 +26,7 @@ const EthService = {
   depositStakedToken,
   getMagicLinkWalletAddress,
   getMagicLinkWalletTrustTokenBalance,
+  enableMetamask,
 };
 
 async function getMagicLinkWalletAddress() {
@@ -37,7 +38,7 @@ async function getMagicLinkWalletAddress() {
 
 async function getMagicLinkWalletTrustTokenBalance(address) {
   const network = getEthNetwork();
-  console.log(`working on ${network}`);
+  //console.log(`checking TRU balance of address ${address} on ${network}`);
   const trustTokenContractAddress = TRUSTTOKEN_CONTRACT_ADDRESSES[network];
 
   const magicProvider = new ethers.providers.Web3Provider(magic.rpcProvider);
@@ -45,7 +46,9 @@ async function getMagicLinkWalletTrustTokenBalance(address) {
 
   const TrustTokenContract = new ethers.Contract(trustTokenContractAddress, TrustTokenControllerAbi, magicSigner);
   const trustTokenBalance = await TrustTokenContract.balanceOf(address);
-  return trustTokenBalance.toString();
+  let balance = trustTokenBalance.toString();
+  console.log(`TRU balance of address ${address} on ${network} is ${balance}`);
+  return balance;
 }
 
 function isMetamaskLocked() {
@@ -112,23 +115,9 @@ async function depositStakedToken(trustTokenAmount) {
   }
 }
 
-async function init(type) {
-  if (type === 'magic') {
-    const provider = new ethers.providers.Web3Provider(magic.rpcProvider);
-    const signer = provider.getSigner();
-    EthService.web3Provider = provider;
-    const address = await signer.getAddress();
-    console.log(address);
-    createTokenContracts();
-
-    const trustTokenBalance = await EthService.TrustTokenContract.balanceOf(address);
-    console.log(trustTokenBalance.toString());
-    console.log(trustTokenBalance.toString() / 100000000);
-    return;
-  }
+async function initMetamask() {
   const ethereum = window.ethereum;
   if (typeof web3 !== 'undefined') {
-
     console.log('Metamask installed');
     EthService.state.metamaskInstalled = true;
 
@@ -157,6 +146,23 @@ async function init(type) {
         EthService.state.TrustTokenBalance = trustTokenBalance.toString();
       }
   }
+}
+
+async function init(type) {
+  if (type === 'magic') {
+    const provider = new ethers.providers.Web3Provider(magic.rpcProvider);
+    const signer = provider.getSigner();
+    EthService.web3Provider = provider;
+    const address = await signer.getAddress();
+    console.log(address);
+    createTokenContracts();
+
+    const trustTokenBalance = await EthService.TrustTokenContract.balanceOf(address);
+    console.log(trustTokenBalance.toString());
+    console.log(trustTokenBalance.toString() / 100000000);
+    return;
+  }
+  await initMetamask();
 }
 
 export { EthService };
