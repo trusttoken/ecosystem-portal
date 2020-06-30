@@ -123,33 +123,35 @@ function EnableMetaMaskDropdownItem(props) {
   }
 
   return (
-    <OverlayTrigger
-      key="enable MetaMask"
-      placement="right"
-      overlay={
-        <Tooltip id="button-tooltip" {...props}>
-          {tooltipText}
-        </Tooltip>
-      }
-    >
-      <Dropdown.Item >
-        <div>
-          Connect to more wallets
-          <div
-            style={{border: '1px solid #CCC'}}
-            onClick={e => handleClick(e)}
-          >
-            <img src={MetaMaskLogo} />
-            &nbsp;
-            Connect to MetaMask wallet
-              <span style={{ float: 'right' }}>
-                &#x2192;
-                &nbsp;
-              </span>
+    <div style={{borderTop: '1px solid #CCC'}}>
+      <OverlayTrigger
+        key="enable MetaMask"
+        placement="right"
+        overlay={
+          <Tooltip id="button-tooltip" {...props}>
+            {tooltipText}
+          </Tooltip>
+        }
+      >
+        <Dropdown.Item >
+          <div>
+            Connect to more wallets
+            <div
+              style={{border: '1px solid #CCC'}}
+              onClick={e => handleClick(e)}
+            >
+              <img src={MetaMaskLogo} />
+              &nbsp;
+              Connect to MetaMask wallet
+                <span style={{ float: 'right' }}>
+                  &#x2192;
+                  &nbsp;
+                </span>
+            </div>
           </div>
-        </div>
-      </Dropdown.Item>
-    </OverlayTrigger>
+        </Dropdown.Item>
+      </OverlayTrigger>
+    </div>
   );
 }
 
@@ -163,13 +165,6 @@ function EthAccountDropdownItem(props) {
 
   const account = props.account;
 
-  //useEffect(() => {
-  //    EthService.getMagicLinkWalletTrustTokenBalance(account.address)
-  //      .then((balance) => {
-  //          setTruBalance(balance);
-  //      });
-  //}, []);
-
   const handleClick = (e, address) => {
     e.stopPropagation();
     copy(address);
@@ -181,7 +176,7 @@ function EthAccountDropdownItem(props) {
   }
 
   return (
-    <div style={{borderBottom: '1px solid #CCC'}}>
+    <div style={ !props.last ? {borderBottom: '1px solid #CCC'} : {} }>
       <OverlayTrigger
         key={account.address}
         placement="right"
@@ -281,6 +276,7 @@ function _EthAccountDropdown(props) {
                 select={account => {
                   props.selectAccount(account);
                 }}
+                last={index == accounts.length - 1}
               />
             </div>
           );
