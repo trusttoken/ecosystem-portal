@@ -125,6 +125,7 @@ const _BalanceCard = ({ activeAccount, onDisplayBonusModal, onDisplayWithdrawMod
                 <span className="ogn">TRU</span>
               </div>
               <div className="col-1 text-right">
+                { /* TODO: Withdraw & Withdrawal History not implemented yet, show hanburger menu when ready.
                 <Dropdown drop={'left'} style={{ display: 'inline' }}>
                   <Dropdown.Toggle
                     as={DropdownDotsToggle}
@@ -140,6 +141,8 @@ const _BalanceCard = ({ activeAccount, onDisplayBonusModal, onDisplayWithdrawMod
                     </Dropdown.Item>
                   </Dropdown.Menu>
                 </Dropdown>
+                */
+                }
               </div>
             </div>
           </div>
