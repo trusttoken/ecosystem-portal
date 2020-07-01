@@ -15,6 +15,24 @@ import { EthService } from '@/contracts/EthService';
 import { selectAccount } from '@/actions/account'
 import { getActiveAccount } from '@/reducers/account'
 
+import MetaMaskLogo from '@/assets/metamask_small.png';
+import EmailWalletIcon from '@/assets/email_wallet.svg'
+import CustodianWalletIcon from '@/assets/custodial-wallet_icon.svg'
+import CustodianWalletPNG from '@/assets/custodial-wallet_icon-1x.png'
+
+import TokenStackIcon from '@/assets/token-stack.svg';
+
+import QuestionIcon from '@/assets/question.svg';
+
+
+const WalletInfo = ({account, logo}) => {
+  return (
+      <div>
+        {logo} {account && account.nickname}: {account && (account.balance / 100000000)}
+      </div>
+  );
+}
+
 const _BalanceCard = ({ activeAccount, onDisplayBonusModal, onDisplayWithdrawModal }) => {
   const data = useContext(DataContext);
   const [redirectTo, setRedirectTo] = useState(false)
@@ -84,11 +102,7 @@ const _BalanceCard = ({ activeAccount, onDisplayBonusModal, onDisplayWithdrawMod
         />
       )}
       <BorderedCard>
-        <div className="row header mb-3">
-          <div className="col">
-            <h2>My Unlocked Tokens</h2>
-          </div>
-        </div>
+
         <div className="row">
           {data.config.lockupsEnabled &&
             (data.totals.balance > 0 || data.totals.locked > 0) && (
@@ -110,19 +124,35 @@ const _BalanceCard = ({ activeAccount, onDisplayBonusModal, onDisplayWithdrawMod
             )}
           <div className="col">
             <div className="row">
-              {data.config.lockupsEnabled && (
-                <div className="col-1 text-right">
-                  <div className="status-circle bg-green"></div>
-                </div>
-              )}
+              <div style={{display: 'block'}}>
+                <TokenStackIcon />
+              </div>
               <div className="col text-nowrap">
-                <div>Available</div>
-                <div
-                  className="mr-1 mb-3 d-inline-block font-weight-bold"
-                  style={{ fontSize: '32px' }}
-                >
-                  { activeAccount && activeAccount.balance && (activeAccount.balance / 100000000) }
-
+                <div style={{ fontWeight: 'normal', fontSize: '14px', lineHeight: '20px', display: 'flex', alignItems: 'center', color: '#638298' }}>
+                  <div style={{display: 'inline'}}>
+                    Available TrustTokens
+                    &nbsp;
+                  </div>
+                  <div style={{display: 'inline'}}>
+                    {
+                    /** Hiding this for now, help text not approved yet.
+                    <QuestionIcon />
+                    */
+                    }
+                  </div>
+                </div>
+                {/**/}
+                <div className="mr-1 mb-3 d-inline-block font-weight-bold" style={{ fontSize: '32px' }} >
+                  {
+                      /** 
+                       *  Available TrustTokens = Sum of tokens in active wallet and custodial wallet,
+                       *  active wallet can be MetaMask or Email wallet;
+                       *  custodial wallet is held by us and will display the number of unlocked TRU
+                       *  that has not yet been transferred from the custodial wallet.
+                       *  TODO: need to get balance of custodial wallet and add it to the formula
+                       */
+                      activeAccount && activeAccount.balance && (activeAccount.balance / 100000000)
+                  }
                 </div>
                 <span className="ogn">TRU</span>
               </div>
@@ -146,6 +176,19 @@ const _BalanceCard = ({ activeAccount, onDisplayBonusModal, onDisplayWithdrawMod
             </div>
           </div>
         </div>
+
+        <div className="row"> { /* style={{borderTop: "solid 1px", borderColor='#E0E9EE'}}> */ }
+          <WalletInfo
+            account={activeAccount}
+            logo={ activeAccount.nickname.indexOf('MetaMask') !== -1 ? <img src={MetaMaskLogo} /> : <EmailWalletIcon/> }
+          />
+          &nbsp;
+          <WalletInfo
+            account={{nickname: "Custodial Wallet", balance: 0}}
+            logo=<img src={CustodianWalletPNG}/>
+          />
+        </div>
+
       </BorderedCard>
     </div>
   )
