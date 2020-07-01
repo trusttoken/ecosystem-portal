@@ -2,7 +2,6 @@ import React, { useContext, useState, useEffect, useRef } from 'react';
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { Redirect } from 'react-router-dom'
-import { Doughnut } from 'react-chartjs-2'
 import Dropdown from 'react-bootstrap/Dropdown'
 import moment from 'moment'
 
@@ -38,19 +37,6 @@ const _BalanceCard = ({ activeAccount, onDisplayBonusModal, onDisplayWithdrawMod
   const [redirectTo, setRedirectTo] = useState(false)
   const [displayLockupDescModal, setDisplayLockupDescModal] = useState(false)
   const [tooltipText, setTooltipText] = useState('Copy to clipboard');
-
-  const doughnutData = () => {
-    return {
-      labels: ['Available', 'Locked'],
-      datasets: [
-        {
-          data: [Number(data.totals.balance), Number(data.totals.locked)],
-          backgroundColor: ['#00db8d', '#061439'],
-          borderWidth: 0
-        }
-      ]
-    }
-  }
 
   if (redirectTo) {
     return <Redirect push to={redirectTo} />
@@ -104,24 +90,6 @@ const _BalanceCard = ({ activeAccount, onDisplayBonusModal, onDisplayWithdrawMod
       <BorderedCard>
 
         <div className="row">
-          {data.config.lockupsEnabled &&
-            (data.totals.balance > 0 || data.totals.locked > 0) && (
-              <div
-                className="col-12 col-lg-4 mb-4 mb-lg-0 mx-auto"
-                style={{ maxWidth: '200px' }}
-              >
-                <div style={{ position: 'relative' }}>
-                  <div>hihihi</div>
-                  <Doughnut
-                    height={100}
-                    width={100}
-                    data={doughnutData}
-                    options={{ cutoutPercentage: 70 }}
-                    legend={{ display: false }}
-                  />
-                </div>
-              </div>
-            )}
           <div className="col">
             <div className="row">
               <div style={{display: 'block'}}>
