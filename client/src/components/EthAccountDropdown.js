@@ -10,13 +10,12 @@ import MetaMaskLogo from '@/assets/metamask_small.png';
 import EmailWalletLogo from '@/assets/email_wallet_small.png';
 
 import { EthService } from '@/contracts/EthService';
-
 import { shortenAddress } from '@/lib/account';
-
 import { DataContext } from '@/providers/data';
-
 import { addAccount, deleteAccount, selectAccount, fetchAccounts } from '@/actions/account'
 import { getError, getIsAdding, getIsLoading } from '@/reducers/account'
+
+import connectingAnimation from '@/assets/connecting_animation.gif'
 
 const GreenDot = styled.div`
   display: inline-block;
@@ -71,6 +70,7 @@ const EthAccountDropdownToggleContainer = styled(Dropdown)`
     cursor: pointer;
   }
 `;
+
 
 const EthAccountDropdownToggle = React.forwardRef(({ children, onClick }, ref) => (
   <EthAccountDropdownToggleContainer
@@ -165,13 +165,24 @@ function EnableMetaMaskDropdownItem(props) {
               }}
               onClick={e => handleClick(e)}
             >
-              <img src={MetaMaskLogo} />
-              &nbsp;
-              Connect to MetaMask wallet
-                <span style={{ float: 'right' }}>
-                  &#x2192;
-                  &nbsp;
-                </span>
+              {props.parentprops.isAdding
+               ? (<div>
+                    <img src={MetaMaskLogo} />
+                    &nbsp;
+                      Connecting to MetaMask 
+                        <span style={{ float: 'right' }}>
+                          <img src={connectingAnimation} alt="loading..." width="24" height="24" />
+                          &nbsp;
+                        </span>
+                  </div>)
+               : (<div>
+                    <img src={MetaMaskLogo} />
+                      Connect to MetaMask wallet
+                        <span style={{ float: 'right' }}>
+                          &#x2192;
+                          &nbsp;
+                        </span>
+                  </div>)}
             </div>
           </div>
         </Dropdown.Item>
