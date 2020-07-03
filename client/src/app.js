@@ -7,6 +7,7 @@ import OnboardingRoute from '@/components/OnboardingRoute'
 import PrivateRoute from '@/components/PrivateRoute'
 import PublicRoute from '@/components/PublicRoute'
 import PublicRouteNoLogo from '@/components/PublicRouteNoLogo'
+import { Route } from 'react-router-dom'
 import withTracker from '@/hoc/withTracker'
 
 // Public routes
@@ -33,6 +34,7 @@ import News from '@/components/pages/News'
 import WithdrawalDetail from '@/components/pages/WithdrawalDetail'
 import WithdrawalHistory from '@/components/pages/WithdrawalHistory'
 import Security from '@/components/pages/Security'
+import NotFound from '@/components/pages/NotFound'
 
 import { pageTitle } from '@/constants'
 
@@ -102,6 +104,7 @@ const App = () => {
           component={WithdrawalDetail}
         />
         <PrivateRoute path="/security" component={Security} />
+        <Route component={NotFound} />
       </Switch>
     </>
   )
