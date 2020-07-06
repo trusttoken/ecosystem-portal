@@ -8,11 +8,19 @@ import { DataContext } from '@/providers/data'
 const VestingHistory = props => {
   const data = useContext(DataContext)
 
+  // Once we know the actual start date we will update it in the database
+  // (start date cannot be null in the database, so we have to enter a 'fake' one initially)
+  // and start showing it.
+  // For now we show only days from an unspecified start date.
+  const showStartDate = false;
+
   const schedule = {}
   data.grants.forEach(grant => {
+    let accumulated = 0;
     vestingSchedule(props.user, grant).forEach(vest => {
+      accumulated += vest.amount;
       const dateKey = vest.date.format()
-      schedule[dateKey] = vest.day;
+      schedule[dateKey] = {accumulated: accumulated, day: vest.day, date: dateKey}
     })
   })
 
@@ -29,14 +37,18 @@ const VestingHistory = props => {
           ></div>
         </td>
         <td className="text-nowrap" width="130px">
-          {Number(schedule[date]).toLocaleString()} TRU
+          {Number(schedule[date].accumulated).toLocaleString()} TRU
         </td>
         <td className="d-none d-sm-block">
           <span className="text-muted">
             {momentDate < moment.now() ? 'Unlocked' : 'Locked'}
           </span>
         </td>
-        <td className="text-right">Day {schedule[date]}</td>
+        {
+         showStartDate
+         ? <td className="text-right"> {schedule[date].date.slice(0, -10)}</td>
+         : <td className="text-right">Day {schedule[date].day}</td>
+        }
       </tr>
     )
   }
