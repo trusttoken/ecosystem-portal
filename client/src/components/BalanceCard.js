@@ -104,7 +104,7 @@ const _BalanceCard = ({ activeAccount, onDisplayBonusModal, onDisplayWithdrawMod
           }}
         />
       )}
-      <BorderedCard>
+      <BorderedCard style={{paddingBottom: 0}}>
         <div className="row">
           <div style={{display: 'block', padding: '10px'}}>
             <TokenStackIcon />
