@@ -16,11 +16,9 @@ const VestingHistory = props => {
 
   const schedule = {}
   data.grants.forEach(grant => {
-    let accumulated = 0;
     vestingSchedule(props.user, grant).forEach(vest => {
-      accumulated += vest.amount;
       const dateKey = vest.date.format()
-      schedule[dateKey] = {accumulated: accumulated, day: vest.day, date: dateKey}
+      schedule[dateKey] = {amount: vest.amount, day: vest.day, date: dateKey}
     })
   })
 
@@ -37,7 +35,7 @@ const VestingHistory = props => {
           ></div>
         </td>
         <td className="text-nowrap" width="130px">
-          {Number(schedule[date].accumulated).toLocaleString()} TRU
+          {Number(schedule[date].amount).toLocaleString()} TRU
         </td>
         <td className="d-none d-sm-block">
           <span className="text-muted">
