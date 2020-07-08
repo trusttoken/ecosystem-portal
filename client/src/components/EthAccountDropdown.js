@@ -271,6 +271,27 @@ function EthAccountDropdownItem(props) {
   );
 }
 
+const showActiveAccount = (account) => (
+  <div style={{ width: '273px' }}>
+   
+    <div style={{
+      fontSize: '14px',
+      lineHeight: '20px',
+      display: 'flex',
+      alignItems: 'center',
+      color: '#638298',
+    }}>
+
+      {account.nickname}
+
+      <span style={{ float: 'right', color: '#212529', flex: 1, textAlign: 'right', whiteSpace: 'nowrap'}}>
+        {shortenAddress(account.address, 6, 4)}
+      </span>
+
+    </div>
+
+  </div>
+);
 
 function _EthAccountDropdown(props) {
   const { accounts, activeAccount } = useContext(DataContext);
@@ -288,8 +309,6 @@ function _EthAccountDropdown(props) {
   useEffect(() => {
     loadAccountBalances();
   });
-
-  const showActiveAccount = (account) => `${account.nickname} ${shortenAddress(account.address, 6, 4)}`;
 
   const handleToggle = (newValue, event, {source}) => {
     if (source === 'select') { return; }
