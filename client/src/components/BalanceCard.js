@@ -26,8 +26,25 @@ import QuestionIcon from '@/assets/question.svg';
 
 const WalletInfo = ({account, logo}) => {
   return (
-      <div>
-        {logo} {account && account.nickname}: {account && (account.balance / 100000000)}
+      <div style={{
+          padding: '10px',
+          fontSize: '14px',
+          lineHeight: '20px',
+          display: 'flex',
+          alignItems: 'center',
+          color: '#638298'
+      }}>
+        <div style={{paddingRight: '10px'}}>
+          {logo} 
+        </div>
+
+        {account && account.nickname}:
+        &nbsp;
+        <div style={{color: '#212529', fontWeight: 500}}>
+          {account && (account.balance / 100000000)}
+        </div>
+        &nbsp;
+        TRU
       </div>
   );
 }
@@ -92,7 +109,7 @@ const _BalanceCard = ({ activeAccount, onDisplayBonusModal, onDisplayWithdrawMod
         <div className="row">
           <div className="col">
             <div className="row">
-              <div style={{display: 'block'}}>
+              <div style={{display: 'block', padding: '10px'}}>
                 <TokenStackIcon />
               </div>
               <div className="col text-nowrap">
@@ -122,7 +139,7 @@ const _BalanceCard = ({ activeAccount, onDisplayBonusModal, onDisplayWithdrawMod
                       activeAccount && activeAccount.balance && (activeAccount.balance / 100000000)
                   }
                 </div>
-                <span className="ogn">TRU</span>
+                <span className="ogn">&nbsp; TRU</span>
               </div>
               <div className="col-1 text-right">
                 { /* TODO: Withdraw & Withdrawal History not implemented yet, show hanburger menu when ready.
@@ -148,7 +165,7 @@ const _BalanceCard = ({ activeAccount, onDisplayBonusModal, onDisplayWithdrawMod
           </div>
         </div>
 
-        <div className="row"> { /* style={{borderTop: "solid 1px", borderColor='#E0E9EE'}}> */ }
+        <div className="row" style={{borderTop: "solid 1px", borderColor: '#E0E9EE'}}>
           <WalletInfo
             account={activeAccount}
             logo={ activeAccount.nickname.indexOf('MetaMask') !== -1 ? <img src={MetaMaskLogo} /> : <EmailWalletIcon/> }
