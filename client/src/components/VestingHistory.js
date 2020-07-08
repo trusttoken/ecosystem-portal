@@ -12,7 +12,7 @@ const VestingHistory = props => {
   // (start date cannot be null in the database, so we have to enter a 'fake' one initially)
   // and start showing it.
   // For now we show only days from an unspecified start date.
-  const showStartDate = false;
+  const showStartDate = true;
 
   const schedule = {}
   data.grants.forEach(grant => {
