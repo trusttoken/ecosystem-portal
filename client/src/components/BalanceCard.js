@@ -26,8 +26,25 @@ import QuestionIcon from '@/assets/question.svg';
 
 const WalletInfo = ({account, logo}) => {
   return (
-      <div>
-        {logo} {account && account.nickname}: {account && (account.balance / 100000000)}
+      <div style={{
+          padding: '10px',
+          fontSize: '14px',
+          lineHeight: '20px',
+          display: 'flex',
+          alignItems: 'center',
+          color: '#638298'
+      }}>
+        <div style={{paddingRight: '10px'}}>
+          {logo} 
+        </div>
+
+        {account && account.nickname}:
+        &nbsp;
+        <div style={{color: '#212529', fontWeight: 500}}>
+          {account && (account.balance / 100000000)}
+        </div>
+        &nbsp;
+        TRU
       </div>
   );
 }
@@ -87,73 +104,63 @@ const _BalanceCard = ({ activeAccount, onDisplayBonusModal, onDisplayWithdrawMod
           }}
         />
       )}
-      <BorderedCard>
-
+      <BorderedCard style={{paddingBottom: 0}}>
         <div className="row">
-          <div className="col">
-            <div className="row">
-              <div style={{display: 'block'}}>
-                <TokenStackIcon />
+          <div style={{display: 'block', padding: '10px'}}>
+            <TokenStackIcon />
+          </div>
+          <div className="col text-nowrap">
+            <div style={{ fontWeight: 'normal', fontSize: '14px', lineHeight: '20px', display: 'flex', alignItems: 'center', color: '#638298' }}>
+              <div style={{display: 'inline'}}>
+                Available TrustTokens
+                &nbsp;
               </div>
-              <div className="col text-nowrap">
-                <div style={{ fontWeight: 'normal', fontSize: '14px', lineHeight: '20px', display: 'flex', alignItems: 'center', color: '#638298' }}>
-                  <div style={{display: 'inline'}}>
-                    Available TrustTokens
-                    &nbsp;
-                  </div>
-                  <div style={{display: 'inline'}}>
-                    {
-                    /** Hiding this for now, help text not approved yet.
-                    <QuestionIcon />
-                    */
-                    }
-                  </div>
-                </div>
-                {/**/}
-                <div className="mr-1 mb-3 d-inline-block font-weight-bold" style={{ fontSize: '32px' }} >
-                  {
-                      /** 
-                       *  Available TrustTokens = Sum of tokens in active wallet and custodial wallet,
-                       *  active wallet can be MetaMask or Email wallet;
-                       *  custodial wallet is held by us and will display the number of unlocked TRU
-                       *  that has not yet been transferred from the custodial wallet.
-                       *  TODO: need to get balance of custodial wallet and add it to the formula
-                       */
-                      activeAccount && activeAccount.balance && (activeAccount.balance / 100000000)
-                  }
-                </div>
-                <span className="ogn">TRU</span>
-              </div>
-              <div className="col-1 text-right">
-                { /* TODO: Withdraw & Withdrawal History not implemented yet, show hanburger menu when ready.
-                <Dropdown drop={'left'} style={{ display: 'inline' }}>
-                  <Dropdown.Toggle
-                    as={DropdownDotsToggle}
-                    id="available-dropdown"
-                  ></Dropdown.Toggle>
-
-                  <Dropdown.Menu>
-                    <Dropdown.Item onClick={onDisplayWithdrawModal}>
-                      Withdraw
-                    </Dropdown.Item>
-                    <Dropdown.Item onClick={() => setRedirectTo('/withdrawal')}>
-                      Withdrawal History
-                    </Dropdown.Item>
-                  </Dropdown.Menu>
-                </Dropdown>
+              <div style={{display: 'inline'}}>
+                { /** Hiding this for now, help text not approved yet.
+                <QuestionIcon />
                 */
                 }
               </div>
             </div>
+            {/**/}
+            <div className="mr-1 mb-3 d-inline-block font-weight-bold" style={{ fontSize: '32px' }} >
+              {
+                  /* TODO: need to get balance of custodial wallet and add it to the formula */
+                  activeAccount && activeAccount.balance && (activeAccount.balance / 100000000)
+              }
+            </div>
+            <span className="ogn">&nbsp; TRU</span>
+          </div>
+          <div className="col-1 text-right">
+            { /* TODO: Withdraw & Withdrawal History not implemented yet, show hanburger menu when ready.
+            <Dropdown drop={'left'} style={{ display: 'inline' }}>
+              <Dropdown.Toggle
+                as={DropdownDotsToggle}
+                id="available-dropdown"
+              ></Dropdown.Toggle>
+
+              <Dropdown.Menu>
+                <Dropdown.Item onClick={onDisplayWithdrawModal}>
+                  Withdraw
+                </Dropdown.Item>
+                <Dropdown.Item onClick={() => setRedirectTo('/withdrawal')}>
+                  Withdrawal History
+                </Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
+            */
+            }
           </div>
         </div>
 
-        <div className="row"> { /* style={{borderTop: "solid 1px", borderColor='#E0E9EE'}}> */ }
+        <div className="row" style={{borderTop: "solid 1px", borderColor: '#E0E9EE'}}>
           <WalletInfo
             account={activeAccount}
             logo={ activeAccount.nickname.indexOf('MetaMask') !== -1 ? <img src={MetaMaskLogo} /> : <EmailWalletIcon/> }
           />
+
           &nbsp;
+
           <WalletInfo
             account={{nickname: "Custodial Wallet", balance: 0}}
             logo=<img src={CustodianWalletPNG}/>

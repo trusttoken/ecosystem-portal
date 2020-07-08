@@ -152,7 +152,8 @@ function EnableMetaMaskDropdownItem(props) {
                 lineHeight: '18px',
                 display: 'flex',
                 alignItems: 'center',
-                color: '#638298'
+                color: '#638298',
+                padding: '10px  0px 10px 0px',
              }}>
               Connect to more wallets
             </div>
@@ -161,12 +162,13 @@ function EnableMetaMaskDropdownItem(props) {
                 background: '#FFFFFF',
                 border: '1px solid #E0E9EE',
                 boxSizing: 'border-box',
-                borderRadius: '2px'
+                borderRadius: '2px',
+                padding: '10px  0px 10px 0px',
               }}
               onClick={e => handleClick(e)}
             >
               {props.parentprops.isAdding
-               ? (<div>
+               ? (<div style={{borderRadius: '2px', padding: '0px 10px 0px 10px'}}>
                     <img src={MetaMaskLogo} />
                     &nbsp;
                       Connecting to MetaMask 
@@ -175,9 +177,9 @@ function EnableMetaMaskDropdownItem(props) {
                           &nbsp;
                         </span>
                   </div>)
-               : (<div>
+               : (<div style={{borderRadius: '2px', padding: '0px 10px 0px 10px'}}>
                     <img src={MetaMaskLogo} />
-                      Connect to MetaMask wallet
+                      Connect to MetaMask
                         <span style={{ float: 'right' }}>
                           &#x2192;
                           &nbsp;
@@ -212,7 +214,7 @@ function EthAccountDropdownItem(props) {
   }
 
   return (
-    <div style={ !props.last ? {borderBottom: '1px solid #CCC'} : {} }>
+    <div style={ !props.last ? {borderBottom: '1px solid #CCC', padding: '10px 0px 10px 0px'} : {padding: '10px 0px 10px 0px'} }>
       <OverlayTrigger
         key={account.address}
         placement="right"
@@ -245,13 +247,13 @@ function EthAccountDropdownItem(props) {
           </Block>
         
           <Block>
-            <div style={{fontSize: '12px', color: '#638298'}}>
+            <div style={{fontSize: '12px', color: '#638298', padding: '10px 0px 10px 0px'}}>
               {account.address}
             </div>
           </Block>
 
           <Block>
-            <div style={{ background: '#F7FBFD', borderRadius: '2px', }}>
+            <div style={{ background: '#F7FBFD', borderRadius: '2px', padding: '10px'}}>
 
               &nbsp;
               <span style={{ float: 'left' }}>
@@ -271,6 +273,27 @@ function EthAccountDropdownItem(props) {
   );
 }
 
+const showActiveAccount = (account) => (
+  <div style={{ width: '273px' }}>
+   
+    <div style={{
+      fontSize: '14px',
+      lineHeight: '20px',
+      display: 'flex',
+      alignItems: 'center',
+      color: '#638298',
+    }}>
+
+      {account.nickname}
+
+      <span style={{ float: 'right', color: '#212529', flex: 1, textAlign: 'right', whiteSpace: 'nowrap'}}>
+        {shortenAddress(account.address, 6, 4)}
+      </span>
+
+    </div>
+
+  </div>
+);
 
 function _EthAccountDropdown(props) {
   const { accounts, activeAccount } = useContext(DataContext);
@@ -288,8 +311,6 @@ function _EthAccountDropdown(props) {
   useEffect(() => {
     loadAccountBalances();
   });
-
-  const showActiveAccount = (account) => `${account.nickname} ${shortenAddress(account.address, 6, 4)}`;
 
   const handleToggle = (newValue, event, {source}) => {
     if (source === 'select') { return; }
