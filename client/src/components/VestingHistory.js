@@ -35,18 +35,28 @@ const VestingHistory = props => {
           ></div>
         </td>
         <td className="text-nowrap" width="130px">
-          {Number(schedule[date].amount).toLocaleString()} TRU
+          <span style={{fontWeight: 500, fontSize: '16px', color: '#212529'}}>
+            {Number(schedule[date].amount).toLocaleString()} 
+          </span>
+          <span className="text-muted">
+            &nbsp;
+            TRU
+          </span>
         </td>
         <td className="d-none d-sm-block">
           <span className="text-muted">
             {momentDate < moment.now() ? 'Unlocked' : 'Locked'}
           </span>
         </td>
-        {
-         showStartDate
-         ? <td className="text-right"> {schedule[date].date.slice(0, -10)}</td>
-         : <td className="text-right">Day {schedule[date].day}</td>
-        }
+        <td >
+          <span className="text-muted">
+            {
+             showStartDate
+             ? schedule[date].date.slice(0, -10)
+             : "Day " + schedule[date].day
+            }
+          </span>
+        </td>
       </tr>
     )
   }
@@ -56,7 +66,7 @@ const VestingHistory = props => {
       <h2 className="mb-4">My Unlocking Schedule</h2>
       <hr />
       <div className="table-card">
-        <div className="scrolling-table">
+        <div className="scrolling-table" style={{float: 'left', width: '30%'}}>
           <table className="table mb-0">
             <tbody>
               {data.config.isLocked ? (
