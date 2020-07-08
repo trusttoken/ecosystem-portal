@@ -247,7 +247,7 @@ function EthAccountDropdownItem(props) {
           </Block>
         
           <Block>
-            <div style={{fontSize: '12px', color: '#638298'}}>
+            <div style={{fontSize: '12px', color: '#638298', padding: '10px 0px 10px 0px'}}>
               {account.address}
             </div>
           </Block>
