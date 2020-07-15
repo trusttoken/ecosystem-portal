@@ -4,7 +4,6 @@ import get from 'lodash.get'
 import styled from 'styled-components';
 
 import { apiUrl } from '@/constants'
-import agent from '@/utils/agent'
 import ThemeToggle from '@/components/ThemeToggle'
 import { EthAccountDropdown } from '@/components/EthAccountDropdown';
 
@@ -28,7 +27,8 @@ const AccountActions = props => {
   //}
 
   const handleLogout = async () => {
-    await agent.post(`${apiUrl}/api/logout`)
+    // TODO: disconnect from MetaMask?
+    //await agent.post(`${apiUrl}/api/logout`)
     setRedirectTo('/')
   }
 

@@ -1,6 +1,5 @@
 import { ethers, utils as ethUtils } from 'ethers';
 
-import { magic } from '@/lib/magic';
 import { getEthNetwork } from '@/lib/eth';
 import { TRUSTTOKEN_CONTRACT_ADDRESSES } from '@/constants/contracts';
 
@@ -24,27 +23,19 @@ const EthService = {
   enableTrueReward,
   disableTrueReward,
   depositStakedToken,
-  getMagicLinkWalletAddress,
-  getMagicLinkWalletTrustTokenBalance,
+  getTrustTokenBalance,
   enableMetamask,
 };
 
-async function getMagicLinkWalletAddress() {
-  const magicProvider = new ethers.providers.Web3Provider(magic.rpcProvider);
-  const magicSigner = magicProvider.getSigner();
-  const magicAddress = await magicSigner.getAddress();
-  return magicAddress;
-}
-
-async function getMagicLinkWalletTrustTokenBalance(address) {
+async function getTrustTokenBalance(address) {
   const network = getEthNetwork();
   //console.log(`checking TRU balance of address ${address} on ${network}`);
   const trustTokenContractAddress = TRUSTTOKEN_CONTRACT_ADDRESSES[network];
 
-  const magicProvider = new ethers.providers.Web3Provider(magic.rpcProvider);
-  const magicSigner = magicProvider.getSigner();
+  const provider = new ethers.providers.Web3Provider(window.web3.currentProvider);
+  const signer = provider.getSigner();
 
-  const TrustTokenContract = new ethers.Contract(trustTokenContractAddress, TrustTokenControllerAbi, magicSigner);
+  const TrustTokenContract = new ethers.Contract(trustTokenContractAddress, TrustTokenControllerAbi, signer);
   const trustTokenBalance = await TrustTokenContract.balanceOf(address);
   let balance = trustTokenBalance.toString();
   console.log(`TRU balance of address ${address} on ${network} is ${balance}`);
@@ -149,19 +140,6 @@ async function initMetamask() {
 }
 
 async function init(type) {
-  if (type === 'magic') {
-    const provider = new ethers.providers.Web3Provider(magic.rpcProvider);
-    const signer = provider.getSigner();
-    EthService.web3Provider = provider;
-    const address = await signer.getAddress();
-    console.log(address);
-    createTokenContracts();
-
-    const trustTokenBalance = await EthService.TrustTokenContract.balanceOf(address);
-    console.log(trustTokenBalance.toString());
-    console.log(trustTokenBalance.toString() / 100000000);
-    return;
-  }
   await initMetamask();
 }
 

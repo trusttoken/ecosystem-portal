@@ -1,5 +1,7 @@
-import agent from '@/utils/agent'
-import { apiUrl } from '@/constants'
+
+const moment = require('moment')
+
+const { unlockDate, lockupBonusRate, earlyLockupBonusRate, earlyLockupsEnabledUntil } = require('./configuration');
 
 export const FETCH_CONFIG_PENDING = 'FETCH_CONFIG_PENDING'
 export const FETCH_CONFIG_SUCCESS = 'FETCH_CONFIG_SUCCESS'
@@ -26,15 +28,29 @@ function fetchConfigError(error) {
 }
 
 export function fetchConfig() {
+  console.log("::: fetchConfig");
+
   return dispatch => {
+    console.log("::: fetchConfig BEGIN");
+
     dispatch(fetchConfigPending())
 
-    agent
-      .get(`${apiUrl}/api/config`)
-      .then(response => dispatch(fetchConfigSuccess(response.body)))
-      .catch(error => {
-        dispatch(fetchConfigError(error))
-        throw error
-      })
+    const cfg = {
+      lockupBonusRate,
+      earlyLockupBonusRate,
+      lockupsEnabled: true, // getLockupsEnabled(),
+      earlyLockupsEnabledUntil,
+      earlyLockupsEnabled: true, // getEarlyLockupsEnabled(),
+      unlockDate: unlockDate,  // TODO: retrieve from contract?
+      isLocked: moment() < moment(unlockDate),
+      otcRequestEnabled: true, // ??? getOtcRequestEnabled()
+    };
+
+    console.log("::: fetchConfig: cfg: " + JSON.stringify(cfg));
+
+    dispatch(fetchConfigSuccess(cfg));
+    // TODO: in case of errors:
+    // dispatch(fetchConfigError(error))
+    console.log("::: fetchConfig END");
   }
 }

@@ -1,5 +1,3 @@
-import agent from '@/utils/agent'
-import { apiUrl } from '@/constants'
 import { EthService } from '@/contracts/EthService';
 
 export const ADD_ACCOUNT_PENDING = 'ADD_ACCOUNT_PENDING'
@@ -94,106 +92,81 @@ function fetchAccountsError(error) {
 }
 
 export function addAccount(account) {
+  console.log("::: addAccount " + JSON.stringify(account));
+
   return dispatch => {
-    dispatch(addAccountPending())
+    dispatch(addAccountPending());
 
-    return agent
-      .post(`${apiUrl}/api/accounts`)
-      .send(account)
-      .then(response => {
-          const newAccount = response.body;
+    console.log("Adding account: " + JSON.stringify(account));
 
-          console.log("Added account: " + JSON.stringify(newAccount))
+    EthService
+      .getTrustTokenBalance(account.address)
+      .then(balance => {
+        account.balance = balance;
+        console.log("Account " + JSON.stringify(account));
 
-          EthService
-            .getMagicLinkWalletTrustTokenBalance(newAccount.address)
-            .then(balance => {
-              newAccount.balance = balance;
-              dispatch(addAccountSuccess(newAccount));
-              // Once we add an account we automatically select it / make it active.
-              dispatch(selectAccountSuccess(newAccount));
-            })
-            .catch(error => {
-                console.log("Account " + account.address + " added but failed to retrieve balance: " + JSON.stringify(error));
-            })
+        dispatch(addAccountSuccess(account));
+        // Once we add an account we automatically select it / make it active.
+        dispatch(selectAccountSuccess(account));
+
+        console.log("Adding account " + JSON.stringify(account + " SUCCESSFUL!"));
       })
       .catch(error => {
-        dispatch(addAccountError(error))
-        throw error
+        console.log("Account " + account.address + " added but failed to retrieve balance: " + JSON.stringify(error));
       })
   }
 }
 
 export function deleteAccount(id) {
   return dispatch => {
-    dispatch(deleteAccountPending())
-
-    return agent
-      .delete(`${apiUrl}/api/accounts/${id}`)
-      .then(() => dispatch(deleteAccountSuccess(id)))
-      .catch(error => {
-        dispatch(deleteAccountError(error))
-        throw error
-      })
+    // TODO: Do we need a function to delete accounts?
+    dispatch(deleteAccountPending());
+    dispatch(deleteAccountSuccess(id));
   }
 }
 
 export function fetchAccounts() {
+  console.log("::: fetchAccounts ");
   return dispatch => {
-    dispatch(fetchAccountsPending())
-    return agent
-      .get(`${apiUrl}/api/accounts`)
-      .then(response => {
-        if (response.body.length === 0) {
-          console.log("Adding Email Wallet...");
-          EthService.getMagicLinkWalletAddress()
-            .then((magicLinkWalletAddress) => {
-              const magicLinkAccount = {
-                nickname: 'Email Wallet',
-                address: magicLinkWalletAddress,
-              };
-              agent.post(`${apiUrl}/api/accounts`)
-                .send(magicLinkAccount)
-                .then(response => {
-                  console.log("Successfully added Email Wallet:" + JSON.stringify(response));
-                  const newAccount = response.body;
-                  EthService
-                    .getMagicLinkWalletTrustTokenBalance(newAccount.address)
-                    .then(balance => {
-                      newAccount.balance = balance;
-                      dispatch(selectAccountSuccess(newAccount));
-                      dispatch(fetchAccountsSuccess([newAccount]));
-                    });
-                })
-                .catch(error => {
-                  console.log("Error adding Email Account:" + JSON.stringify(error));
-                });
-            });
+    dispatch(fetchAccountsPending());
+
+    if (! EthService.state.metamaskInstalled) {
+      EthService.enableMetamask()
+      .then(enableRes => {
+        if (enableRes.code === 4001) {
+          console.log("MetaMask NOT enabled.");
+          // TODO: dispatch error
+          
         } else {
-          const accounts = uniqueAccounts(response.body);
-          // Fetch balance of the first account, so we can show it immediately.
-          const selectedAccount = accounts[0];
-          EthService
-            .getMagicLinkWalletTrustTokenBalance(selectedAccount.address)
-            .then(balance => {
-              selectedAccount.balance = balance;
-              dispatch(selectAccountSuccess(selectedAccount));
-              dispatch(fetchAccountsSuccess(accounts));
-            });
+          console.log("MetaMask enabled!");
         }
-      })
-      .catch(error => {
-        dispatch(fetchAccountsError(error))
-        if (error.status !== 401) {
-          throw error
-        }
-      })
+      });
+    }
+
+    const accounts = window.web3.eth.accounts.map(address => ({address: address, nickname: 'MetaMask Wallet', balance: null}));
+    console.log("fetchAccounts: " + JSON.stringify(accounts));
+    // Fetch balance of the first account, so we can show it immediately.
+    if (accounts.length == 0) {
+        // TODO: handle error condition better.
+        console.log("accounts.length == 0");
+        return;
+    }
+    const selectedAccount = accounts[0];
+    EthService
+      .getTrustTokenBalance(selectedAccount.address)
+      .then(balance => {
+        console.log("fetchAccounts: balance of " + selectedAccount + " " + balance);
+        selectedAccount.balance = balance;
+        dispatch(selectAccountSuccess(selectedAccount));
+        dispatch(fetchAccountsSuccess(accounts));
+      });
+    console.log("::: fetchAccounts END");
   }
 }
 
 export function selectAccount(account) {
   return dispatch => {
-    dispatch(selectAccountSuccess(account))
+    dispatch(selectAccountSuccess(account));
   }
 }
 

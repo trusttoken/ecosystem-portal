@@ -3,7 +3,6 @@ import { Redirect } from 'react-router-dom'
 
 import { apiUrl } from '@/constants'
 import { getNextOnboardingPage } from '@/utils'
-import agent from '@/utils/agent'
 
 const HandleLogin = props => {
   const [redirectTo, setRedirectTo] = useState(null)
@@ -18,6 +17,8 @@ const HandleLogin = props => {
   }, [])
 
   const handleLoginToken = async token => {
+    console.log("::: handleLoginToken");
+    /*
     let response
     try {
       response = await agent
@@ -31,8 +32,10 @@ const HandleLogin = props => {
       }
       return
     }
+    */
 
-    const nextOnboardingPage = getNextOnboardingPage(response.body)
+    let user; // TODO: get the user?
+    const nextOnboardingPage = getNextOnboardingPage(user);
 
     let redirectTo
     if (nextOnboardingPage === '/terms') {

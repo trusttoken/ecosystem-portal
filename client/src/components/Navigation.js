@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import { Redirect } from 'react-router-dom'
 
 import { apiUrl } from '@/constants'
-import agent from '@/utils/agent'
 import NavLink from '@/components/NavLink'
 import Earn from '@/assets/earn-icon.svg'
 import Dashboard from '@/assets/dashboard-icon.svg'
@@ -18,7 +17,7 @@ const Navigation = props => {
   const [redirectTo, setRedirectTo] = useState(null)
 
   const handleLogout = async () => {
-    await agent.post(`${apiUrl}/api/logout`)
+    //await agent.post(`${apiUrl}/api/logout`)
     setRedirectTo('/')
   }
 

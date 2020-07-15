@@ -1,5 +1,3 @@
-import agent from '@/utils/agent'
-import { apiUrl } from '@/constants'
 
 export const SUBMIT_OTC_REQUEST_PENDING = 'SUBMIT_OTC_REQUEST_PENDING'
 export const SUBMIT_OTC_REQUEST_SUCCESS = 'SUBMIT_OTC_REQUEST_SUCCESS'
@@ -26,15 +24,16 @@ function submitOtcRequestError(error) {
 
 export function submitOtcRequest(lockup) {
   return dispatch => {
-    dispatch(submitOtcRequestPending())
+    dispatch(submitOtcRequestPending());
+    dispatch(submitOtcRequestSuccess());
 
-    return agent
-      .post(`${apiUrl}/api/otc`)
-      .send(lockup)
-      .then(() => dispatch(submitOtcRequestSuccess()))
-      .catch(error => {
-        dispatch(submitOtcRequestError(error))
-        throw error
-      })
+    //return agent
+    //  .post(`${apiUrl}/api/otc`)
+    //  .send(lockup)
+    //  .then(() => dispatch(submitOtcRequestSuccess()))
+    //  .catch(error => {
+    //    dispatch(submitOtcRequestError(error))
+    //    throw error
+    //  })
   }
 }

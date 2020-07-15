@@ -303,7 +303,7 @@ function _EthAccountDropdown(props) {
 
   const loadAccountBalances = async () => {
     for (let i = 0; i < accounts.length; i++) {
-      accounts[i].balance = await EthService.getMagicLinkWalletTrustTokenBalance(accounts[i].address);
+      accounts[i].balance = await EthService.getTrustTokenBalance(accounts[i].address);
     }
     setBalancesLoading(false);
   };

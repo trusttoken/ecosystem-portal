@@ -3,7 +3,6 @@ import { Redirect } from 'react-router-dom'
 
 import { formInput, formFeedback } from '@/utils/formHelpers'
 import { apiUrl } from '@/constants'
-import agent from '@/utils/agent'
 
 class Otp extends Component {
   state = {
@@ -15,6 +14,8 @@ class Otp extends Component {
 
   handleVerifyOtpCode = async () => {
     this.setState({ loading: true })
+    /*
+ 
     try {
       await agent
         .post(`${apiUrl}/api/verify_totp`)
@@ -23,6 +24,7 @@ class Otp extends Component {
       this.setState({ loading: false, otpCodeError: 'Invalid OTP code.' })
       return
     }
+    */
 
     this.setState({ loading: false, redirectToDashboard: true })
   }

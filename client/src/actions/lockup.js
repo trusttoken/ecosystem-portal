@@ -1,5 +1,3 @@
-import agent from '@/utils/agent'
-import { apiUrl } from '@/constants'
 
 export const ADD_LOCKUP_PENDING = 'ADD_LOCKUP_PENDING'
 export const ADD_LOCKUP_SUCCESS = 'ADD_LOCKUP_SUCCESS'
@@ -71,48 +69,75 @@ function fetchLockupsError(error) {
   }
 }
 
+
+const sampleLockup = {
+  "amount": 100000000000,
+  "bonus_rate": 0.1,
+  "confirmed": true,
+  "created_at": "2020-06-02 18:29:38.997429+00",
+  "data": null,
+  "end": "2022-06-02 18:29:38.997429+00",
+  "id": 1,
+  "start": "2020-06-02 18:29:38.997429+00",
+  "updated_at": "2020-06-02 18:29:38.997429+00",
+  "user_id": 1
+};
+
+
 export function addLockup(lockup) {
   return dispatch => {
-    dispatch(addLockupPending())
+    dispatch(addLockupPending());
+    dispatch(addLockupSuccess(sampleLockup));
 
-    return agent
-      .post(`${apiUrl}/api/lockups`)
-      .send(lockup)
-      .then(response => dispatch(addLockupSuccess(response.body)))
-      .catch(error => {
-        dispatch(addLockupError(error))
-        throw error
-      })
+    //return agent
+    //  .post(`${apiUrl}/api/lockups`)
+    //  .send(lockup)
+    //  .then(response => dispatch(addLockupSuccess(response.body)))
+    //  .catch(error => {
+    //    dispatch(addLockupError(error))
+    //    throw error
+    //  })
   }
 }
 
-export function fetchLockups() {
-  return dispatch => {
-    dispatch(fetchLockupsPending())
 
-    agent
-      .get(`${apiUrl}/api/lockups`)
-      .then(response => dispatch(fetchLockupsSuccess(response.body)))
-      .catch(error => {
-        dispatch(fetchLockupsError(error))
-        if (error.status !== 401) {
-          throw error
-        }
-      })
+export function fetchLockups() {
+  console.log("::: fetchLockups");
+
+  return dispatch => {
+    console.log("::: fetchLockups BEGIN");
+
+    dispatch(fetchLockupsPending());
+    dispatch(fetchLockupsSuccess([sampleLockup]));
+
+    console.log("::: fetchLockups END");
+
+    //agent
+    //  .get(`${apiUrl}/api/lockups`)
+    //  .then(response => dispatch(fetchLockupsSuccess(response.body)))
+    //  .catch(error => {
+    //    dispatch(fetchLockupsError(error))
+    //    if (error.status !== 401) {
+    //      throw error
+    //    }
+    //  })
   }
 }
 
 export function confirmLockup(id, token) {
   return dispatch => {
     dispatch(confirmLockupPending())
+    // TODO:
+    const data = sampleLockup;
+    dispatch(confirmLockupSuccess(data));
 
-    return agent
-      .post(`${apiUrl}/api/lockups/${id}`)
-      .send({ token })
-      .then(response => dispatch(confirmLockupSuccess(response.body)))
-      .catch(error => {
-        dispatch(confirmLockupError(error))
-        throw error
-      })
+    //return agent
+    //  .post(`${apiUrl}/api/lockups/${id}`)
+    //  .send({ token })
+    //  .then(response => dispatch(confirmLockupSuccess(response.body)))
+    //  .catch(error => {
+    //    dispatch(confirmLockupError(error))
+    //    throw error
+    //  })
   }
 }
