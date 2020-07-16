@@ -33,10 +33,6 @@ const Dashboard = props => {
   const displayFullWidthLockupCta = displayLockupCta && hasLockups
   const isEarlyLockup = displayBonusModal === 'early'
 
-  // React.useEffect(() => {
-  //   EthService.init('magic');
-  // }, []);
-
   const renderModals = () => (
     <>
       {displayBonusModal && (

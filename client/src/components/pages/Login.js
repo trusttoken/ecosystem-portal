@@ -1,13 +1,52 @@
-import React, { Component } from 'react'
-import { Redirect } from 'react-router-dom'
+import React, { Component } from 'react';
+import { Redirect } from 'react-router-dom';
 import { EthService } from '@/contracts/EthService';
-import MetaMaskLogo from '@/assets/metamask_small.png';
+import MetaMaskLogo from '@/assets/metamask_medium.png';
+import BlueRightArrow from '@/assets/blue-right-arrow.png';
 
-import { formInput, formFeedback } from '@/utils/formHelpers'
-import { apiUrl } from '@/constants'
+import { formInput, formFeedback } from '@/utils/formHelpers';
 
-import { addAccount } from '@/actions/account'
+import { addAccount } from '@/actions/account';
+import { Link } from 'react-router-dom';
 
+function ConnectToMetaMask(props) {
+  return (
+            <div
+              style={{
+                cursor: 'pointer',
+                background: '#FFFFFF',
+                boxSizing: 'border-box',
+                borderRadius: '2px',
+                padding: '50px 120px 50px 120px',
+              }}
+              onClick={e => props.connect()}
+            >
+                  <div style={{borderRadius: '2px', height: "50px"}}>
+                    <span style={{
+                                    fontStyle: 'normal',
+                                    fontWeight: '500',
+                                    fontSize: '18px',
+                                    lineHeight: '26px',
+                                    color: '#061439',
+                                    verticalAlign: 'middle',
+                                    float: 'left',
+                               }}
+                    >
+                      <img src={MetaMaskLogo} />
+                      MetaMask
+                    </span>
+                    <span style={{
+                                    verticalAlign: 'middle',
+                                    float: 'right',
+                                    marginTop: "10px"
+                                }}
+                    >
+                      <img src={BlueRightArrow} />
+                    </span>
+                  </div>
+            </div>
+  )
+}
 
 class Login extends Component {
   state = {
@@ -16,13 +55,13 @@ class Login extends Component {
     testMessage: ''
   }
 
-
   render() {
     const input = formInput(
       this.state,
       state => this.setState(state),
       'text-center'
     )
+
     const Feedback = formFeedback(this.state)
 
     if (this.state.redirectTo) {
@@ -50,26 +89,44 @@ class Login extends Component {
     return (
       <>
         <div className="action-card">
-          <h1>Sign In</h1>
-            <p>Login with MetaMask.</p>
-            <img src={MetaMaskLogo} />
-          <form>
-            <button
-              type="submit"
-              className="btn btn-primary btn-lg mt-5"
-              onClick={loginWithMetaMask}
-              disabled={this.state.loading}
-            >
-              {this.state.loading ? (
-                <>
-                  <span className="spinner-grow spinner-grow-sm"></span>
-                  Loading...
-                </>
-              ) : (
-                <span>Continue</span>
-              )}
-            </button>
-          </form>
+
+          <div style={{
+                        fontWeight: '500',
+                        fontSize: '22px',
+                        lineHeight: '32px',
+                        textAlign: 'center',
+                        color: '#061439',
+                     }}
+          >
+            Connect wallet
+          </div>
+          <div style={{
+                        fontStyle: 'normal',
+                        fontWeight: 'normal',
+                        fontSize: '16px',
+                        lineHeight: '24px',
+                        textAlign: 'center',
+                        color: '#7A859E',
+                     }}
+          >
+            To start using TrueRewards
+          </div>
+
+          <ConnectToMetaMask connect={loginWithMetaMask} /> 
+
+          <div style={{
+                        fontStyle: 'normal',
+                        fontWeight: 'normal',
+                        fontSize: '14px',
+                        lineHeight: '20px',
+                        textAlign: 'center',
+                        color: '#7A859E',
+                     }}
+          >
+            By connecting, I accept TrustToken’s 
+            <br/>
+            <Link to="/terms-of-use"> Terms of Service</Link>
+          </div>
         </div>
       </>
     )
