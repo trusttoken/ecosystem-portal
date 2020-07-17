@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import { EthService } from '@/contracts/EthService';
 import MetaMaskLogo from '@/assets/metamask_medium.png';
+import TrustTokenLogo from '@/assets/trust-token-round-logo.png';
 import BlueRightArrow from '@/assets/blue-right-arrow.png';
 
 import { formInput, formFeedback } from '@/utils/formHelpers';
@@ -17,7 +18,7 @@ function ConnectToMetaMask(props) {
                 background: '#FFFFFF',
                 boxSizing: 'border-box',
                 borderRadius: '2px',
-                padding: '50px 120px 50px 120px',
+                padding: '60px 10px 60px 10px',
               }}
               onClick={e => props.connect()}
             >
@@ -88,7 +89,18 @@ class Login extends Component {
 
     return (
       <>
-        <div className="action-card">
+        <div className="action-card" style={{
+                                            position: 'absolute',
+                                            width: '440px',
+                                            height: '463px',
+                                            left: '500px',
+                                            top: '140px',
+                                            background: '#FFFFFF',
+                                            borderRadius: '8px',
+                                           }}
+        >
+
+          <img src={TrustTokenLogo} width='80px' height='80px' />
 
           <div style={{
                         fontWeight: '500',
