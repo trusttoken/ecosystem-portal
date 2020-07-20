@@ -1,14 +1,13 @@
 import React, { Component } from 'react';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 import { EthService } from '@/contracts/EthService';
+
+
 import MetaMaskLogo from '@/assets/metamask_medium.png';
 import TrustTokenLogo from '@/assets/trust-token-round-logo.png';
 import BlueRightArrow from '@/assets/blue-right-arrow.png';
 
 import { formInput, formFeedback } from '@/utils/formHelpers';
-
-import { addAccount } from '@/actions/account';
-import { Link } from 'react-router-dom';
 
 function ConnectToMetaMask(props) {
   return (
@@ -97,6 +96,8 @@ class Login extends Component {
                                             top: '140px',
                                             background: '#FFFFFF',
                                             borderRadius: '8px',
+                                            border: '1px',
+                                            borderColor: 'red',
                                            }}
         >
 
@@ -140,6 +141,7 @@ class Login extends Component {
             <Link to="/terms-of-use"> Terms of Service</Link>
           </div>
         </div>
+
       </>
     )
   }

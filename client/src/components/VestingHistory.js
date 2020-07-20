@@ -63,7 +63,7 @@ const VestingHistory = props => {
 
   return (
     <>
-      <h2 className="mb-4">My Unlocking Schedule</h2>
+      <h2 className="mb-4">Unlocking Schedule</h2>
       <hr />
       <div className="table-card">
         <div className="scrolling-table" style={{float: 'left', width: '30%'}}>

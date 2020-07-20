@@ -69,14 +69,6 @@ const Dashboard = props => {
     <>
       {renderModals()}
       <div className="row small-gutter">
-        <div className={`${data.config.isLocked ? 'col-12' : 'col'} mb-10`}>
-          <BalanceCard
-            onDisplayBonusModal={() => setDisplayBonusModal(true)}
-            onDisplayWithdrawModal={() => setDisplayWithdrawModal(true)}
-          />
-        </div>
-      </div>
-      <div className="row small-gutter">
         <div className="col col-xl-12 mb-10">
           <VestingCard user={props.user} isEmployee={isEmployee} />
         </div>
