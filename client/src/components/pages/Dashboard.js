@@ -15,7 +15,6 @@ import BonusCta from '@/components/BonusCta'
 import WithdrawModal from '@/components/WithdrawModal'
 import OtcRequestModal from '@/components/OtcRequestModal'
 import { EthService } from '@/contracts/EthService';
-import Footer from '@/components/Footer';
 
 
 const Dashboard = props => {
@@ -73,9 +72,6 @@ const Dashboard = props => {
           <VestingCard user={props.user} isEmployee={isEmployee} />
         </div>
       </div>
-
-      <Footer/>
-
     </>
   )
 }

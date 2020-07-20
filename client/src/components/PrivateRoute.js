@@ -9,8 +9,8 @@ import { getUser, getIsLoading } from '@/reducers/user'
 import { getSessionExpired } from '@/reducers/session'
 import { setSessionExpired } from '@/actions/session'
 
+import Footer from '@/components/Footer';
 import AccountActions from '@/components/AccountActions'
-import Navigation from '@/components/Navigation'
 import Modal from '@/components/Modal'
 import { ThemeProvider } from '@/providers/theme'
 import { DataProvider } from '@/providers/data'
@@ -64,6 +64,7 @@ const PrivateRoute = ({
                         </DataProvider>
                       </div>
                     </div>
+                    <Footer/>
                   </ThemeProvider>
                 </>
               )}
