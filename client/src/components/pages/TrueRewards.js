@@ -72,6 +72,31 @@ const SwitchInner = styled.div`
   position: relative;
 `;
 
+const TableHeader = styled.div`
+  display: block;
+  height: 40px;
+  background: #FFFFFF;
+  border-radius: 8px;
+  font-size: 14px;
+  line-height: 20px;
+  color: #7A859E;
+  clear: right;
+`;
+
+const ProjectBox = styled.div`
+  height: 80px;
+  background: #FFFFFF;
+  border: 1px solid #E7EAF3;
+  box-sizing: border-box;
+  box-shadow: 0px 24px 60px rgba(2, 10, 33, 0.04);
+  border-radius: 8px;
+  td {
+      //text-align: center;
+      vertical-align: middle;
+  }
+`;
+
+
 const SwitchKnob = styled.div`
   position: relative;
   left: 3px;
@@ -126,6 +151,44 @@ function BalanceBox({icon, description, balance}) {
   </div>
   );
 }
+
+
+function Project({project, annualRewards, balance, rewardsEarned, rewards}) {
+  return (
+    <ProjectBox>
+      <table style={{width: '100%', height: '100%'}}>
+        <colgroup>
+          <col span="1" style={{width: '20%'}} />
+          <col span="1" style={{width: '20%'}} />
+          <col span="1" style={{width: '20%'}} />
+          <col span="1" style={{width: '20%'}} />
+          <col span="1" style={{width: '20%'}} />
+        </colgroup>
+
+        <tbody>
+          <tr>
+            <td>
+              {project}
+            </td>
+            <td>
+              {annualRewards}
+            </td>
+            <td>
+              {balance}
+            </td>
+            <td>
+              {rewardsEarned}
+            </td>
+            <td>
+              {rewards}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </ProjectBox>
+  );
+}
+
 
 function TrueRewards(props) {
   const { history } = props;
@@ -219,18 +282,62 @@ function TrueRewards(props) {
         }
       </Container>
 
-      <div style={{
+      <div style={{ display: 'block',
+                 }}
+      >
+        <div style={{display: 'flex',
                     float: 'right',
                     padding: '40px 0 10px 0',
                     fontSize: '14px',
                     lineHeight: '20px',
                     color: '#1253FA'
-                 }}
-      >
-        <a href="">
-          What happens when I enable rewards?
-        </a>
+                   }}
+        >
+          <a href="">
+            What happens when I enable rewards?
+          </a>
+        </div>
       </div>
+
+    <TableHeader>
+      <table style={{width: '100%'}}>
+        <colgroup>
+          <col span="1" style={{width: '20%'}} />
+          <col span="1" style={{width: '20%'}} />
+          <col span="1" style={{width: '20%'}} />
+          <col span="1" style={{width: '20%'}} />
+          <col span="1" style={{width: '20%'}} />
+        </colgroup>
+        <tbody>
+          <tr>
+            <td>
+              Project
+            </td>
+            <td>
+              Annual rewards
+            </td>
+            <td>
+              Balance
+            </td>
+            <td>
+              Rewards earned
+            </td>
+            <td>
+              Rewards
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </TableHeader>
+
+
+    <Project
+      project=<div>AAVE</div>
+      annualRewards="0.75%"
+      balance="0.0"
+      rewardsEarned="0.0"
+      rewards="Enable"
+    />
 
     </div>
   );
