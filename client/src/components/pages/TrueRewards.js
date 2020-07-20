@@ -4,11 +4,20 @@ import styled from 'styled-components';
 import { EthService } from '@/contracts/EthService';
 import TokenStackIcon from '@/assets/token-stack.svg';
 import ClockStackIcon from '@/assets/clock-stack.svg';
+import CardIcon from '@/assets/card.png';
 
 const Container = styled.div`
-  max-width: 1128px;
-  padding: 0 156px;
+  height: 118px;
+  left: 156px;
+  top: 100px;
+  background: #FFFFFF;
+  border: 1px solid #E7EAF3;
+  box-sizing: border-box;
+  border-radius: 8px;
+
   margin: 0 auto;
+
+  vertical-align: center;
 `;
 
 const Box = styled.div`
@@ -97,6 +106,27 @@ function Switch(props) {
   );
 }
 
+function BalanceBox({icon, description, balance}) {
+  return (
+  <div style={{display: 'inline-block', padding: '35px 0 0 50px'}}>
+
+    <div style={{display: 'flex'}}>
+
+      <div style={{width: '60px'}}>
+        {icon}
+      </div>
+
+      <div style={{flexGrow: 1, display: 'block'}}>
+        <Label> {description} </Label>
+        <Amount> 0.0 <Ticker> TUSD </Ticker> </Amount>
+      </div>
+
+    </div>
+
+  </div>
+  );
+}
+
 function TrueRewards(props) {
   const { history } = props;
 
@@ -127,12 +157,39 @@ function TrueRewards(props) {
   return (
     <div>
       <Container>
-        {!metamaskAccounts &&
-          <div onClick={connectWallet}>
-            Connect Wallet
+        <BalanceBox icon=<TokenStackIcon/> description="TrueUSD balance" balance={TUSDBalance} />
+        <BalanceBox icon=<ClockStackIcon/> description="Total rewards earned" balance={0.0} />
+
+        <div style={{
+                     float: 'right',
+                     padding: '40px'
+                   }}
+        >
+          <div style={{
+                     style: 'flex',
+                     justifyContent: 'center',
+                     alignItems: 'center',
+                     padding: '10px',
+                     height: '32px',
+                     fontSize: '14px',
+                     lineHeight: '20px',
+                     color: '#FFFFFF',
+                     background: '#1253FA',
+                     borderRadius: '2px',
+                     }}
+          >
+            <a href="https://www.trusttoken.com/trueusd"
+               style={{ color: '#FFFFFF' }}
+            >
+                <img src={CardIcon} />
+                &nbsp;
+                Purchase TUSD
+            </a>
           </div>
-        }
-        {metamaskAccounts &&
+        </div>
+
+        
+        { /* metamaskAccounts &&
           <div>
             <Box>
               <BoxInner>
@@ -158,8 +215,23 @@ function TrueRewards(props) {
               <Amount>4.0%</Amount>
             </Box>
           </div>
+        */
         }
       </Container>
+
+      <div style={{
+                    float: 'right',
+                    padding: '40px 0 10px 0',
+                    fontSize: '14px',
+                    lineHeight: '20px',
+                    color: '#1253FA'
+                 }}
+      >
+        <a href="">
+          What happens when I enable rewards?
+        </a>
+      </div>
+
     </div>
   );
 }
