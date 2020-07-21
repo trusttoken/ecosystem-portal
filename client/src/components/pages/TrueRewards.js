@@ -72,7 +72,7 @@ const SwitchInner = styled.div`
   position: relative;
 `;
 
-const TableHeader = styled.div`
+const HeaderBox = styled.div`
   display: block;
   height: 40px;
   background: #FFFFFF;
@@ -96,6 +96,111 @@ const ProjectBox = styled.div`
   }
 `;
 
+
+const FutureOpportunityBox = styled.div`
+  height: 70px;
+
+  /* N100 - Athens */
+
+  background: #F6F8FC;
+  /* N200 - Porcelain */
+
+  border: 1px dashed #E6EBF2;
+  box-sizing: border-box;
+  border-radius: 6px;
+
+  color: #9BAABF;
+`;
+
+
+const GreenBox = styled.div`
+  width: 67px;
+  height: 32px;
+
+  /* Mountain Meadow_light */
+
+  background: #E0F9F0;
+  border-radius: 6px;
+
+  /* 0.75% */
+
+  /* Body 1 / Regular 18px */
+
+  font-family: Inter;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 26px;
+  /* identical to box height, or 144% */
+
+  display: flex;
+  align-items: center;
+
+  /* Mountain Meadow */
+
+  color: #0FD28C;
+`;
+
+const WhiteBox = styled.div`
+  /* Rectangle 136 */
+
+  width: 53px;
+  height: 32px;
+
+  /* N0 - White */
+
+  background: #FFFFFF;
+  border-radius: 6px;
+
+  /* Body 2 / Regular 16px */
+
+  font-family: Inter;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 24px;
+  /* identical to box height, or 150% */
+
+  display: flex;
+  align-items: center;
+`;
+
+const GrayDot = styled.div`
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #E0E9EE;
+`;
+
+
+const RewardInfoBox = styled.div`
+  height: 52px;
+  width: 100%;
+
+  /* N0 - White */
+
+  background: #FFFFFF;
+  /* N200 - Porcelain */
+
+  border: 1px solid #E6EBF2;
+  box-sizing: border-box;
+  border-radius: 6px;
+
+  /* Body 2 / Regular 16px */
+
+  font-family: Inter;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 24px;
+  /* identical to box height, or 150% */
+
+  /* N600 - Big Stone */
+
+  color: #001425;
+  padding: 20px;
+`;
 
 const SwitchKnob = styled.div`
   position: relative;
@@ -153,9 +258,19 @@ function BalanceBox({icon, description, balance}) {
 }
 
 
-function Project({project, annualRewards, balance, rewardsEarned, rewards}) {
+function Cell({content}) {
   return (
-    <ProjectBox>
+    <td>
+      <div style={{padding: '0px 10px 0px 10px'}}>
+        {content}
+      </div>
+    </td>
+  );
+}
+
+
+function Row({project, annualRewards, balance, rewardsEarned, rewards}) {
+  return (
       <table style={{width: '100%', height: '100%'}}>
         <colgroup>
           <col span="1" style={{width: '20%'}} />
@@ -167,25 +282,45 @@ function Project({project, annualRewards, balance, rewardsEarned, rewards}) {
 
         <tbody>
           <tr>
+            <Cell content={project} />
+            <Cell content={annualRewards} />
+            <Cell content={balance} />
+            <Cell content={rewardsEarned} />
             <td>
-              {project}
-            </td>
-            <td>
-              {annualRewards}
-            </td>
-            <td>
-              {balance}
-            </td>
-            <td>
-              {rewardsEarned}
-            </td>
-            <td>
-              {rewards}
+              <div style={{textAlign: 'right'}} >
+                {rewards}
+              </div>
             </td>
           </tr>
         </tbody>
       </table>
+  );
+}
+
+
+function Project({project, annualRewards, balance, rewardsEarned, rewards}) {
+  return (
+    <ProjectBox>
+      <Row project={project} annualRewards={annualRewards} balance={balance} rewardsEarned={rewardsEarned} rewards={rewards} />
     </ProjectBox>
+  );
+}
+
+function FutureOpportunity({project, annualRewards, balance, rewardsEarned, rewards}) {
+  return (
+    <FutureOpportunityBox>
+      <Row project={project} annualRewards={annualRewards} balance={balance} rewardsEarned={rewardsEarned} rewards={rewards} />
+    </FutureOpportunityBox>
+  );
+}
+
+function Link({href, text}) {
+  return (
+    <div style={{ fontSize: '14px', lineHeight: '20px', color: '#1253FA' }} >
+      <a href={href}>
+        {text}
+      </a>
+    </div>
   );
 }
 
@@ -299,45 +434,105 @@ function TrueRewards(props) {
         </div>
       </div>
 
-    <TableHeader>
-      <table style={{width: '100%'}}>
-        <colgroup>
-          <col span="1" style={{width: '20%'}} />
-          <col span="1" style={{width: '20%'}} />
-          <col span="1" style={{width: '20%'}} />
-          <col span="1" style={{width: '20%'}} />
-          <col span="1" style={{width: '20%'}} />
-        </colgroup>
-        <tbody>
-          <tr>
-            <td>
-              Project
-            </td>
-            <td>
-              Annual rewards
-            </td>
-            <td>
-              Balance
-            </td>
-            <td>
-              Rewards earned
-            </td>
-            <td>
-              Rewards
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </TableHeader>
+    <HeaderBox>
+      <Row project="Project" annualRewards="Annual rewards" balance="Balance" rewardsEarned="Rewards earned" rewards="Rewards" />
+    </HeaderBox>
 
+    <div style={{marginTop: '8px'}} />
 
     <Project
-      project=<div>AAVE</div>
-      annualRewards="0.75%"
+      project=<div style={{padding: '10px'}}>
+                <span style={{float: 'left'}}>
+                  <GrayDot/>
+                </span>
+
+                <div style={{padding: '0px 0px 0px 10px'}}>
+                    AAVE
+                    <span style={{float: 'right'}}>
+                      <Link href="" text="Learn more" />
+                    </span>
+                </div>
+
+              </div>
+      annualRewards=<GreenBox>0.75%</GreenBox>
       balance="0.0"
       rewardsEarned="0.0"
-      rewards="Enable"
+      rewards=<div>
+                Enable
+                &nbsp;
+                <div style={{float: 'right'}}> 
+                    <Switch
+                      onEnable={() => EthService.enableTrueReward()}
+                      onDisable={() => EthService.disableTrueReward()}
+                    />
+                </div> 
+              </div>
     />
+
+    <div style={{marginTop: '8px'}} />
+
+    <FutureOpportunity
+      project=<div style={{padding: '10px'}}>
+                <span style={{float: 'left'}}>
+                  <GrayDot/>
+                </span>
+
+                <div style={{padding: '0px 0px 0px 10px'}}>
+                  Future Reward Opportunity
+                </div>
+
+              </div>
+      annualRewards=<WhiteBox>4.0%</WhiteBox>
+      balance="0.0"
+      rewardsEarned="0.0"
+      rewards=<div>
+                Enable
+                &nbsp;
+                <div style={{float: 'right'}}> 
+                    <Switch
+                      onEnable={() => EthService.enableTrueReward()}
+                      onDisable={() => EthService.disableTrueReward()}
+                    />
+                </div> 
+              </div>
+    />
+
+    <div style={{marginTop: '8px'}} />
+
+    <FutureOpportunity
+      project=<div style={{padding: '10px'}}>
+                <span style={{float: 'left'}}>
+                  <GrayDot/>
+                </span>
+
+                <div style={{padding: '0px 0px 0px 10px'}}>
+                  Future Reward Opportunity
+                </div>
+
+              </div>
+      annualRewards=<WhiteBox>4.0%</WhiteBox>
+      balance="0.0"
+      rewardsEarned="0.0"
+      rewards=<div>
+                Enable
+                &nbsp;
+                <div style={{float: 'right'}}> 
+                    <Switch
+                      onEnable={() => EthService.enableTrueReward()}
+                      onDisable={() => EthService.disableTrueReward()}
+                    />
+                </div> 
+              </div>
+    />
+
+    <div style={{marginTop: '40px'}} />
+
+    <RewardInfoBox>
+      More reward opportunities coming soon
+                    <span style={{float: 'right'}}>
+                      <Link href="" text="Learn more" />
+                    </span>
+    </RewardInfoBox>
 
     </div>
   );
