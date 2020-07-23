@@ -66,7 +66,7 @@ const VestingHistory = props => {
       <h2 className="mb-4">Unlocking Schedule</h2>
       <hr />
       <div className="table-card">
-        <div className="scrolling-table" style={{float: 'left', width: '30%'}}>
+        <div style={{width: '100%'}}>
           <table className="table mb-0">
             <tbody>
               {data.config.isLocked ? (
@@ -78,7 +78,22 @@ const VestingHistory = props => {
                   </td>
                 </tr>
               ) : (
-                tableRows
+                  <tr>
+                    <td>
+                      <table className="table mb-0">
+                        <tbody>
+                          {tableRows.splice(0, Math.ceil(tableRows.length / 2))}
+                        </tbody>
+                      </table>
+                    </td>
+                    <td>
+                      <table className="table mb-0">
+                        <tbody>
+                          {tableRows.splice(Math.ceil(tableRows.length / 2) - 2)}
+                        </tbody>
+                      </table>
+                    </td>
+                  </tr>
               )}
             </tbody>
           </table>
