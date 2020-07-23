@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Redirect, Link } from 'react-router-dom';
 import { EthService } from '@/contracts/EthService';
 import styled from 'styled-components';
+import { keyframes } from "styled-components";
 
 import MetaMaskLogo from '@/assets/metamask_medium.png';
 import TrustTokenLogo from '@/assets/trust-token-round-logo.png';
@@ -9,6 +10,23 @@ import BlueRightArrow from '@/assets/blue-right-arrow.png';
 import CircleConfirmConnection from '@/assets/circle-confirm-connection.png';
 
 import { formInput, formFeedback } from '@/utils/formHelpers';
+
+const rotate = keyframes`
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+`;
+
+
+const Rotate = styled.div`
+  display: inline-block;
+  animation: ${rotate} 2s linear infinite;
+`;
+
 
 const WaitingToConnectBox = styled.div`
 /* Waiting to connect ... */
@@ -173,7 +191,9 @@ class Login extends Component {
               this.state.loading
               ? (
                   <div style={{height: "150px", padding: "40px"}}> 
-                    <img src={CircleConfirmConnection} /> 
+                    <Rotate>
+                      <img src={CircleConfirmConnection} /> 
+                    </Rotate>
 
                     <WaitingToConnectBox>
                       Waiting to connect&nbsp;...
