@@ -1,13 +1,38 @@
 import React, { Component } from 'react';
 import { Redirect, Link } from 'react-router-dom';
 import { EthService } from '@/contracts/EthService';
-
+import styled from 'styled-components';
 
 import MetaMaskLogo from '@/assets/metamask_medium.png';
 import TrustTokenLogo from '@/assets/trust-token-round-logo.png';
 import BlueRightArrow from '@/assets/blue-right-arrow.png';
+import CircleConfirmConnection from '@/assets/circle-confirm-connection.png';
 
 import { formInput, formFeedback } from '@/utils/formHelpers';
+
+const WaitingToConnectBox = styled.div`
+/* Waiting to connect ... */
+
+text-align: center;
+height: 18px;
+padding: 10px;
+
+/* Caption / Regular 12px */
+
+font-family: Inter;
+font-style: normal;
+font-weight: normal;
+font-size: 12px;
+line-height: 18px;
+/* identical to box height, or 150% */
+
+text-align: center;
+
+/* N400 - Casper */
+
+color: #9BAABF;
+
+`;
 
 function ConnectToMetaMask(props) {
   return (
@@ -76,6 +101,8 @@ class Login extends Component {
           .then(enableRes => {
             if (enableRes.code === 4001) {
               console.log("MetaMask NOT enabled.");
+            } else if (enableRes.code) {
+              console.log("MetaMask NOT enabled: " + JSON.stringify(enableRes.code) + ", ::: " + JSON.stringify(enableRes));
             } else {
               console.log("MetaMask enabled!");
               this.setState({ loading: false, redirectTo: `/dashboard` });
@@ -111,7 +138,15 @@ class Login extends Component {
                         color: '#061439',
                      }}
           >
-            Connect wallet
+            
+
+            {this.state.loading ? (
+                <>
+                  Confirm connection
+                </>
+              ) : (
+                <span>Connect wallet</span>
+              )}
           </div>
           <div style={{
                         fontStyle: 'normal',
@@ -122,10 +157,31 @@ class Login extends Component {
                         color: '#7A859E',
                      }}
           >
-            To start using TrueRewards
+            {
+              this.state.loading
+              ? ( <span>
+                     Open the extension and give access to the app
+                 </span> )
+              : ( <span>
+                     To start using TrueRewards
+                 </span> )
+            }
+
           </div>
 
-          <ConnectToMetaMask connect={loginWithMetaMask} /> 
+            {
+              this.state.loading
+              ? (
+                  <div style={{height: "150px", padding: "40px"}}> 
+                    <img src={CircleConfirmConnection} /> 
+
+                    <WaitingToConnectBox>
+                      Waiting to connect&nbsp;...
+                    </WaitingToConnectBox>
+                  </div>
+                )
+              : ( <ConnectToMetaMask connect={loginWithMetaMask} /> )
+            }
 
           <div style={{
                         fontStyle: 'normal',
