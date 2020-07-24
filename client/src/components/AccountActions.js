@@ -11,6 +11,8 @@ import DashboardIconGray from '@/assets/dashboard-icon-gray.png';
 
 import RewardsIconBlue from '@/assets/rewards-icon-blue.png';
 import RewardsIconGray from '@/assets/rewards-icon-gray.png';
+import SignIcon from '@/assets/Sign.png';
+import TrustTokenIcon from '@/assets/TrustToken.png';
 
 //import { DataContext } from '@/providers/data';
 
@@ -27,8 +29,15 @@ const AccountActions = props => {
   }
 
   return (
-      <div style={{ color: '#638298' }}>
+      <div style={{ color: '#638298', textAlign: 'center', verticalAlign: 'center'}}>
+
+        <span style={{float: 'left'}}>
+          <img src={SignIcon} />
+          <img src={TrustTokenIcon} />
+        </span>
+
         <span style={{
+                    display: 'inline-block',
                     fontWeight: 'normal',
                     fontSize: '16px',
                     lineHeight: '24px',
