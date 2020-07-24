@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
 import { Redirect, Link } from 'react-router-dom';
 import { EthService } from '@/contracts/EthService';
 import styled from 'styled-components';
@@ -9,7 +9,7 @@ import TrustTokenLogo from '@/assets/trust-token-round-logo.png';
 import BlueRightArrow from '@/assets/blue-right-arrow.png';
 import CircleConfirmConnection from '@/assets/circle-confirm-connection.png';
 
-import { formInput, formFeedback } from '@/utils/formHelpers';
+import Modal from 'react-bootstrap/Modal';
 
 const rotate = keyframes`
   from {
@@ -52,61 +52,147 @@ color: #9BAABF;
 
 `;
 
+
+const ConnectToMetaMaskBox = styled.div`
+  cursor: pointer;
+  background: #FFFFFF;
+  box-sizing: border-box;
+  border-radius: 2px;
+  padding: 60px 10px 60px 10px;
+`;
+
+
+const MetaMaskSpan = styled.span`
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 26px;
+  color: #061439;
+  vertical-align: middle;
+`;
+
+
 function ConnectToMetaMask(props) {
   return (
-            <div
-              style={{
-                cursor: 'pointer',
-                background: '#FFFFFF',
-                boxSizing: 'border-box',
-                borderRadius: '2px',
-                padding: '60px 10px 60px 10px',
-              }}
-              onClick={e => props.connect()}
-            >
-                  <div style={{borderRadius: '2px', height: "50px"}}>
-                    <span style={{
-                                    fontStyle: 'normal',
-                                    fontWeight: '500',
-                                    fontSize: '18px',
-                                    lineHeight: '26px',
-                                    color: '#061439',
-                                    verticalAlign: 'middle',
-                                    float: 'left',
-                               }}
-                    >
-                      <img src={MetaMaskLogo} />
-                      MetaMask
-                    </span>
-                    <span style={{
-                                    verticalAlign: 'middle',
-                                    float: 'right',
-                                    marginTop: "10px"
-                                }}
-                    >
-                      <img src={BlueRightArrow} />
-                    </span>
-                  </div>
-            </div>
+    <ConnectToMetaMaskBox onClick={e => props.connect()}>
+      <div style={{borderRadius: '2px', height: "50px"}}>
+
+        <MetaMaskSpan>
+          <img src={MetaMaskLogo} />
+          MetaMask
+        </MetaMaskSpan>
+
+        <span style={{ verticalAlign: 'middle', float: 'right', marginTop: "10px" }}>
+          <img src={BlueRightArrow} />
+        </span>
+      </div>
+    </ConnectToMetaMaskBox>
   )
 }
+
+
+const ConnectWalletBox = styled.div`
+  background-color: white;
+  padding: 40px 80px;
+  text-align: center;
+  max-width: 685px;
+  margin: 0 auto;
+
+  width: 440px;
+  height: 463px;
+  background: #FFFFFF;
+  border-radius: 8px;
+  border: 1px;
+  border-color: red;
+`;
+
+
+const Title = styled.div`
+  font-weight: 500;
+  font-size: 22px;
+  line-height: 32px;
+  text-align: center;
+  color: #061439;
+`;
+
+
+const Subtitle = styled.div`
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 24px;
+  text-align: center;
+  color: #7A859E;
+`;
+
+
+const Accept = styled.div`
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 20px;
+  text-align: center;
+  color: #7A859E;
+`;
+
+
+function ConnectWallet({loading, loginWithMetaMask}) {
+    return (
+      <Modal.Dialog centered>
+
+        <Modal.Body>
+        <ConnectWalletBox>
+
+          <img src={TrustTokenLogo} width='80px' height='80px' />
+
+          <Title>
+            {loading ? "Confirm connection" : "Connect wallet" }
+          </Title>
+
+          <Subtitle>
+            {
+              loading
+              ? "Open the extension and give access to the app"
+              : "To start using TrueRewards"
+            }
+          </Subtitle>
+
+            {
+              loading
+              ? (
+                  <div style={{height: "150px", padding: "40px"}}> 
+                    <Rotate>
+                      <img src={CircleConfirmConnection} /> 
+                    </Rotate>
+
+                    <WaitingToConnectBox>
+                      Waiting to connect&nbsp;...
+                    </WaitingToConnectBox>
+                  </div>
+                )
+              : ( <ConnectToMetaMask connect={loginWithMetaMask} /> )
+            }
+
+          <Accept>
+            By connecting, I accept TrustToken’s 
+            <br/>
+            <Link to="/terms-of-use"> Terms of Service</Link>
+          </Accept>
+
+        </ConnectWalletBox>
+        </Modal.Body>
+      </Modal.Dialog>
+    )
+};
+
 
 class Login extends Component {
   state = {
     loading: false,
-    redirectTo: null,
-    testMessage: ''
+    redirectTo: null
   }
 
   render() {
-    const input = formInput(
-      this.state,
-      state => this.setState(state),
-      'text-center'
-    )
-
-    const Feedback = formFeedback(this.state)
-
     if (this.state.redirectTo) {
       return <Redirect push to={this.state.redirectTo} />
     };
@@ -131,95 +217,8 @@ class Login extends Component {
         }
       }
 
-    return (
-      <>
-        <div className="action-card" style={{
-                                            position: 'absolute',
-                                            width: '440px',
-                                            height: '463px',
-                                            left: '500px',
-                                            top: '140px',
-                                            background: '#FFFFFF',
-                                            borderRadius: '8px',
-                                            border: '1px',
-                                            borderColor: 'red',
-                                           }}
-        >
+    return <ConnectWallet loading={this.state.loading} loginWithMetaMask={loginWithMetaMask} />;
 
-          <img src={TrustTokenLogo} width='80px' height='80px' />
-
-          <div style={{
-                        fontWeight: '500',
-                        fontSize: '22px',
-                        lineHeight: '32px',
-                        textAlign: 'center',
-                        color: '#061439',
-                     }}
-          >
-            
-
-            {this.state.loading ? (
-                <>
-                  Confirm connection
-                </>
-              ) : (
-                <span>Connect wallet</span>
-              )}
-          </div>
-          <div style={{
-                        fontStyle: 'normal',
-                        fontWeight: 'normal',
-                        fontSize: '16px',
-                        lineHeight: '24px',
-                        textAlign: 'center',
-                        color: '#7A859E',
-                     }}
-          >
-            {
-              this.state.loading
-              ? ( <span>
-                     Open the extension and give access to the app
-                 </span> )
-              : ( <span>
-                     To start using TrueRewards
-                 </span> )
-            }
-
-          </div>
-
-            {
-              this.state.loading
-              ? (
-                  <div style={{height: "150px", padding: "40px"}}> 
-                    <Rotate>
-                      <img src={CircleConfirmConnection} /> 
-                    </Rotate>
-
-                    <WaitingToConnectBox>
-                      Waiting to connect&nbsp;...
-                    </WaitingToConnectBox>
-                  </div>
-                )
-              : ( <ConnectToMetaMask connect={loginWithMetaMask} /> )
-            }
-
-          <div style={{
-                        fontStyle: 'normal',
-                        fontWeight: 'normal',
-                        fontSize: '14px',
-                        lineHeight: '20px',
-                        textAlign: 'center',
-                        color: '#7A859E',
-                     }}
-          >
-            By connecting, I accept TrustToken’s 
-            <br/>
-            <Link to="/terms-of-use"> Terms of Service</Link>
-          </div>
-        </div>
-
-      </>
-    )
   }
 }
 
