@@ -139,6 +139,8 @@ const GreenBox = styled.div`
   /* Mountain Meadow */
 
   color: #0FD28C;
+
+  padding: 0 10px;
 `;
 
 const WhiteBox = styled.div`
@@ -163,6 +165,8 @@ const WhiteBox = styled.div`
 
   display: flex;
   align-items: center;
+
+  padding: 0 10px;
 `;
 
 const GrayDot = styled.div`
@@ -215,8 +219,9 @@ const SwitchKnob = styled.div`
   ${({ switchEnabled }) => switchEnabled && 'left: 19px;'}
 `;
 
+
 function Switch(props) {
-  const [switchEnabled, setSwitchEnabled] = React.useState(true);
+  const [switchEnabled, setSwitchEnabled] = React.useState(false);
 
   const handleClick = () => {
     if (!switchEnabled) {
@@ -231,6 +236,16 @@ function Switch(props) {
     <SwitchContainer onClick={handleClick}>
       <SwitchInner>
         <SwitchKnob switchEnabled={switchEnabled} />
+      </SwitchInner>
+    </SwitchContainer>
+  );
+}
+
+function DisabledSwitch(props) {
+  return (
+    <SwitchContainer onClick={() => null}>
+      <SwitchInner>
+        <SwitchKnob switchEnabled={false} />
       </SwitchInner>
     </SwitchContainer>
   );
@@ -356,7 +371,9 @@ function TrueRewards(props) {
     <div>
       <Container>
         <BalanceBox icon=<TokenStackIcon/> description="TrueUSD balance" balance={TUSDBalance} />
-        <BalanceBox icon=<ClockStackIcon/> description="Total rewards earned" balance={0.0} />
+        <span style={{padding: '0 0 0 120px'}}>
+          <BalanceBox icon=<ClockStackIcon/> description="Total rewards earned" balance={0.0} />
+        </span>
 
         <div style={{
                      float: 'right',
@@ -387,34 +404,6 @@ function TrueRewards(props) {
         </div>
 
         
-        { /* metamaskAccounts &&
-          <div>
-            <Box>
-              <BoxInner>
-                <div><TokenStackIcon /></div>
-                <div>
-                  <Label>TUSD balance</Label>
-                  <Amount>{TUSDBalance}<Ticker>TUSD</Ticker></Amount>
-                </div>
-                <div><ClockStackIcon /></div>
-                <div>
-                  <Label>Earnings</Label>
-                  <Amount>10.01010101<Ticker>TUSD</Ticker></Amount>
-                </div>
-                <div>
-                  <Label>Enable Aave Rewards</Label>
-                  <Switch
-                    onEnable={() => EthService.enableTrueReward()}
-                    onDisable={() => EthService.disableTrueReward()}
-                  />
-                </div>
-              </BoxInner>
-              <Label>Annual Percentage Rewards</Label>
-              <Amount>4.0%</Amount>
-            </Box>
-          </div>
-        */
-        }
       </Container>
 
       <div style={{ display: 'block',
@@ -435,7 +424,14 @@ function TrueRewards(props) {
       </div>
 
     <HeaderBox>
-      <Row project="Project" annualRewards="Annual rewards" balance="Balance" rewardsEarned="Rewards earned" rewards="Rewards" />
+      <Row project="Project"
+           annualRewards="Annual rewards"
+           balance="Balance"
+           rewardsEarned="Rewards earned"
+           rewards=<div style={{padding: '0px 20px'}}>
+                     Rewards
+                   </div>
+      />
     </HeaderBox>
 
     <div style={{marginTop: '8px'}} />
@@ -446,7 +442,7 @@ function TrueRewards(props) {
                   <GrayDot/>
                 </span>
 
-                <div style={{padding: '0px 0px 0px 10px'}}>
+                <div style={{padding: '0px 0px 0px 40px'}}>
                     AAVE
                     <span style={{float: 'right'}}>
                       <Link href="" text="Learn more" />
@@ -460,7 +456,7 @@ function TrueRewards(props) {
       rewards=<div>
                 Enable
                 &nbsp;
-                <div style={{float: 'right'}}> 
+                <div style={{float: 'right', padding: '0px 20px'}}> 
                     <Switch
                       onEnable={() => EthService.enableTrueReward()}
                       onDisable={() => EthService.disableTrueReward()}
@@ -477,7 +473,7 @@ function TrueRewards(props) {
                   <GrayDot/>
                 </span>
 
-                <div style={{padding: '0px 0px 0px 10px'}}>
+                <div style={{padding: '0px 0px 0px 40px'}}>
                   Future Reward Opportunity
                 </div>
 
@@ -488,12 +484,9 @@ function TrueRewards(props) {
       rewards=<div>
                 Enable
                 &nbsp;
-                <div style={{float: 'right'}}> 
-                    <Switch
-                      onEnable={() => EthService.enableTrueReward()}
-                      onDisable={() => EthService.disableTrueReward()}
-                    />
-                </div> 
+                <div style={{float: 'right', padding: '0px 20px'}}>
+                    <DisabledSwitch />
+                </div>
               </div>
     />
 
@@ -505,7 +498,7 @@ function TrueRewards(props) {
                   <GrayDot/>
                 </span>
 
-                <div style={{padding: '0px 0px 0px 10px'}}>
+                <div style={{padding: '0px 0px 0px 40px'}}>
                   Future Reward Opportunity
                 </div>
 
@@ -516,11 +509,8 @@ function TrueRewards(props) {
       rewards=<div>
                 Enable
                 &nbsp;
-                <div style={{float: 'right'}}> 
-                    <Switch
-                      onEnable={() => EthService.enableTrueReward()}
-                      onDisable={() => EthService.disableTrueReward()}
-                    />
+                <div style={{float: 'right', padding: '0px 20px'}}> 
+                    <DisabledSwitch />
                 </div> 
               </div>
     />
