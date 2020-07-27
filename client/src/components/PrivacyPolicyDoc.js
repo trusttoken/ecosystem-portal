@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 const PrivacyPolicyDoc = props => (
 <>
 <h1 style={{textAlign: "center"}}>TRU Privacy Policy</h1>
-<h1 style={{textAlign: "center"}}>Purchaser Portal</h1><p style={{textAlign: "center"}}>While using TRU Purchase Portal you agree that you have read <br/> Privacy Policy of our service and accept it. </p><p style={{textAlign: "center"}}> Last modified: July 27, 2020</p>
+<h1 style={{textAlign: "center"}}>Purchaser Portal</h1><p style={{textAlign: "center"}}>While using TRU Purchase Portal you agree that you have read <br/> Privacy Policy of our services and accept it. </p><p style={{textAlign: "center"}}> Last modified: July 27, 2020</p>
 <h2>Introduction</h2>
 <p>TrustToken, Inc. ("Company," "our," "we") understands the importance of privacy, especially when it comes to your personal information. Data privacy and your trust are our top priorities, and in this Privacy Policy we explain what information we collect from you when you use our online TRU purchaser portal (the "Portal"), how we will use this information, and the very limited ways that we may share your information. Please read this policy carefully to understand our policies and practices regarding your information, as you agree to this Privacy Policy by using the Portal. If you do not agree with our policies and practices, do not use the Portal. This Privacy Policy is part of our <Link to="/terms-of-use"> Terms of Use </Link>.</p>
 <h2>Users Under Age 18</h2>
