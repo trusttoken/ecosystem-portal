@@ -73,8 +73,9 @@ const MetaMaskSpan = styled.span`
 
 
 function ConnectToMetaMask(props) {
+
   return (
-    <ConnectToMetaMaskBox onClick={e => props.connect()}>
+    <ConnectToMetaMaskBox>
       <div style={{borderRadius: '2px', height: "50px"}}>
 
         <MetaMaskSpan>
@@ -136,69 +137,34 @@ const Accept = styled.div`
 `;
 
 
-function ConnectWallet({loading, loginWithMetaMask}) {
-    return (
-      <Modal.Dialog centered>
+function WaitingToConnect (props) {
+  return (
+    <div style={{height: "150px", padding: "40px"}}> 
+      <Rotate>
+        <img src={CircleConfirmConnection} /> 
+      </Rotate>
 
-        <Modal.Body>
-        <ConnectWalletBox>
-
-          <img src={TrustTokenLogo} width='80px' height='80px' />
-
-          <Title>
-            {loading ? "Confirm connection" : "Connect wallet" }
-          </Title>
-
-          <Subtitle>
-            {
-              loading
-              ? "Open the extension and give access to the app"
-              : "To start using TrueRewards"
-            }
-          </Subtitle>
-
-            {
-              loading
-              ? (
-                  <div style={{height: "150px", padding: "40px"}}> 
-                    <Rotate>
-                      <img src={CircleConfirmConnection} /> 
-                    </Rotate>
-
-                    <WaitingToConnectBox>
-                      Waiting to connect&nbsp;...
-                    </WaitingToConnectBox>
-                  </div>
-                )
-              : ( <ConnectToMetaMask connect={loginWithMetaMask} /> )
-            }
-
-          <Accept>
-            By connecting, I accept TrustToken’s 
-            <br/>
-            <Link to="/terms-of-use"> Terms of Service</Link>
-          </Accept>
-
-        </ConnectWalletBox>
-        </Modal.Body>
-      </Modal.Dialog>
-    )
-};
+      <WaitingToConnectBox>
+        Waiting to connect&nbsp;...
+      </WaitingToConnectBox>
+    </div>
+  );
+}
 
 
-class Login extends Component {
+class ConnectWallet extends Component {
   state = {
     loading: false,
     redirectTo: null
   }
+
 
   render() {
     if (this.state.redirectTo) {
       return <Redirect push to={this.state.redirectTo} />
     };
 
-    const loginWithMetaMask = () => {
-        console.log("loginWithMetaMask: this: " + this);
+    const loginWithMetamask = () => {
         if (! EthService.state.metamaskInstalled) {
           this.setState({ loading: true });
           EthService.enableMetamask()
@@ -209,17 +175,64 @@ class Login extends Component {
               console.log("MetaMask NOT enabled: " + JSON.stringify(enableRes.code) + ", ::: " + JSON.stringify(enableRes));
             } else {
               console.log("MetaMask enabled!");
-              this.setState({ loading: false, redirectTo: `/dashboard` });
+              this.setState({ loading: false, redirectTo: this.props.redirectTo});
             }
           });
         } else {
-          this.setState({ loading: false, redirectTo: `/dashboard` });
+          this.setState({ loading: false, redirectTo: this.props.redirectTo});
         }
       }
 
-    return <ConnectWallet loading={this.state.loading} loginWithMetaMask={loginWithMetaMask} />;
+    return (
+    <div>
+      <Modal.Dialog centered>
 
+        <Modal.Body>
+        <ConnectWalletBox>
+
+          <img src={TrustTokenLogo} width='80px' height='80px' />
+
+          <Title>
+            {
+              this.state.loading
+              ? "Confirm connection"
+              : "Connect wallet"
+            }
+          </Title>
+
+          <Subtitle>
+            {
+              this.state.loading
+              ? "Open the extension and give access to the app"
+              : "To start using TrueRewards"
+            }
+          </Subtitle>
+
+          {
+            this.state.loading
+            ? <WaitingToConnect />
+            : <div onClick={loginWithMetamask}>
+                <ConnectToMetaMask />
+              </div>
+          }
+
+          <Accept>
+            By connecting, I accept TrustToken’s 
+            <br/>
+            <Link to="/terms-of-use"> Terms of Service</Link>
+          </Accept>
+
+        </ConnectWalletBox>
+        </Modal.Body>
+      </Modal.Dialog>
+    </div>
+    )
   }
+}
+
+
+function Login (props) {
+  return <ConnectWallet redirectTo='/dashboard' /> ;
 }
 
 export default Login
