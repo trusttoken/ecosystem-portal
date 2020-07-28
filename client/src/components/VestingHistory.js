@@ -8,10 +8,6 @@ import { DataContext } from '@/providers/data'
 const VestingHistory = props => {
   const data = useContext(DataContext)
 
-  // Once we know the actual start date we will update it in the database
-  // (start date cannot be null in the database, so we have to enter a 'fake' one initially)
-  // and start showing it.
-  // For now we show only days from an unspecified start date.
   const showStartDate = true;
 
   const schedule = {}

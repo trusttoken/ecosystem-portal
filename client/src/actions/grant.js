@@ -1,3 +1,4 @@
+import { EthService } from '@/contracts/EthService';
 
 export const FETCH_GRANTS_PENDING = 'FETCH_GRANTS_PENDING'
 export const FETCH_GRANTS_SUCCESS = 'FETCH_GRANTS_SUCCESS'
@@ -25,27 +26,32 @@ function fetchGrantsError(error) {
 
 
 export function fetchGrants() {
-  return dispatch => {
+  return async dispatch => {
     console.log("fetchGrants: START");
 
     dispatch(fetchGrantsPending());
 
-    // TODO: Retrieve from TT smart contract, for now a mock.
+    const account = await EthService.getActiveAccount();
+    const amount = await EthService.getTrustTokenBalance(account);
+    const start = await EthService.getTrustTokenLockStart();
+    const end = await EthService.getTrustTokenFinalEpoch();
+    const cliff = await EthService.getTrustTokenNextEpoch();
+
     const grant = {
       'id': 1,
       'user_id': 1,
-      'end': '2022-06-02',
-      'created_at': '2020-06-02 18:29:38.997429+00',
-      'updated_at': '2020-06-02 18:29:38.997429+00',
+      'end': end,
+      'created_at': start,
+      'updated_at': start,
       'purchase_total': null,
-      'start': '2020-06-02',
-      'amount': '1000000000',
-      'purchase_date': '2020-06-02',
-      'investment_amount': 100000000,
+      'start': start,
+      'amount': amount,
+      'purchase_date': start,
+      'investment_amount': amount,
       'cancelled': null,
       'purchase_round': null,
       'grant_type': null,
-      'cliff': '2020-11-02'
+      'cliff': cliff
     };
     dispatch(fetchGrantsSuccess([grant]));
 

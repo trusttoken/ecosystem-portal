@@ -24,26 +24,64 @@ const EthService = {
   disableTrueReward,
   depositStakedToken,
   getTrustTokenBalance,
+  getTrustTokenLockStart,
+  getTrustTokenEpochsPassed,
+  getTrustTokenFinalEpoch,
+  getTrustTokenLatestEpoch,
+  getTrustTokenNextEpoch,
+  getActiveAccount,
   enableMetamask,
 };
 
-async function getTrustTokenBalance(address) {
-  const network = getEthNetwork();
-  //console.log(`checking TRU balance of address ${address} on ${network}`);
-  const trustTokenContractAddress = TRUSTTOKEN_CONTRACT_ADDRESSES[network];
 
+function getTrustTokenContract() {
+  const network = getEthNetwork();
+  const trustTokenContractAddress = TRUSTTOKEN_CONTRACT_ADDRESSES[network];
   const provider = new ethers.providers.Web3Provider(window.web3.currentProvider);
   const signer = provider.getSigner();
-
   const TrustTokenContract = new ethers.Contract(trustTokenContractAddress, TrustTokenControllerAbi, signer);
+  return TrustTokenContract;
+}
+
+async function getTrustTokenBalance(address) {
+  const TrustTokenContract = getTrustTokenContract();
   const trustTokenBalance = await TrustTokenContract.balanceOf(address);
-  let balance = trustTokenBalance.toString();
-  console.log(`TRU balance of address ${address} on ${network} is ${balance}`);
+  const balance = trustTokenBalance.toString();
+  //console.log(`TRU balance of address ${address} on is ${balance}`);
   return balance;
 }
 
+async function getTrustTokenLockStart() {
+  return new Date(await getTrustTokenContract().lockStart() * 1000);
+}
+
+async function getTrustTokenEpochsPassed() {
+  return await getTrustTokenContract().epochsPassed();
+}
+
+async function getTrustTokenFinalEpoch() {
+  return new Date(await getTrustTokenContract().finalEpoch() * 1000);
+}
+
+async function getTrustTokenLatestEpoch() {
+  return new Date(await getTrustTokenContract().latestEpoch() * 1000);
+}
+
+async function getTrustTokenNextEpoch() {
+  return new Date(await getTrustTokenContract().nextEpoch() * 1000);
+}
+
+
+async function getActiveAccount() {
+  let accounts = window.web3.eth.accounts;
+  if (accounts.length === 0) {
+    await window.ethereum.enable();
+    accounts = window.web3.eth.accounts;
+  }
+  return accounts[0];
+}
+
 function isMetamaskLocked() {
-  console.log(window.web3.eth.accounts);
   const accounts = window.web3.eth.accounts;
   console.log('accounts length', accounts.length);
   const isLocked = accounts.length === 0;
@@ -63,6 +101,7 @@ async function enableMetamask() {
   return res;
 }
 
+
 function handleMetamaskAccountsChangedEvent() {
   window.ethereum.on('accountsChanged', function (accounts) {
     console.log('metamask accounts changed coolio!');
@@ -71,6 +110,8 @@ function handleMetamaskAccountsChangedEvent() {
 
 // This is using ropsten proxy contract addresses at the moment. Will have to change based on selected network
 function createTokenContracts() {
+  console.log("getEthNetwork: " + getEthNetwork());
+
   EthService.TUSDTokenContract = new ethers.Contract('0xB36938c51c4f67e5E1112eb11916ed70A772bD75', TrueUSDControllerAbi, EthService.web3Provider.getSigner());
   EthService.TrustTokenContract = new ethers.Contract('0xC2A3cA255B12769242201db4B91774Cae4caEf69', TrustTokenControllerAbi, EthService.web3Provider.getSigner());
   EthService.StakedTokenContract = new ethers.Contract('0xC2A3cA255B12769242201db4B91774Cae4caEf69', StakedTokenControllerAbi, EthService.web3Provider.getSigner());
