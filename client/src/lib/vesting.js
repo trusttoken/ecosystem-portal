@@ -192,4 +192,4 @@ export {
   toMoment,
   vestingSchedule,
   vestedAmount
-}
+};

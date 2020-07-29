@@ -4,7 +4,11 @@ import { bindActionCreators } from 'redux'
 import moment from 'moment'
 import get from 'lodash.get'
 
-import enums from '@trusttoken/token-transfer-server/src/enums'
+import {
+  InvestorTypes,
+  RevisedScheduleStatus,
+  TransferStatuses
+} from '@/lib/enums'
 
 import { DataContext } from '@/providers/data'
 import { confirmTransfer } from '@/actions/transfer'
@@ -32,7 +36,7 @@ class WithdrawalDetail extends Component {
       )
       if (
         transferToConfirm &&
-        transferToConfirm.status === enums.TransferStatuses.WaitingEmailConfirm
+        transferToConfirm.status === TransferStatuses.WaitingEmailConfirm
       ) {
         this.props.confirmTransfer(transferToConfirm.id, token)
       }
@@ -67,8 +71,8 @@ class WithdrawalDetail extends Component {
       0
     )}s`
     const hasExpired =
-      transfer.status === enums.TransferStatuses.Expired ||
-      (transfer.status === enums.TransferStatuses.WaitingEmailConfirm &&
+      transfer.status === TransferStatuses.Expired ||
+      (transfer.status === TransferStatuses.WaitingEmailConfirm &&
         moment.utc().diff(expires, 'minutes') > 5)
 
     return (
@@ -89,7 +93,7 @@ class WithdrawalDetail extends Component {
           </div>
         )}
         {!hasExpired &&
-          transfer.status === enums.TransferStatuses.WaitingEmailConfirm && (
+          transfer.status === TransferStatuses.WaitingEmailConfirm && (
             <div className="alert alert-warning mb-4">
               <div className="row">
                 <div className="col">

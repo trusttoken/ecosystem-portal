@@ -1,5 +1,5 @@
 // Code shared between token-transfer-client and token-transfer-server
-// The imports in here should be kept minimal o avoid issues
+// The imports in here should be kept minimal to avoid issues
 // with webpack building and node
 
 const BigNumber = require('bignumber.js')
@@ -10,7 +10,7 @@ const {
   vestedAmount,
   toMoment,
   momentizeGrant
-} = require('./lib/vesting')
+} = require('./vesting')
 const enums = require('./enums')
 
 /**
@@ -242,7 +242,7 @@ function lockupHasExpired(lockup) {
   )
 }
 
-module.exports = {
+export {
   calculateGranted,
   calculateVested,
   calculateUnlockedEarnings,
@@ -258,4 +258,4 @@ module.exports = {
   transferHasExpired,
   lockupConfirmationTimeout,
   transferConfirmationTimeout
-}
+};

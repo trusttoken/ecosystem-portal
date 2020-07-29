@@ -38,8 +38,8 @@ const InvestorTypes = new Enum('Advisor', 'Strategic', 'CoinList')
 
 const RevisedScheduleStatus = new Enum('Accepted', 'Rejected', 'Abstained')
 
-module.exports = {
+export {
   InvestorTypes,
   RevisedScheduleStatus,
   TransferStatuses
-}
+};

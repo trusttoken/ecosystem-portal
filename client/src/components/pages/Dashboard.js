@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react'
 import get from 'lodash.get'
 
-import { getNextVest } from '@trusttoken/token-transfer-server/src/shared'
+import { getNextVest } from '@/lib/shared'
 
 import { DataContext } from '@/providers/data'
 import BalanceCard from '@/components/BalanceCard'
