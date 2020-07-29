@@ -6,7 +6,7 @@ import BigNumber from 'bignumber.js'
 
 import { DataContext } from '@/providers/data';
 
-import { vestingSchedule } from '@trusttoken/token-transfer-server/src/lib/vesting'
+import { vestingSchedule } from '@/lib/vesting';
 
 const DateAndDayLabel = styled.div`
   margin-top: 4px;
@@ -146,7 +146,7 @@ const VestingBars = ({ user }) => {
           // upper bound of 100
 
           let i = 0;
-          vestingSchedule(user, grant).forEach((vest, index) => {
+          vestingSchedule(grant).forEach((vest, index) => {
               if (vest.vested) {
                   i = index;
               }

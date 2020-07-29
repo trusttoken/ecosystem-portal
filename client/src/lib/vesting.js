@@ -1,4 +1,3 @@
-'use strict'
 
 const moment = require('moment')
 const BigNumber = require('bignumber.js')
@@ -30,13 +29,10 @@ function momentizeGrant(grant) {
 /** Returns an array of vesting objects that include a datetime and status
  * associated with each vesting event.
  *
- * @param {User} user: DB model user object
  * @param {Object} grantObj: plain grant object
  */
-function vestingSchedule(user, grantObj) {
-  return user.employee
-    ? employeeVestingSchedule(grantObj)
-    : investorVestingSchedule(grantObj)
+function vestingSchedule(grantObj) {
+    return investorVestingSchedule(grantObj)
 }
 
 /** Return a vesting schedule for an employee. Employee vests have a cliff and vest monthly
@@ -98,6 +94,8 @@ function employeeVestingSchedule(grantObj) {
  * @param {Object} grantObj: plain grant object
  */
 function investorVestingSchedule(grantObj) {
+  console.log("investorVestingSchedule: grantObj: " + JSON.stringify(grantObj))
+
   const grant = momentizeGrant(grantObj)
 
   const vestingSchedule = []
@@ -164,6 +162,8 @@ function investorVestingSchedule(grantObj) {
     });
   }
 
+  console.log("vestingSchedule: " + JSON.stringify(vestingSchedule))
+
   return vestingSchedule
 }
 
@@ -187,7 +187,7 @@ function vestedAmount(user, grantObj) {
     }, BigNumber(0))
 }
 
-module.exports = {
+export {
   momentizeGrant,
   toMoment,
   vestingSchedule,

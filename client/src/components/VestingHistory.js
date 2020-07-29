@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import moment from 'moment'
 
-import { vestingSchedule } from '@trusttoken/token-transfer-server/src/lib/vesting'
+import { vestingSchedule } from '@/lib/vesting';
 
 import { DataContext } from '@/providers/data'
 
@@ -12,7 +12,7 @@ const VestingHistory = props => {
 
   const schedule = {}
   data.grants.forEach(grant => {
-    vestingSchedule(props.user, grant).forEach(vest => {
+    vestingSchedule(grant).forEach(vest => {
       const dateKey = vest.date.format()
       schedule[dateKey] = {amount: vest.amount, day: vest.day, date: dateKey}
     })

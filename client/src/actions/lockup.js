@@ -1,3 +1,4 @@
+import { EthService } from '@/contracts/EthService';
 
 export const ADD_LOCKUP_PENDING = 'ADD_LOCKUP_PENDING'
 export const ADD_LOCKUP_SUCCESS = 'ADD_LOCKUP_SUCCESS'
@@ -69,25 +70,32 @@ function fetchLockupsError(error) {
   }
 }
 
+async function retrieveLockup() {
+  const account = await EthService.getActiveAccount();
+  const amount = await EthService.getTrustTokenBalance(account);
+  const start = await EthService.getTrustTokenLockStart();
+  const end = await EthService.getTrustTokenFinalEpoch();
+  const cliff = await EthService.getTrustTokenNextEpoch();
 
-const sampleLockup = {
-  "amount": 100000000000,
-  "bonus_rate": 0.1,
-  "confirmed": true,
-  "created_at": "2020-06-02 18:29:38.997429+00",
-  "data": null,
-  "end": "2022-06-02 18:29:38.997429+00",
-  "id": 1,
-  "start": "2020-06-02 18:29:38.997429+00",
-  "updated_at": "2020-06-02 18:29:38.997429+00",
-  "user_id": 1
-};
+  return {
+    "amount": amount,
+    "bonus_rate": 0.1,  // ???
+    "confirmed": true,
+    "created_at": start,
+    "data": null,
+    "start": start,
+    "end": end,
+    "id": 1,
+    "updated_at": start,
+    "user_id": 1
+  };
+}
 
 
 export function addLockup(lockup) {
-  return dispatch => {
+  return async dispatch => {
     dispatch(addLockupPending());
-    dispatch(addLockupSuccess(sampleLockup));
+    dispatch(addLockupSuccess(await retrieveLockup()));
 
     //return agent
     //  .post(`${apiUrl}/api/lockups`)
@@ -104,11 +112,11 @@ export function addLockup(lockup) {
 export function fetchLockups() {
   console.log("::: fetchLockups");
 
-  return dispatch => {
+  return async dispatch => {
     console.log("::: fetchLockups BEGIN");
 
     dispatch(fetchLockupsPending());
-    dispatch(fetchLockupsSuccess([sampleLockup]));
+    dispatch(fetchLockupsSuccess([await retrieveLockup()]));
 
     console.log("::: fetchLockups END");
 
@@ -125,10 +133,9 @@ export function fetchLockups() {
 }
 
 export function confirmLockup(id, token) {
-  return dispatch => {
+  return async dispatch => {
     dispatch(confirmLockupPending())
-    // TODO:
-    const data = sampleLockup;
+    const data = await retrieveLockup();
     dispatch(confirmLockupSuccess(data));
 
     //return agent
