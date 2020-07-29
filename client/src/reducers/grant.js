@@ -47,7 +47,7 @@ export const getIsLoading = state => state.isLoading
 export const getTotals = (user, state) => {
   const grants = getGrants(state)
   const granted = calculateGranted(grants)
-  const vested = calculateVested(user, grants)
+  const vested = calculateVested(grants)
   const unvested = granted.minus(vested)
   return { granted, vested, unvested }
 }

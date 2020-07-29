@@ -53,13 +53,13 @@ function calculateGranted(grants) {
  * @param {User|Object} user: user to calculate grants for
  * @param {[Object]} grants: grant object
  */
-function calculateVested(user, grants) {
+function calculateVested(grants) {
   return grants.reduce((total, grant) => {
     if (grant.dataValues) {
       // Convert if instance of sequelize model
       grant = grant.get({ plain: true })
     }
-    return total.plus(vestedAmount(user, grant))
+    return total.plus(vestedAmount(grant))
     // @ts-ignore
   }, BigNumber(0))
 }
@@ -171,7 +171,7 @@ function getNextVest(grants, user) {
   // Flat map implementation, can remove in node >11
   const flatMap = (a, cb) => [].concat(...a.map(cb))
   const allGrantVestingSchedule = flatMap(grants, grant => {
-    return vestingSchedule(user, grant)
+    return vestingSchedule(grant)
   })
   const sortedUnvested = allGrantVestingSchedule
     .filter(v => !v.vested)

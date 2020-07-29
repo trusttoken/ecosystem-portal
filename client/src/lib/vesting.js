@@ -179,8 +179,8 @@ function hasVested(vestingDate, grant) {
  * @param {User} user: DB user object
  * @param {Object} grantObj: plain grant object
  */
-function vestedAmount(user, grantObj) {
-  return vestingSchedule(user, grantObj)
+function vestedAmount(grantObj) {
+  return vestingSchedule(grantObj)
     .filter(v => v.vested)
     .reduce((total, vestingEvent) => {
       return total.plus(BigNumber(vestingEvent.amount))
