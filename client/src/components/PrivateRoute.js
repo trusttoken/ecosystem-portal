@@ -8,6 +8,7 @@ import { fetchUser } from '@/actions/user'
 import { getUser, getIsLoading } from '@/reducers/user'
 import { getSessionExpired } from '@/reducers/session'
 import { setSessionExpired } from '@/actions/session'
+import ConnectWallet from "@/components/ConnectWallet"
 
 import Footer from '@/components/Footer';
 import AccountActions from '@/components/AccountActions'
@@ -45,29 +46,38 @@ const PrivateRoute = ({
         render={props => {
           return (
             <div id="private" className="logged-in d-flex">
-              {isLoading || !user ? (
+              {isLoading || !user
+               ? (
                 <div id="main">
                   <div className="spinner-grow" role="status">
                     <span className="sr-only">Loading...</span>
                   </div>
                 </div>
-              ) : (
+               )
+               : (
                 <>
                   <ThemeProvider>
                     <div id="main" className={expandSidebar ? 'd-none' : ''}>
-                      <div className="d-none d-md-block">
-                        {user && <DataProvider><AccountActions user={user} /></DataProvider>}
-                      </div>
-                      <div className="mt-md-4">
-                        <DataProvider>
-                          <Component {...props} user={user} />
-                        </DataProvider>
-                      </div>
+                      { // TODO: handle case when MetaMask not installed at all
+                        web3 === "undefined"
+                        || ! web3.eth.accounts
+                        || web3.eth.accounts.length == 0
+                        ? <ConnectWallet redirectTo={window.location.pathname} />
+                        :
+                          <DataProvider>
+                              <div className="d-none d-md-block">
+                                <AccountActions user={user} />
+                              </div>
+                              <div className="mt-md-4">
+                                <Component {...props} user={user} />
+                              </div>
+                          </DataProvider>
+                      }
                     </div>
                     <Footer/>
                   </ThemeProvider>
                 </>
-              )}
+               )}
             </div>
           )
         }}
