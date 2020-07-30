@@ -34,8 +34,7 @@ const HandleLogin = props => {
     }
     */
 
-    let user; // TODO: get the user?
-    const nextOnboardingPage = getNextOnboardingPage(user);
+    const nextOnboardingPage = getNextOnboardingPage();
 
     let redirectTo
     if (nextOnboardingPage === '/terms') {

@@ -37,7 +37,7 @@ const OnboardingRoute = ({
               </div>
             </div>
           ) : (
-            <Component {...props} user={user} />
+            <Component {...props} />
           )}
         </div>
       )}

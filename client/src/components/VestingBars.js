@@ -33,7 +33,7 @@ const Ticker = styled.div`
   padding-left: 4px;
 `;
 
-const VestingBars = ({ user }) => {
+const VestingBars = () => {
   const data = useContext(DataContext)
 
   const [displayPopover, setDisplayPopover] = useState({})

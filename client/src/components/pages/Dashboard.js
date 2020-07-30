@@ -24,7 +24,6 @@ const Dashboard = props => {
   const [displayWithdrawModal, setDisplayWithdrawModal] = useState(false)
   const [displayOtcRequestModal, setDisplayOtcRequestModal] = useState(false)
 
-  const isEmployee = !!get(props.user, 'employee')
   const nextVest = getNextVest(data.grants, props.user)
   const hasLockups = data.lockups.length > 0
   const displayLockupCta =
@@ -69,7 +68,7 @@ const Dashboard = props => {
       {renderModals()}
       <div className="row small-gutter">
         <div className="col col-xl-12 mb-10">
-          <VestingCard user={props.user} isEmployee={isEmployee} />
+          <VestingCard />
         </div>
       </div>
     </>

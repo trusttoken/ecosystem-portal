@@ -20,7 +20,6 @@ const PrivateRoute = ({
   component: Component,
   history,
   isLoading,
-  user,
   ...rest
 }) => {
   const [expandSidebar, setExpandSidebar] = useState(false)
@@ -46,7 +45,7 @@ const PrivateRoute = ({
         render={props => {
           return (
             <div id="private" className="logged-in d-flex">
-              {isLoading || !user
+              {isLoading
                ? (
                 <div id="main">
                   <div className="spinner-grow" role="status">
@@ -66,10 +65,10 @@ const PrivateRoute = ({
                         :
                           <DataProvider>
                               <div className="d-none d-md-block">
-                                <AccountActions user={user} />
+                                <AccountActions />
                               </div>
                               <div className="mt-md-4">
-                                <Component {...props} user={user} />
+                                <Component {...props} />
                               </div>
                           </DataProvider>
                       }
