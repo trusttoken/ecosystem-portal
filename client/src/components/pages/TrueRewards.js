@@ -47,7 +47,6 @@ const Amount = styled.div`
   font-size: 28px;
   line-height: 40px;
   color: #061439;
-
 `;
 
 const Ticker = styled.div`
@@ -263,7 +262,7 @@ function BalanceBox({icon, description, balance}) {
 
       <div style={{flexGrow: 1, display: 'block'}}>
         <Label> {description} </Label>
-        <Amount> 0.0 <Ticker> TUSD </Ticker> </Amount>
+        <Amount> {balance} <Ticker> TUSD </Ticker> </Amount>
       </div>
 
     </div>
@@ -348,24 +347,16 @@ function TrueRewards(props) {
 
   const initMetamask = async () => {
     await EthService.init();
-    console.log(EthService.state);
+    console.log("EthService.state: ", EthService.state);
     setMetamaskAccounts(EthService.accounts);
     setTUSDBalance(EthService.state.TUSDBalance);
   };
 
   React.useEffect(() => {
-    console.log('effect');
-    if (!EthService.isMetamaskLocked()) {
+    if (! EthService.isMetamaskLocked()) {
       initMetamask();
     }
   }, [])
-
-  const connectWallet = async () => {
-    // const web3State = await web3.init();
-    // setLocalWeb3State(web3State);
-    initMetamask();
-    // setLocalWeb3State({ accounts: []});
-  };
 
   return (
     <div>

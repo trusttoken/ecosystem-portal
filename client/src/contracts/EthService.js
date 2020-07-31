@@ -108,17 +108,26 @@ function handleMetamaskAccountsChangedEvent() {
   });
 }
 
-// This is using ropsten proxy contract addresses at the moment. Will have to change based on selected network
 function createTokenContracts() {
-  console.log("getEthNetwork: " + getEthNetwork());
+  const test = getEthNetwork() == 'ropsten';
 
-  EthService.TUSDTokenContract = new ethers.Contract('0xB36938c51c4f67e5E1112eb11916ed70A772bD75', TrueUSDControllerAbi, EthService.web3Provider.getSigner());
-  EthService.TrustTokenContract = new ethers.Contract('0xC2A3cA255B12769242201db4B91774Cae4caEf69', TrustTokenControllerAbi, EthService.web3Provider.getSigner());
-  EthService.StakedTokenContract = new ethers.Contract('0xC2A3cA255B12769242201db4B91774Cae4caEf69', StakedTokenControllerAbi, EthService.web3Provider.getSigner());
+  // Addresses of contracts (proxies) on mainnet and ropsten
+  // TODO: update mainnet addresses
+  const TUSDTokenContractAddress = test ? '0xa2EA00Df6d8594DBc76b79beFe22db9043b8896F' : '0xB36938c51c4f67e5E1112eb11916ed70A772bD75';
+  const TrustTokenContractAddress = test ? '0x711161BaF6fA362Fa41F80aD2295F1f601b44f3F' : '0xC2A3cA255B12769242201db4B91774Cae4caEf69';
+  const StakedTokenContractAddress = test ? '0xE510468dAD975bC77F0B81fADdE2f9DdF4231cf4' : '0xC2A3cA255B12769242201db4B91774Cae4caEf69';
+
+  const signer = EthService.web3Provider.getSigner();
+
+  EthService.TUSDTokenContract = new ethers.Contract(TUSDTokenContractAddress, TrueUSDControllerAbi, signer);
+  EthService.TrustTokenContract = new ethers.Contract(TrustTokenContractAddress, TrustTokenControllerAbi, signer);
+  EthService.StakedTokenContract = new ethers.Contract(StakedTokenContractAddress, StakedTokenControllerAbi, signer);
 }
 
 async function enableTrueReward() {
-  if (!EthService.TUSDTokenContract) { console.log('TUSDTokenContract not initialized.'); }
+  if (!EthService.TUSDTokenContract) {
+    console.log('TUSDTokenContract not initialized.');
+  }
   try {
     const enableTrueRewardRes = await EthService.TUSDTokenContract.enableTrueReward();
     console.log(enableTrueRewardRes);
@@ -128,7 +137,9 @@ async function enableTrueReward() {
 }
 
 async function disableTrueReward() {
-  if (!EthService.TUSDTokenContract) { console.log('TUSDTokenContract not initialized.'); }
+  if (!EthService.TUSDTokenContract) {
+    console.log('TUSDTokenContract not initialized.');
+  }
   try {
     const disableTrueRewardRes = await EthService.TUSDTokenContract.disableTrueReward();
     console.log(disableTrueRewardRes);
@@ -138,7 +149,9 @@ async function disableTrueReward() {
 }
 
 async function depositStakedToken(trustTokenAmount) {
-  if (!EthService.StakedTokenContract) { console.log('StakedTokenContract not initialized.'); }
+  if (!EthService.StakedTokenContract) {
+    console.log('StakedTokenContract not initialized.');
+  }
   try {
     const depositStakedTokenRes = await EthService.StakedTokenContract.deposit(2000000000);
     console.log(depositStakedTokenRes);
@@ -161,21 +174,20 @@ async function initMetamask() {
         handleMetamaskAccountsChangedEvent();
 
         EthService.accounts = enableRes;
-        console.log('EthService.accounts', EthService.accounts);
-
         EthService.web3Provider = new ethers.providers.Web3Provider(window.web3.currentProvider);
 
         createTokenContracts();
 
         const tusdBalance = await EthService.TUSDTokenContract.balanceOf(EthService.accounts[0]);
-        console.log(tusdBalance.toString());
-        console.log(ethUtils.formatEther(tusdBalance.toString()));
+
         EthService.state.TUSDBalance = ethUtils.formatEther(tusdBalance.toString());
 
         const trustTokenBalance = await EthService.TrustTokenContract.balanceOf(EthService.accounts[0]);
-        console.log(trustTokenBalance.toString());
-        console.log(trustTokenBalance.toString() / 100000000);
+
         EthService.state.TrustTokenBalance = trustTokenBalance.toString();
+
+        console.log(EthService.state.TrustTokenBalance);
+        console.log("================== TRU balance:", EthService.state.TrustTokenBalance / 100000000);
       }
   }
 }
