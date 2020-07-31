@@ -4,8 +4,6 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { Link } from 'react-router-dom'
 
-import { fetchUser } from '@/actions/user'
-import { getUser, getIsLoading } from '@/reducers/user'
 import { getSessionExpired } from '@/reducers/session'
 import { setSessionExpired } from '@/actions/session'
 import ConnectWallet from "@/components/ConnectWallet"
@@ -19,12 +17,10 @@ import { DataProvider } from '@/providers/data'
 const PrivateRoute = ({
   component: Component,
   history,
-  isLoading,
+  //isLoading,
   ...rest
 }) => {
   const [expandSidebar, setExpandSidebar] = useState(false)
-
-  useEffect(rest.fetchUser, [])
 
   useEffect(
     () =>
@@ -45,7 +41,7 @@ const PrivateRoute = ({
         render={props => {
           return (
             <div id="private" className="logged-in d-flex">
-              {isLoading
+              { false //isLoading
                ? (
                 <div id="main">
                   <div className="spinner-grow" role="status">
@@ -81,7 +77,8 @@ const PrivateRoute = ({
           )
         }}
       />
-      {rest.sessionExpired && !isLoading && (
+      { false // rest.sessionExpired && !isLoading 
+          && (
         <Modal>
           <h1 className="mb-2">Session Expired</h1>
           <p>
@@ -97,18 +94,15 @@ const PrivateRoute = ({
   )
 }
 
-const mapStateToProps = ({ session, user }) => {
+const mapStateToProps = ({ session }) => {
   return {
-    isLoading: getIsLoading(user),
     sessionExpired: getSessionExpired(session),
-    user: getUser(user)
   }
 }
 
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
-      fetchUser: fetchUser,
       setSessionExpired: setSessionExpired
     },
     dispatch

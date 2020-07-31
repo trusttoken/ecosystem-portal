@@ -87,7 +87,6 @@ async function retrieveLockup() {
     "end": end,
     "id": 1,
     "updated_at": start,
-    "user_id": 1
   };
 }
 

@@ -3,7 +3,6 @@ import { withRouter, Switch } from 'react-router-dom'
 
 import Modal from '@/components/Modal'
 import ScrollToTop from '@/components/ScrollToTop'
-import OnboardingRoute from '@/components/OnboardingRoute'
 import PrivateRoute from '@/components/PrivateRoute'
 import PublicRoute from '@/components/PublicRoute'
 import PublicRouteNoLogo from '@/components/PublicRouteNoLogo'
@@ -13,17 +12,10 @@ import withTracker from '@/hoc/withTracker'
 // Public routes
 import Welcome from '@/components/pages/Welcome'
 import RevisedSchedule from '@/components/pages/RevisedSchedule'
-import RevisedTerms from '@/components/pages/RevisedTerms'
-import Phone from '@/components/pages/Phone'
-import Terms from '@/components/pages/Terms'
 import TermsOfUse from '@/components/pages/TermsOfUse'
 import PrivacyPolicy from '@/components/pages/PrivacyPolicy'
 import Login from '@/components/pages/Login'
-import CheckEmail from '@/components/pages/CheckEmail'
 import HandleLogin from '@/components/pages/HandleLogin'
-import OtpExplain from '@/components/pages/OtpExplain'
-import OtpSetup from '@/components/pages/OtpSetup'
-import Otp from '@/components/pages/Otp'
 // Private routes
 import Lockup from '@/components/pages/Lockup'
 import LockupConfirm from '@/components/pages/LockupConfirm'
@@ -77,22 +69,9 @@ const App = () => {
       <ScrollToTop />
       <Switch>
         <PublicRoute exact path="/" component={Login} />
-        <PublicRoute path="/check_email" component={CheckEmail} />
         <PublicRoute path="/login_handler/:token" component={HandleLogin} />
-        <PublicRoute path="/otp/explain" component={OtpExplain} />
-        <PublicRoute exact path="/otp" component={Otp} />
         <PublicRouteNoLogo path="/terms-of-use" component={TermsOfUse} />
         <PublicRouteNoLogo path="/privacy-policy" component={PrivacyPolicy} />
-        <OnboardingRoute exact path="/welcome" component={Welcome} />
-        <OnboardingRoute
-          exact
-          path="/revised_schedule"
-          component={RevisedSchedule}
-        />
-        <OnboardingRoute exact path="/revised_terms" component={RevisedTerms} />
-        <OnboardingRoute exact path="/terms" component={Terms} />
-        <OnboardingRoute exact path="/phone" component={Phone} />
-        <OnboardingRoute path="/otp/setup" component={OtpSetup} />
         <PrivateRoute path="/dashboard" component={Dashboard} />
         <PrivateRoute path="/assurance" component={TrustTokenAssurance} />
         <PrivateRoute path="/truerewards" component={TrueRewards} />

@@ -97,7 +97,6 @@ const mapStateToProps = ({
   grant,
   lockup,
   transfer,
-  user
 }) => {
   return {
     activeAccount: getActiveAccount(account),
@@ -112,7 +111,7 @@ const mapStateToProps = ({
     lockupIsLoading: getLockupIsLoading(lockup),
     transferIsLoading: getTransferIsLoading(transfer),
     withdrawn: getWithdrawn(transfer),
-    grantTotals: getGrantTotals(user.user, grant),
+    grantTotals: getGrantTotals(grant),
     lockupTotals: getLockupTotals(lockup)
   }
 }
