@@ -54,7 +54,7 @@ const PrivateRoute = ({
                   <ThemeProvider>
                     <div id="main" className={expandSidebar ? 'd-none' : ''}>
                       { // TODO: handle case when MetaMask not installed at all
-                        web3 === "undefined"
+                        typeof web3 === "undefined"
                         || ! web3.eth.accounts
                         || web3.eth.accounts.length == 0
                         ? <ConnectWallet redirectTo={window.location.pathname} />
