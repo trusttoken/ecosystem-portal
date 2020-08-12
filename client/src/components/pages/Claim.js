@@ -8,85 +8,99 @@ import { EthService } from '@/contracts/EthService';
 
 
 const Title = styled.div`
-position: absolute;
-width: 692px;
-height: 92px;
-left: 374px;
-top: 300px;
+  width: 692px;
+  height: 92px;
+  left: 374px;
+  top: 300px;
 
-/* H2 / Medium 38px */
+  /* H2 / Medium 38px */
 
-font-family: Space Grotesk;
-font-style: normal;
-font-weight: 500;
-font-size: 38px;
-line-height: 46px;
-/* or 121% */
+  font-family: Space Grotesk;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 38px;
+  line-height: 46px;
+  /* or 121% */
 
-display: flex;
-align-items: center;
-text-align: center;
+  display: block;
+  align-items: center;
+  text-align: center;
 
-/* N600 - Big Stone */
+  /* N600 - Big Stone */
 
-color: #001425;
+  color: #001425;
 `;
 
 
 const ClaimButton = styled.div`
+  position: absolute;
+  height: 50px;
+  left: 0px;
+  right: 0px;
+  top: 0px;
 
-position: absolute;
-height: 50px;
-left: 0px;
-right: 0px;
-top: 0px;
+  /* Neon */
 
-/* Neon */
-
-background: #1253FA;
-border-radius: 6px;
+  background: #1253FA;
+  border-radius: 6px;
 `;
 
 
 const ClaimText = styled.div`
-position: absolute;
-height: 24px;
-left: 24px;
-right: 24px;
-top: 13px;
+  position: absolute;
+  height: 24px;
+  left: 24px;
+  right: 24px;
+  top: 13px;
 
-/* Body 2 / Medium 16px */
+  /* Body 2 / Medium 16px */
 
-font-family: Inter;
-font-style: normal;
-font-weight: 500;
-font-size: 16px;
-line-height: 24px;
-/* identical to box height, or 150% */
+  font-family: Inter;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  /* identical to box height, or 150% */
 
-display: flex;
-align-items: center;
-text-align: center;
+  align-items: center;
+  text-align: center;
 
-/* N0 - White */
+  /* N0 - White */
 
-color: #FFFFFF;
+  color: #FFFFFF;
+`;
 
+
+const Centered = styled.div`
+  display: flex;
+  justify-content: center;
+`;
+
+
+const TitlePadding = styled.div`
+  padding: 300px 0px 50px 0px
 `;
 
 
 
 function Claim(props) {
   return (
-    <>
+  <>
+    <Centered>
       <Title> 
-        The Ecosystem portal is a service for earning rewards through markets
+
+        <TitlePadding>
+          The Ecosystem portal is a service for earning rewards through markets
+        </TitlePadding>
 
         <Button variant="primary" size="lg">
           Claim TrustTokens
         </Button>
+
       </Title> 
-    </>
+    </Centered>
+
+  </>
 
   );
 }
