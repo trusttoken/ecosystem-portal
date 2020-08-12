@@ -1,6 +1,5 @@
 import { ethers, utils as ethUtils } from 'ethers';
 
-import { getEthNetwork } from '@/lib/eth';
 import { TRUSTTOKEN_CONTRACT_ADDRESSES } from '@/constants/contracts';
 
 const TrueUSDControllerAbi = require('./abi/TrueUSDController.abi.json');
@@ -31,8 +30,18 @@ const EthService = {
   getTrustTokenNextEpoch,
   getActiveAccount,
   enableMetamask,
+  getEthNetwork,
+  isConnectedToMetaMask,
 };
 
+function getEthNetwork() {
+  let network = process.env.ETH_NETWORK || (process.env.NODE_ENV === 'production' ? 'mainnet' : 'ropsten');
+  return network;
+}
+
+function isConnectedToMetaMask() {
+  return typeof web3 !== "undefined" && web3.eth.accounts && web3.eth.accounts.length;
+}
 
 function getTrustTokenContract() {
   const network = getEthNetwork();

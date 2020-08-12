@@ -14,6 +14,22 @@ import Modal from '@/components/Modal'
 import { ThemeProvider } from '@/providers/theme'
 import { DataProvider } from '@/providers/data'
 
+import { EthService } from '@/contracts/EthService';
+
+
+const MaybeDataProvider = props => {
+  return EthService.isConnectedToMetaMask()
+    ?
+      <DataProvider>
+        {props.children}
+      </DataProvider>
+    :
+      <>
+        {props.children}
+      </>
+    ;
+};
+
 const PrivateRoute = ({
   component: Component,
   history,
@@ -53,20 +69,17 @@ const PrivateRoute = ({
                 <>
                   <ThemeProvider>
                     <div id="main" className={expandSidebar ? 'd-none' : ''}>
-                      { // TODO: handle case when MetaMask not installed at all
-                        typeof web3 === "undefined"
-                        || ! web3.eth.accounts
-                        || web3.eth.accounts.length == 0
+                      { ! EthService.isConnectedToMetaMask()
                         ? <ConnectWallet redirectTo={window.location.pathname} />
                         :
-                          <DataProvider>
-                              <div className="d-none d-md-block">
-                                <AccountActions />
-                              </div>
-                              <div className="mt-md-4">
-                                <Component {...props} />
-                              </div>
-                          </DataProvider>
+                          <MaybeDataProvider>
+                            <div className="d-none d-md-block">
+                              <AccountActions />
+                            </div>
+                            <div className="mt-md-4">
+                              <Component {...props} />
+                            </div>
+                          </MaybeDataProvider>
                       }
                     </div>
                     <Footer/>

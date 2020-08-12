@@ -108,10 +108,10 @@ function EnableMetaMaskDropdownItem(props) {
             } else {
               setTooltipText("MetaMask enabled!");
 
-              const accounts = window.web3.eth.accounts;
+              const accounts = window.web3 && window.web3.eth && window.web3.eth.accounts;
               console.log('MetaMask accounts:', JSON.stringify(accounts));
 
-              if (accounts.length === 0) {
+              if (!accounts || accounts.length === 0) {
                 console.log("No MetaMask account!?");
               } else {
                 console.log("Adding MetaMask account " + JSON.stringify(accounts[0]));
@@ -302,6 +302,9 @@ function _EthAccountDropdown(props) {
   const [menuOpen, setMenuOpen] = useState(false);
 
   const loadAccountBalances = async () => {
+    if (! accounts)
+      return;
+
     for (let i = 0; i < accounts.length; i++) {
       accounts[i].balance = await EthService.getTrustTokenBalance(accounts[i].address);
     }
