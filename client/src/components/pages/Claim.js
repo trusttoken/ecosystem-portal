@@ -1,10 +1,20 @@
 import React from 'react';
-import ConnectWallet from "@/components/ConnectWallet"
 import styled from 'styled-components';
 import Button from 'react-bootstrap/Button';
+import { Redirect } from 'react-router-dom';
+
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
+import { makeStyles } from '@material-ui/core/styles';
+
 import { DataProvider } from '@/providers/data';
-import AccountActions from '@/components/AccountActions';
+import ConnectWallet from "@/components/ConnectWallet"
 import { EthService } from '@/contracts/EthService';
+
+
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
 
 const Title = styled.div`
@@ -82,26 +92,71 @@ const TitlePadding = styled.div`
 `;
 
 
-
 function Claim(props) {
+
+  const [redirect, setRedirect] = React.useState(null);
+
+  const [open, setOpen] = React.useState(false);
+  const [statusMessage, setStatusMessage] = React.useState('');
+  const [severity, setSeverity] = React.useState('success');
+
+  const showStatus = (severity, message) => {
+    setSeverity(severity)
+    setStatusMessage(message);
+    setOpen(true);
+  }
+
+  const claimTrustToken = async () => {
+    const rd = await EthService.registeredDistributions(await EthService.getActiveAccount());
+    console.log("claimTrustToken: registeredDistributions => '" + rd + "' " + typeof rd);
+
+    if (rd == 0) {
+      showStatus(
+        'warning',
+        "Seems you didn't register the public key. Please contact support at support@trusttoken.com to register your public key for TrustToken transfer."
+      );
+      //return;
+    } 
+
+    const r = await EthService.claim();
+    console.log("claimTrustToken: claim => " + r);
+    showStatus('success', "Claim status: " + r);
+
+    setTimeout(() => setRedirect("/dashboard"), 10000);
+  }
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpen(false);
+  };
+
+  if (redirect)
+    return <Redirect push to={redirect} />;
+
   return (
-  <>
     <Centered>
+
       <Title> 
 
         <TitlePadding>
           The Ecosystem portal is a service for earning rewards through markets
         </TitlePadding>
 
-        <Button variant="primary" size="lg">
+        <Button variant="primary" size="lg" onClick={claimTrustToken}>
           Claim TrustTokens
         </Button>
 
-      </Title> 
+      </Title>
+
+      <Snackbar open={open} autoHideDuration={10000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity={severity}>
+          {statusMessage}
+        </Alert>
+      </Snackbar>
+
     </Centered>
-
-  </>
-
   );
 }
 
