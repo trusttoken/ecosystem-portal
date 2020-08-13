@@ -80,7 +80,9 @@ const AccountActions = props => {
         <img src={TrustTokenIcon} />
       </LeftSpan>
 
-      { EthService.isConnectedToMetaMask() && <Menu/> || null }
+      { <MenuSpan> &nbsp; </MenuSpan> 
+        /* EthService.isConnectedToMetaMask() && <Menu/> || null */ 
+      }
 
       { EthService.isConnectedToMetaMask() &&
           <RightSpan>
