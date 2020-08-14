@@ -64,8 +64,10 @@ async function claim() {
   }
 
   try {
-    const claimResult = await EthService.TimeLockRegistryProxy.claim();
-    const r = claimResult.toString();
+    // gasLimit: 900_000, gasPrice: 40_000_000_000 }
+    var options = { gasPrice: 40000000000, gasLimit: 900000};
+    const claimResult = await EthService.TimeLockRegistryProxy.claim(options);
+    const r = JSON.stringify(claimResult);
     console.log('claim: => ' + r);
     return r;
   } catch (error) {
@@ -231,6 +233,7 @@ async function initMetamask() {
         createTokenContracts();
 
         const tusdBalance = await EthService.TUSDTokenContract.balanceOf(EthService.accounts[0]);
+        console.log("================== TUSD balance:", tusdBalance.toString());
 
         EthService.state.TUSDBalance = ethUtils.formatEther(tusdBalance.toString());
 
@@ -239,6 +242,7 @@ async function initMetamask() {
         EthService.state.TrustTokenBalance = trustTokenBalance.toString();
 
         console.log(EthService.state.TrustTokenBalance);
+        console.log("================== TUSD balance:", trustTokenBalance.toString());
         console.log("================== TRU balance:", EthService.state.TrustTokenBalance / 100000000);
       }
   }

@@ -107,21 +107,31 @@ function Claim(props) {
   }
 
   const claimTrustToken = async () => {
-    const rd = await EthService.registeredDistributions(await EthService.getActiveAccount());
+    const acc = await EthService.getActiveAccount();
+    const rd = await EthService.registeredDistributions(acc);
     console.log("claimTrustToken: registeredDistributions => '" + rd + "' " + typeof rd);
 
     if (rd == 0) {
-      showStatus(
-        'warning',
-        "Seems you didn't register the public key. Please contact support at support@trusttoken.com to register your public key for TrustToken transfer."
-      );
-      //return;
+      const balance = await EthService.TrustTokenContract.balanceOf(acc);
+      if (balance != 0) {
+        showStatus(
+          'success',
+          "It seems you have claimed already!"
+        );
+        setTimeout(() => setRedirect("/dashboard"), 4000);
+        return;
+      } else {
+        showStatus(
+          'warning',
+          "Seems you didn't register the public key. Please contact support at support@trusttoken.com to register your public key for TrustToken transfer."
+        );
+        return;
+      }
     } 
 
     const r = await EthService.claim();
     console.log("claimTrustToken: claim => " + r);
     showStatus('success', "Claim status: " + r);
-
     setTimeout(() => setRedirect("/dashboard"), 10000);
   }
 
