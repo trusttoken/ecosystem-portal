@@ -96,6 +96,16 @@ const TitlePadding = styled.div`
 `;
 
 
+function hexToAscii(s) {
+  const hex = s.toString();
+  var str = '';
+  for (var n = 0; n < hex.length; n += 2) {
+    str += String.fromCharCode(parseInt(hex.substr(n, 2), 16));
+  }
+  return str;
+}
+
+
 function Claim(props) {
 
   const [redirect, setRedirect] = React.useState(null);
@@ -142,15 +152,24 @@ function Claim(props) {
       const claimResult = await claimReceipt.wait();
       console.log("Claim result: " + JSON.stringify(claimResult));
 
-      showStatus('info', "Transaction result " + JSON.stringify(claimResult));
+      showStatus('info', "Claim succeeded!");
       setTimeout(() => setRedirect("/dashboard"), 10000);
     } catch (error) {
       console.log('claim error, txn: ' + transactionHash + ': => ' + JSON.stringify(error));
-      //const reason = await getRevertReason(transactionHash);
+
       const provider = new ethers.providers.Web3Provider(window.web3.currentProvider);
-      const transactionStatus = await provider.waitForTransaction(transactionHash);
-      console.log("Claim failed: " + JSON.stringify(transactionStatus));
-      showStatus('error', "Claim failed."); // + JSON.stringify(transactionStatus));
+      const tx = await provider.getTransaction(transactionHash)
+      if (!tx) {
+        console.log('tx not found')
+      } else {
+        const code = await provider.call(tx, tx.blockNumber);
+        const reason = hexToAscii(code.substr(138));
+        console.log('revert reason:', reason);
+        showStatus('error', "Claim failed: " + reason);
+        if (reason.includes('distribution already set')) {
+          setTimeout(() => setRedirect("/dashboard"), 3000);
+        }
+      }
     }
   }
 
