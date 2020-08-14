@@ -63,18 +63,10 @@ async function claim() {
     await initMetamask();
   }
 
-  try {
-    // gasLimit: 900_000, gasPrice: 40_000_000_000 }
-    var options = { gasPrice: 40000000000, gasLimit: 900000};
-    const claimResult = await EthService.TimeLockRegistryProxy.claim(options);
-    const r = JSON.stringify(claimResult);
-    console.log('claim: => ' + r);
-    return r;
-  } catch (error) {
-    const r = JSON.stringify(error);
-    console.log(r);
-    return r;
-  }
+  const options = { gasLimit: 900000 };
+  const claimResult = await EthService.TimeLockRegistryProxy.claim(options);
+  console.log('claim: => ' + JSON.stringify(claimResult));
+  return claimResult;
 }
 
 async function registeredDistributions(address) {
@@ -86,7 +78,8 @@ async function registeredDistributions(address) {
     console.log('registeredDistributions(' + address + '): => ' + amount);
     return amount;
   } catch (error) {
-    console.log(error);
+    console.log("registeredDistributions error:" + JSON.stringfiy(error));
+    return 0;
   }
 }
 

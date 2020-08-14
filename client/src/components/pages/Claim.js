@@ -2,6 +2,9 @@ import React from 'react';
 import styled from 'styled-components';
 import Button from 'react-bootstrap/Button';
 import { Redirect } from 'react-router-dom';
+import { ethers } from 'ethers';
+
+//import getRevertReason from 'eth-revert-reason';
 
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
@@ -10,6 +13,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { DataProvider } from '@/providers/data';
 import ConnectWallet from "@/components/ConnectWallet"
 import { EthService } from '@/contracts/EthService';
+
 
 
 function Alert(props) {
@@ -108,10 +112,10 @@ function Claim(props) {
 
   const claimTrustToken = async () => {
     const acc = await EthService.getActiveAccount();
-    const rd = await EthService.registeredDistributions(acc);
-    console.log("claimTrustToken: registeredDistributions => '" + rd + "' " + typeof rd);
+    const registeredDistribution = await EthService.registeredDistributions(acc);
+    console.log("claimTrustToken: registeredDistributions => '" + registeredDistribution + "' " + typeof registeredDistribution);
 
-    if (rd == 0) {
+    if (registeredDistribution == 0) {
       const balance = await EthService.TrustTokenContract.balanceOf(acc);
       if (balance != 0) {
         showStatus(
@@ -129,10 +133,25 @@ function Claim(props) {
       }
     } 
 
-    const r = await EthService.claim();
-    console.log("claimTrustToken: claim => " + r);
-    showStatus('success', "Claim status: " + r);
-    setTimeout(() => setRedirect("/dashboard"), 10000);
+    let transactionHash;
+    try {
+      const claimReceipt = await EthService.claim();
+      console.log("Claim receipt: " + JSON.stringify(claimReceipt));
+      transactionHash = claimReceipt.hash;
+      showStatus('info', "Transaction " + transactionHash + " sent and pending")
+      const claimResult = await claimReceipt.wait();
+      console.log("Claim result: " + JSON.stringify(claimResult));
+
+      showStatus('info', "Transaction result " + JSON.stringify(claimResult));
+      setTimeout(() => setRedirect("/dashboard"), 10000);
+    } catch (error) {
+      console.log('claim error, txn: ' + transactionHash + ': => ' + JSON.stringify(error));
+      //const reason = await getRevertReason(transactionHash);
+      const provider = new ethers.providers.Web3Provider(window.web3.currentProvider);
+      const transactionStatus = await provider.waitForTransaction(transactionHash);
+      console.log("Claim failed: " + JSON.stringify(transactionStatus));
+      showStatus('error', "Claim failed."); // + JSON.stringify(transactionStatus));
+    }
   }
 
   const handleClose = (event, reason) => {
