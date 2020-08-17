@@ -128,6 +128,10 @@ function Claim(props) {
     //  this.props.history.push(window.location.pathname);
     //  return;
     //}
+    if (processing) {
+      console.log("claimTrustToken: claiming now");
+      return;
+    }
 
     const acc = await EthService.getActiveAccount();
     const registeredDistribution = await EthService.registeredDistributions(acc);
@@ -211,7 +215,22 @@ function Claim(props) {
           The Ecosystem portal is a service for earning rewards through markets
         </TitlePadding>
 
-        <Button variant="primary" size="lg" onClick={claimTrustToken}>
+        <style type="text/css">
+            {`
+            .btn-denim {
+              background-color: #1253fa;
+              color: white;
+            }
+
+            .btn-xxl {
+              padding: 1rem 1.5rem;
+              font-size: 1.5rem;
+            }
+            `}
+       </style>
+
+
+        <Button variant="denim" size="lg" onClick={claimTrustToken}>
           {processing
           &&
           <div>
