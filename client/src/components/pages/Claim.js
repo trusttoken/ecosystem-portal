@@ -217,6 +217,9 @@ function Claim(props) {
 
         <style type="text/css">
             {`
+            .btn-denim:hover {
+             color: white !important;
+            }
             .btn-denim {
               background-color: #1253fa;
               color: white;
