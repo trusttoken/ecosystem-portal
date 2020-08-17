@@ -14,6 +14,8 @@ import { DataProvider } from '@/providers/data';
 import ConnectWallet from "@/components/ConnectWallet"
 import { EthService } from '@/contracts/EthService';
 
+import connectingAnimation from '@/assets/connecting_animation.gif';
+
 
 
 function Alert(props) {
@@ -113,6 +115,7 @@ function Claim(props) {
   const [open, setOpen] = React.useState(false);
   const [statusMessage, setStatusMessage] = React.useState('');
   const [severity, setSeverity] = React.useState('success');
+  const [processing, setProcessing] = React.useState(false);
 
   const showStatus = (severity, message) => {
     setSeverity(severity)
@@ -124,6 +127,9 @@ function Claim(props) {
     const acc = await EthService.getActiveAccount();
     const registeredDistribution = await EthService.registeredDistributions(acc);
     console.log("claimTrustToken: registeredDistributions => '" + registeredDistribution + "' " + typeof registeredDistribution);
+
+    const SUPPORT = "If you need help please send an email to support@trusttoken.com";
+    const EthLow = "Your ETH balance is low, please add some Ethereum to your account for claiming Trust Tokens.";
 
     if (registeredDistribution == 0) {
       const balance = await EthService.TrustTokenContract.balanceOf(acc);
@@ -141,10 +147,15 @@ function Claim(props) {
         );
         return;
       }
-    } 
+    }
+
+    const ethBalance = 0; // TODO: Check balance in ETH (for paying gas) is not zero or is enough to pay?
+    if (ethBalance == 0) {
+    }
 
     let transactionHash;
     try {
+      setProcessing(true);
       const claimReceipt = await EthService.claim();
       console.log("Claim receipt: " + JSON.stringify(claimReceipt));
       transactionHash = claimReceipt.hash;
@@ -153,6 +164,7 @@ function Claim(props) {
       console.log("Claim result: " + JSON.stringify(claimResult));
 
       showStatus('info', "Claim succeeded!");
+      setProcessing(false);
       setTimeout(() => setRedirect("/dashboard"), 10000);
     } catch (error) {
       console.log('claim error, txn: ' + transactionHash + ': => ' + JSON.stringify(error));
@@ -163,11 +175,13 @@ function Claim(props) {
         console.log('tx not found')
       } else {
         const code = await provider.call(tx, tx.blockNumber);
+        setProcessing(false);
         const reason = hexToAscii(code.substr(138));
         console.log('revert reason:', reason);
         showStatus('error', "Claim failed: " + reason);
         if (reason.includes('distribution already set')) {
-          setTimeout(() => setRedirect("/dashboard"), 3000);
+          //setTimeout(() => setRedirect("/dashboard"), 3000);
+          setRedirect("/dashboard");
         }
       }
     }
@@ -193,7 +207,16 @@ function Claim(props) {
         </TitlePadding>
 
         <Button variant="primary" size="lg" onClick={claimTrustToken}>
-          Claim TrustTokens
+          {processing
+          &&
+          <div>
+            Processing <img src={connectingAnimation} alt="..." width="24" height="24" />
+          </div>
+          ||
+          <div>
+            Claim TrustTokens
+          </div>
+          }
         </Button>
 
       </Title>
