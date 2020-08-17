@@ -32,7 +32,7 @@ const VestingHistory = props => {
         </td>
         <td className="text-nowrap" width="130px">
           <span style={{fontWeight: 500, fontSize: '16px', color: '#212529'}}>
-            {Number(schedule[date].amount).toLocaleString()} 
+            {Number(schedule[date].amount).toLocaleString("en-US", {style: "decimal", maximumFractionDigits: 5}) } 
           </span>
           <span className="text-muted">
             &nbsp;

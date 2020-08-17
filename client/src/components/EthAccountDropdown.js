@@ -120,7 +120,7 @@ function EnableMetaMaskDropdownItem(props) {
                   address: accounts[0]
                 });
               }
-          }
+            }
         })();
     }
 
@@ -262,7 +262,7 @@ function EthAccountDropdownItem(props) {
 
               &nbsp;
               <span style={{ float: 'right' }}>
-                {account.balance / 100000000} TRU
+                {account.balance} TRU
               </span>
             </div>
           </Block>

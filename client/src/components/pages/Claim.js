@@ -14,7 +14,7 @@ import { DataProvider } from '@/providers/data';
 import ConnectWallet from "@/components/ConnectWallet"
 import { EthService } from '@/contracts/EthService';
 
-import connectingAnimation from '@/assets/connecting_animation.gif';
+import connectingAnimation from '@/assets/connecting_animation_blue_bg_small.gif';
 
 
 
@@ -124,6 +124,11 @@ function Claim(props) {
   }
 
   const claimTrustToken = async () => {
+    //if ( ! EthService.isConnectedToMetaMask()) {
+    //  this.props.history.push(window.location.pathname);
+    //  return;
+    //}
+
     const acc = await EthService.getActiveAccount();
     const registeredDistribution = await EthService.registeredDistributions(acc);
     console.log("claimTrustToken: registeredDistributions => '" + registeredDistribution + "' " + typeof registeredDistribution);
