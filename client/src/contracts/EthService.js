@@ -86,8 +86,8 @@ async function registeredDistributions(address) {
 async function getTrustTokenBalance(address) {
   const TrustTokenContract = getTrustTokenContract();
   const trustTokenBalance = await TrustTokenContract.balanceOf(address);
-  const balance = trustTokenBalance.toString();
-  //console.log(`TRU balance of address ${address} on is ${balance}`);
+  const balance = trustTokenBalance / 100000000;
+  console.log(`TRU balance of address ${address} on is ${balance}`);
   return balance;
 }
 
@@ -230,13 +230,13 @@ async function initMetamask() {
 
         EthService.state.TUSDBalance = ethUtils.formatEther(tusdBalance.toString());
 
-        const trustTokenBalance = await EthService.TrustTokenContract.balanceOf(EthService.accounts[0]);
+        const trustTokenBalance = await getTrustTokenBalance(EthService.accounts[0]);
 
         EthService.state.TrustTokenBalance = trustTokenBalance.toString();
 
         console.log(EthService.state.TrustTokenBalance);
         console.log("================== TUSD balance:", trustTokenBalance.toString());
-        console.log("================== TRU balance:", EthService.state.TrustTokenBalance / 100000000);
+        console.log("================== TRU balance:", EthService.state.TrustTokenBalance);
       }
   }
 }
