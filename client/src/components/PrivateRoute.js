@@ -39,6 +39,7 @@ const MaybeDataProvider = props => {
 const PrivateRoute = ({
   component: Component,
   history,
+  background,
   //isLoading,
   ...rest
 }) => {
@@ -62,7 +63,7 @@ const PrivateRoute = ({
         {...rest}
         render={props => {
           return (
-            <div id="private" className="logged-in d-flex" style={backgroundDivStyle}>
+            <div id="private" className="logged-in d-flex" style={background ? backgroundDivStyle : {}}>
               { false //isLoading
                ? (
                 <div id="main">

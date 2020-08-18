@@ -70,7 +70,7 @@ const App = () => {
       <ScrollToTop />
       <Switch>
         <PublicRoute exact path="/" component={Login} />
-        <PrivateRoute exact path="/claim" component={Claim} />
+        <PrivateRoute exact path="/claim" background="true" component={Claim} />
         <PublicRoute path="/login_handler/:token" component={HandleLogin} />
         <PublicRouteNoLogo path="/terms-of-use" component={TermsOfUse} />
         <PublicRouteNoLogo path="/privacy-policy" component={PrivacyPolicy} />
