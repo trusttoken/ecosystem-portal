@@ -70,12 +70,13 @@ const VestingBars = () => {
       markers.push({
         amountLabel: amountMarkers[i].label,
         dayLabel: monthMarkers[i].dayLabel,
+        dateLabel: monthMarkers[i].dateLabel,
         left: amountMarkers[i].left,
       });
     }
     markers.push({
       amountLabel: grants[0].amount,
-      dayLabel: 750,
+      dateLabel: firstStartDate.clone().add(750, 'days').format('MM/DD/YYYY'),
       left: 100,
     });
     return markers;
@@ -223,7 +224,7 @@ const VestingBars = () => {
               <DateAndDayLabel i={index}>
                 <small className="text-muted">
                   {marker.amountLabel}<br/>
-                  Day {marker.dayLabel}
+                  {marker.dateLabel}
                 </small>
               </DateAndDayLabel>
             </div>
