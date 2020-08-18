@@ -176,7 +176,9 @@ function Claim(props) {
       setProcessing(false);
       setTimeout(() => setRedirect("/dashboard"), 10000);
     } catch (error) {
+      setProcessing(false);
       console.log('claim error, txn: ' + transactionHash + ': => ' + JSON.stringify(error));
+      showStatus('error', error.message);
 
       const provider = new ethers.providers.Web3Provider(window.web3.currentProvider);
       const tx = await provider.getTransaction(transactionHash)
@@ -184,7 +186,6 @@ function Claim(props) {
         console.log('tx not found')
       } else {
         const code = await provider.call(tx, tx.blockNumber);
-        setProcessing(false);
         const reason = hexToAscii(code.substr(138));
         console.log('revert reason:', reason);
         showStatus('error', "Claim failed: " + reason);
