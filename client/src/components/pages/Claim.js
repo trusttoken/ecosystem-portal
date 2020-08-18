@@ -51,9 +51,7 @@ const Title = styled.div`
 const ClaimButton = styled.div`
   position: absolute;
   height: 50px;
-  left: 0px;
-  right: 0px;
-  top: 0px;
+  width: 265px;
 
   /* Neon */
 
@@ -68,6 +66,8 @@ const ClaimText = styled.div`
   left: 24px;
   right: 24px;
   top: 13px;
+  cursor: pointer;
+
 
   /* Body 2 / Medium 16px */
 
@@ -145,7 +145,7 @@ function Claim(props) {
       if (balance != 0) {
         showStatus(
           'success',
-          "It seems you have claimed already!"
+          'You have already claimed TrustTokens, if you are facing any problems please send us an email to support@trusttoken.com'
         );
         setTimeout(() => setRedirect("/dashboard"), 4000);
         return;
@@ -158,9 +158,6 @@ function Claim(props) {
       }
     }
 
-    const ethBalance = 0; // TODO: Check balance in ETH (for paying gas) is not zero or is enough to pay?
-    if (ethBalance == 0) {
-    }
 
     let transactionHash;
     try {
@@ -213,28 +210,12 @@ function Claim(props) {
       <Title> 
 
         <TitlePadding>
-          The Ecosystem portal is a service for earning rewards through markets
+          &nbsp;
         </TitlePadding>
 
-        <style type="text/css">
-            {`
-            .btn-denim:hover {
-             color: white !important;
-            }
-            .btn-denim {
-              background-color: #1253fa;
-              color: white;
-            }
 
-            .btn-xxl {
-              padding: 1rem 1.5rem;
-              font-size: 1.5rem;
-            }
-            `}
-       </style>
-
-
-        <Button variant="denim" size="lg" onClick={claimTrustToken}>
+        <ClaimButton onClick={claimTrustToken}>
+          <ClaimText>
           {processing
           &&
           <div>
@@ -245,7 +226,8 @@ function Claim(props) {
             Claim TrustTokens
           </div>
           }
-        </Button>
+          </ClaimText>
+        </ClaimButton>
 
       </Title>
 
