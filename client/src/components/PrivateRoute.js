@@ -15,7 +15,13 @@ import { ThemeProvider } from '@/providers/theme'
 import { DataProvider } from '@/providers/data'
 
 import { EthService } from '@/contracts/EthService';
+import backgroundImage from '@/assets/starting_screen.png';
 
+const backgroundDivStyle = {
+  width: '100%',
+  backgroundImage: `url(${backgroundImage})`,
+  backgroundSize: 'cover'
+};
 
 const MaybeDataProvider = props => {
   return EthService.isConnectedToMetaMask()
@@ -56,7 +62,7 @@ const PrivateRoute = ({
         {...rest}
         render={props => {
           return (
-            <div id="private" className="logged-in d-flex">
+            <div id="private" className="logged-in d-flex" style={backgroundDivStyle}>
               { false //isLoading
                ? (
                 <div id="main">
