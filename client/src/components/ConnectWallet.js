@@ -169,8 +169,12 @@ class ConnectWallet extends Component {
           this.setState({ loading: true });
           EthService.enableMetamask()
           .then(enableRes => {
+            console.log("MetaMask result:" + JSON.stringify(enableRes));
+
             if (enableRes.code === 4001) {
+              // enableRes.message == "User rejected the request."
               console.log("MetaMask NOT enabled.");
+              this.setState({ loading: false });
             } else if (enableRes.code) {
               console.log("MetaMask NOT enabled: " + JSON.stringify(enableRes.code) + ", ::: " + JSON.stringify(enableRes));
             } else {

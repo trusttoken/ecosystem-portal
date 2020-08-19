@@ -15,11 +15,11 @@ import { ThemeProvider } from '@/providers/theme'
 import { DataProvider } from '@/providers/data'
 
 import { EthService } from '@/contracts/EthService';
-import backgroundImage from '@/assets/starting_screen.png';
+//import backgroundImage from '@/assets/starting_screen.png';
 
 const backgroundDivStyle = {
   width: '100%',
-  backgroundImage: `url(${backgroundImage})`,
+  //backgroundImage: `url(${backgroundImage})`,
   backgroundSize: 'cover'
 };
 

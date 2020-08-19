@@ -50,6 +50,7 @@ const Title = styled.div`
 
 const ClaimButton = styled.div`
   position: absolute;
+  top: 400px;
   height: 50px;
   width: 265px;
 
@@ -213,6 +214,8 @@ function Claim(props) {
           &nbsp;
         </TitlePadding>
 
+      </Title>
+
 
         <ClaimButton onClick={claimTrustToken}>
           <ClaimText>
@@ -228,8 +231,6 @@ function Claim(props) {
           }
           </ClaimText>
         </ClaimButton>
-
-      </Title>
 
       <Snackbar open={open} autoHideDuration={10000} onClose={handleClose}>
         <Alert onClose={handleClose} severity={severity}>
