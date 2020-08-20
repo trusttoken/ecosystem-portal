@@ -65,7 +65,7 @@ const Dashboard = props => {
 
   return (
     <>
-      {renderModals()}
+      { /* renderModals() */ }
       <div className="row small-gutter">
         <div className="col col-xl-12 mb-10">
           <VestingCard />
