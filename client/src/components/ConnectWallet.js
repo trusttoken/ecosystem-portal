@@ -208,7 +208,7 @@ class ConnectWallet extends Component {
             {
               this.state.loading
               ? "Open the extension and give access to the app"
-              : "To start using TrueRewards"
+              : "To claim Trust Tokens"
             }
           </Subtitle>
 
