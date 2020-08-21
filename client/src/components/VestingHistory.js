@@ -65,7 +65,7 @@ const VestingHistory = props => {
         <div style={{width: '100%'}}>
           <table className="table mb-0">
             <tbody>
-              {data.config.isLocked ? (
+              {false ? ( // data.config.isLocked ? (
                 <tr>
                   <td className="table-empty-cell" colSpan="100%">
                     Unlocking has not yet started.

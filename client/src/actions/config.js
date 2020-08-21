@@ -1,7 +1,8 @@
+import { EthService } from '@/contracts/EthService';
 
 const moment = require('moment')
 
-const { unlockDate, lockupBonusRate, earlyLockupBonusRate, earlyLockupsEnabledUntil } = require('./configuration');
+const { lockupBonusRate, earlyLockupBonusRate, earlyLockupsEnabledUntil } = require('./configuration');
 
 export const FETCH_CONFIG_PENDING = 'FETCH_CONFIG_PENDING'
 export const FETCH_CONFIG_SUCCESS = 'FETCH_CONFIG_SUCCESS'
@@ -30,10 +31,18 @@ function fetchConfigError(error) {
 export function fetchConfig() {
   console.log("::: fetchConfig");
 
-  return dispatch => {
+  return async dispatch => {
     console.log("::: fetchConfig BEGIN");
 
-    dispatch(fetchConfigPending())
+    dispatch(fetchConfigPending());
+
+    const start = await EthService.getTrustTokenLockStart();
+    const unlockDate = moment(start).add(120, 'days');
+    const isLocked = moment() < moment(unlockDate);
+
+    console.log("::: fetchConfig start: " + start);
+    console.log("::: fetchConfig unlockDate: " + unlockDate);
+    console.log("::: fetchConfig isLocked: " + isLocked);
 
     const cfg = {
       lockupBonusRate,
@@ -41,8 +50,8 @@ export function fetchConfig() {
       lockupsEnabled: true, // getLockupsEnabled(),
       earlyLockupsEnabledUntil,
       earlyLockupsEnabled: true, // getEarlyLockupsEnabled(),
-      unlockDate: unlockDate,  // TODO: retrieve from contract?
-      isLocked: moment() < moment(unlockDate),
+      unlockDate: unlockDate,
+      isLocked: isLocked,
       otcRequestEnabled: true, // ??? getOtcRequestEnabled()
     };
 

@@ -12,7 +12,7 @@ const VestingCard = () => {
   return (
     <BorderedCard style={{ minHeight: '100%' }}>
       <VestingBars />
-      {data.config.isLocked ? (
+      {false ? ( //data.config.isLocked ? (
           <>
             <h2>Revised Unlocking Schedule</h2>
             <p>

@@ -3,11 +3,6 @@ require('dotenv').config({ path: path.join(__dirname, `../.env.${process.env.NOD
 
 const moment = require('moment')
 
-//const {
-//  //transferConfirmationTimeout,
-//  lockupConfirmationTimeout
-//} = require('./shared')
-
 const discordWebhookUrl = process.env.DISCORD_WEBHOOK_URL || null
 
 const networkId = Number.parseInt(process.env.NETWORK_ID) || 999
@@ -26,12 +21,6 @@ const otcPartnerEmails = (
 ).split(',')
 
 const gasPriceMultiplier = process.env.GAS_PRICE_MULTIPLIER
-
-// Unlock date, if undefined assume tokens are locked with an unknown unlock
-// date
-const unlockDate = moment(process.env.UNLOCK_DATE, 'YYYY-MM-DD').isValid()
-  ? moment.utc(process.env.UNLOCK_DATE)
-  : undefined
 
 // Lockup bonus rate as a percentage
 const lockupBonusRate = Number(process.env.LOCKUP_BONUS_RATE) || 17.5
@@ -66,15 +55,12 @@ module.exports = {
   earlyLockupsEnabled,
   lockupsEnabled,
   lockupBonusRate,
-  //lockupConfirmationTimeout,
   lockupDuration,
   networkId,
   otcPartnerEmails,
   port,
-  unlockDate,
   largeTransferThreshold,
   largeTransferDelayMinutes,
   gasPriceMultiplier,
-  //transferConfirmationTimeout,
   otcRequestEnabled
 }
