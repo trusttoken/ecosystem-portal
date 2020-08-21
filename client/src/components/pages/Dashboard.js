@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import get from 'lodash.get'
 
 import { getNextVest } from '@/lib/shared'
@@ -15,9 +15,12 @@ import BonusCta from '@/components/BonusCta'
 import WithdrawModal from '@/components/WithdrawModal'
 import OtcRequestModal from '@/components/OtcRequestModal'
 import { EthService } from '@/contracts/EthService';
+import { fetchGrants } from '@/actions/grant';
 
 
 const Dashboard = props => {
+  useEffect(fetchGrants, []);
+
   const data = useContext(DataContext)
 
   const [displayBonusModal, setDisplayBonusModal] = useState(false)
