@@ -75,6 +75,7 @@ const App = () => {
         <PublicRouteNoLogo path="/terms-of-use" component={TermsOfUse} />
         <PublicRouteNoLogo path="/privacy-policy" component={PrivacyPolicy} />
         <PrivateRoute path="/dashboard" component={Dashboard} />
+        { /*
         <PrivateRoute path="/assurance" component={TrustTokenAssurance} />
         <PrivateRoute path="/truerewards" component={TrueRewards} />
         <PrivateRoute exact path="/lockup" component={Lockup} />
@@ -86,6 +87,8 @@ const App = () => {
         />
         <PrivateRoute path="/security" component={Security} />
         <Route component={NotFound} />
+        */
+        }
       </Switch>
     </>
   )
