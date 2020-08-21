@@ -153,12 +153,11 @@ function createTokenContracts() {
 
   const test = getEthNetwork() == 'ropsten';
 
-  // Addresses of contracts (proxies) on mainnet and ropsten
-  // TODO: update mainnet addresses
-  const TUSDTokenContractAddress = test ? '0xa2EA00Df6d8594DBc76b79beFe22db9043b8896F' : '0xB36938c51c4f67e5E1112eb11916ed70A772bD75';
-  const TrustTokenContractAddress = test ? '0x711161BaF6fA362Fa41F80aD2295F1f601b44f3F' : '0xC2A3cA255B12769242201db4B91774Cae4caEf69';
-  const StakedTokenContractAddress = test ? '0xE510468dAD975bC77F0B81fADdE2f9DdF4231cf4' : '0xC2A3cA255B12769242201db4B91774Cae4caEf69';
-  const TimeLockRegistryProxyAddress = test ? '0xa9Fe04F164DF0C75F9A9F67994Ba91Abb9932633' : '0xEeDB291fCF250C4259211469787a380eC5aAA95d';
+  // Addresses of contracts (proxies) on ropsten and mainnet
+  const TUSDTokenContractAddress = test ?     '0xa2EA00Df6d8594DBc76b79beFe22db9043b8896F' : '0x0000000000085d4780B73119b644AE5ecd22b376';
+  const TrustTokenContractAddress = test ?    '0x711161BaF6fA362Fa41F80aD2295F1f601b44f3F' : '0x4C19596f5aAfF459fA38B0f7eD92F11AE6543784';
+  const StakedTokenContractAddress = test ?   '0xE510468dAD975bC77F0B81fADdE2f9DdF4231cf4' : '0x9499e8d5a56bb9ecf1b7c6a95e1c4f5331805a2e';
+  const TimeLockRegistryProxyAddress = test ? '0xa9Fe04F164DF0C75F9A9F67994Ba91Abb9932633' : '0x5Fe2F5F2Cc97887746C5cB44386A94061F35DcC4';
 
   const signer = EthService.web3Provider.getSigner();
 
