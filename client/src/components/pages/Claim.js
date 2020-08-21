@@ -170,7 +170,7 @@ function Claim(props) {
       const claimResult = await claimReceipt.wait();
       console.log("Claim result: " + JSON.stringify(claimResult));
 
-      showStatus('info', "Claim succeeded!");
+      showStatus('info', "Claim successful!");
       setProcessing(false);
       setTimeout(() => setRedirect("/dashboard"), 10000);
     } catch (error) {
