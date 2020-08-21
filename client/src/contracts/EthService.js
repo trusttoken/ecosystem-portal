@@ -1,4 +1,5 @@
 import { ethers, utils as ethUtils } from 'ethers';
+import moment from 'moment';
 
 import { TRUSTTOKEN_CONTRACT_ADDRESSES } from '@/constants/contracts';
 
@@ -250,8 +251,7 @@ async function loadGrant() {
   const amount = await getTrustTokenBalance(account);
   const start = await getTrustTokenLockStart();
   const end = await getTrustTokenFinalEpoch();
-  // TODO: don't use nextEpoch, just add 120 days to lockStart
-  const cliff = await getTrustTokenNextEpoch();
+  const cliff = moment(start).add(120, 'days');
 
   const grant = {
     'id': 1,

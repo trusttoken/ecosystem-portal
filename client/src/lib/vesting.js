@@ -94,8 +94,6 @@ function employeeVestingSchedule(grantObj) {
  * @param {Object} grantObj: plain grant object
  */
 function investorVestingSchedule(grantObj) {
-  console.log("investorVestingSchedule: grantObj: " + JSON.stringify(grantObj))
-
   const grant = momentizeGrant(grantObj)
 
   const vestingSchedule = []
@@ -161,8 +159,6 @@ function investorVestingSchedule(grantObj) {
       vested: hasVested(vestingDate, grant),
     });
   }
-
-  console.log("vestingSchedule: " + JSON.stringify(vestingSchedule))
 
   return vestingSchedule
 }
