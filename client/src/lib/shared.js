@@ -163,11 +163,11 @@ function calculateNextVestLocked(lockups) {
   }, BigNumber(0))
 }
 
-/** Get the next vest for a user.
+/** Get the next vest.
  * @param {[Object]} grants: array of grant objects
  * @param {User|Object} user: user the grants belong to
  */
-function getNextVest(grants, user) {
+function getNextVest(grants) {
   // Flat map implementation, can remove in node >11
   const flatMap = (a, cb) => [].concat(...a.map(cb))
   const allGrantVestingSchedule = flatMap(grants, grant => {

@@ -5,13 +5,13 @@ import { vestingSchedule } from '@/lib/vesting';
 
 import { DataContext } from '@/providers/data'
 
-const VestingHistory = props => {
-  const data = useContext(DataContext)
+const VestingHistory = ({grants}) => {
+  //const data = useContext(DataContext)
 
   const showStartDate = true;
 
   const schedule = {}
-  data.grants.forEach(grant => {
+  grants.forEach(grant => {
     vestingSchedule(grant).forEach(vest => {
       const dateKey = vest.date.format()
       schedule[dateKey] = {amount: vest.amount, day: vest.day, date: dateKey}

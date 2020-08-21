@@ -38,6 +38,7 @@ const EthService = {
   getTrustTokenContract,
   claim,
   registeredDistributions,
+  loadGrant,
 };
 
 function getEthNetwork() {
@@ -242,6 +243,32 @@ async function initMetamask() {
 
 async function init(type) {
   await initMetamask();
+}
+
+async function loadGrant() {
+  const account = await getActiveAccount();
+  const amount = await getTrustTokenBalance(account);
+  const start = await getTrustTokenLockStart();
+  const end = await getTrustTokenFinalEpoch();
+  // TODO: don't use nextEpoch, just add 120 days to lockStart
+  const cliff = await getTrustTokenNextEpoch();
+
+  const grant = {
+    'id': 1,
+    'end': end,
+    'created_at': start,
+    'updated_at': start,
+    'purchase_total': null,
+    'start': start,
+    'amount': amount,
+    'purchase_date': start,
+    'investment_amount': amount,
+    'cancelled': null,
+    'purchase_round': null,
+    'grant_type': null,
+    'cliff': cliff
+  };
+  return grant;
 }
 
 export { EthService };

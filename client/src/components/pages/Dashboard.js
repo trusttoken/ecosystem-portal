@@ -1,9 +1,10 @@
-import React, { useContext, useState, useEffect } from 'react'
+import React, { useContext, useState, useEffect} from 'react'
+import { useLocation } from 'react-router-dom';
+
 import get from 'lodash.get'
 
 import { getNextVest } from '@/lib/shared'
 
-import { DataContext } from '@/providers/data'
 import BalanceCard from '@/components/BalanceCard'
 import NewsHeadlinesCard from '@/components/NewsHeadlinesCard'
 import VestingCard from '@/components/VestingCard'
@@ -19,19 +20,20 @@ import { fetchGrants } from '@/actions/grant';
 
 
 const Dashboard = props => {
-  useEffect(fetchGrants, []);
-
-  const data = useContext(DataContext)
 
   const [displayBonusModal, setDisplayBonusModal] = useState(false)
   const [displayWithdrawModal, setDisplayWithdrawModal] = useState(false)
   const [displayOtcRequestModal, setDisplayOtcRequestModal] = useState(false)
+  const [grants, setGrants] = useState([]);
 
-  const nextVest = getNextVest(data.grants, props.user)
-  const hasLockups = data.lockups.length > 0
-  const displayLockupCta =
-    data.config.earlyLockupsEnabled && !data.config.isLocked
-  const displayFullWidthLockupCta = displayLockupCta && hasLockups
+  useEffect(() => {
+    (async () => {
+      const grant = await EthService.loadGrant();
+      setGrants([grant]);
+    })();
+  }, []);
+
+  const nextVest = getNextVest(grants)
   const isEarlyLockup = displayBonusModal === 'early'
 
   const renderModals = () => (
@@ -71,7 +73,7 @@ const Dashboard = props => {
       { /* renderModals() */ }
       <div className="row small-gutter">
         <div className="col col-xl-12 mb-10">
-          <VestingCard />
+          <VestingCard grants={grants} />
         </div>
       </div>
     </>
