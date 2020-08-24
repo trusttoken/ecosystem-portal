@@ -69,7 +69,7 @@ const App = () => {
       {displayMobileWarning && renderMobileWarning()}
       <ScrollToTop />
       <Switch>
-        <PublicRoute exact path="/" component={Login} />
+        <PrivateRoute exact path="/" background="true" component={Claim} />
         <PrivateRoute exact path="/claim" background="true" component={Claim} />
         <PublicRoute path="/login_handler/:token" component={HandleLogin} />
         <PublicRouteNoLogo path="/terms-of-use" component={TermsOfUse} />
