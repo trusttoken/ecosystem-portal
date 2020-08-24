@@ -40,7 +40,33 @@ const EthService = {
   claim,
   registeredDistributions,
   loadGrant,
+  networkIdToNetworkName,
 };
+
+function networkIdToNetworkName(networkId) {
+  console.log("networkIdToNetworkName: " + networkId + " " + typeof networkId);
+  var networkName;
+  switch (networkId) {
+    case "1":
+      networkName = "mainnet";
+      break;
+    case "2":
+      networkName = "morden";
+      break;
+    case "3":
+      networkName = "ropsten";
+      break;
+    case "4":
+      networkName = "rinkeby";
+      break;
+    case "42":
+      networkName = "kovan";
+      break;
+    default:
+      networkName = "unknown (networkId: " + networkId + ")";
+  }
+  return networkName;
+}
 
 function getEthNetwork() {
   let network = process.env.ETH_NETWORK || (process.env.NODE_ENV === 'production' ? 'mainnet' : 'ropsten');
