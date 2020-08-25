@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import ReactGA from 'react-ga'
 
-ReactGA.initialize('UA-106384880-4', {
+ReactGA.initialize('UA-99382971-10', {
   debug: !process.env.ENABLE_GA,
   testMode: !process.env.ENABLE_GA
 })

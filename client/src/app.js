@@ -31,10 +31,7 @@ import NotFound from '@/components/pages/NotFound'
 
 import { pageTitle } from '@/constants';
 
-import ReactGA from 'react-ga';
 import TagManager from 'react-gtm-module';
-
-ReactGA.initialize('UA-99382971-10');
 
 const tagManagerArgs = {
     gtmId: 'GTM-PLSJ89D'
@@ -50,11 +47,6 @@ const App = () => {
   useEffect(() => {
     document.title = pageTitle
   }, [])
-
-  useEffect(
-    () => ReactGA.pageview(window.location.pathname + window.location.search)
-  );
-
 
   const dismissMobileWarning = () => {
     localStorage.setItem('mobileWarningDismissed', true)
