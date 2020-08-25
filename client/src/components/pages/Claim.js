@@ -153,7 +153,7 @@ function Claim(props) {
       } else {
         showStatus(
           'warning',
-          "Seems you didn't register the public key. Please contact support at support@trusttoken.com to register your public key for TrustToken transfer."
+          "Your public key is not registered for claiming Trust Tokens, if you have purchased Trust Tokens please reach out to support@trusttoken.com to register your public key."
         );
         return;
       }
