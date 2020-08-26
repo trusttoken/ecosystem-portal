@@ -4,27 +4,46 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { Link } from 'react-router-dom'
 
-import { fetchUser } from '@/actions/user'
-import { getUser, getIsLoading } from '@/reducers/user'
 import { getSessionExpired } from '@/reducers/session'
 import { setSessionExpired } from '@/actions/session'
+import ConnectWallet from "@/components/ConnectWallet"
 
+import Footer from '@/components/Footer';
 import AccountActions from '@/components/AccountActions'
-import Navigation from '@/components/Navigation'
 import Modal from '@/components/Modal'
 import { ThemeProvider } from '@/providers/theme'
 import { DataProvider } from '@/providers/data'
 
+import { EthService } from '@/contracts/EthService';
+import backgroundImage from '@/assets/starting_screen.png';
+
+const backgroundDivStyle = {
+  width: '100%',
+  backgroundImage: `url(${backgroundImage})`,
+  backgroundSize: 'cover'
+};
+
+const MaybeDataProvider = props => {
+  return EthService.isConnectedToMetaMask()
+    ?
+      <DataProvider>
+        {props.children}
+      </DataProvider>
+    :
+      <>
+        {props.children}
+      </>
+    ;
+};
+
 const PrivateRoute = ({
   component: Component,
   history,
-  isLoading,
-  user,
+  background,
+  //isLoading,
   ...rest
 }) => {
   const [expandSidebar, setExpandSidebar] = useState(false)
-
-  useEffect(rest.fetchUser, [])
 
   useEffect(
     () =>
@@ -44,66 +63,53 @@ const PrivateRoute = ({
         {...rest}
         render={props => {
           return (
-            <div id="private" className="logged-in d-flex">
-              {isLoading || !user ? (
+            <div id="private" className="logged-in d-flex" style={background ? backgroundDivStyle : {}}>
+              { false //isLoading
+               ? (
                 <div id="main">
                   <div className="spinner-grow" role="status">
                     <span className="sr-only">Loading...</span>
                   </div>
                 </div>
-              ) : (
+               )
+               : (
                 <>
                   <ThemeProvider>
-                    <Navigation
-                      onExpandSidebar={toggleSidebar}
-                      expandSidebar={expandSidebar}
-                      user={user}
-                    />
                     <div id="main" className={expandSidebar ? 'd-none' : ''}>
-                      <div className="d-none d-md-block">
-                        {user && <DataProvider><AccountActions user={user} /></DataProvider>}
-                      </div>
-                      <div className="mt-md-4">
-                        <DataProvider>
-                          <Component {...props} user={user} />
-                        </DataProvider>
-                      </div>
+                      { ! EthService.isConnectedToMetaMask()
+                        ? <ConnectWallet redirectTo={window.location.pathname} />
+                        :
+                          <MaybeDataProvider>
+                            <div className="d-none d-md-block">
+                              <AccountActions />
+                            </div>
+                            <div className="mt-md-4">
+                              <Component {...props} />
+                            </div>
+                          </MaybeDataProvider>
+                      }
                     </div>
+                    <Footer/>
                   </ThemeProvider>
                 </>
-              )}
+               )}
             </div>
           )
         }}
       />
-      {rest.sessionExpired && !isLoading && (
-        <Modal>
-          <h1 className="mb-2">Session Expired</h1>
-          <p>
-            Your session has expired. You will need to sign in again to
-            continue.
-          </p>
-          <Link to="/">
-            <button className="btn btn-primary btn-lg">Sign In</button>
-          </Link>
-        </Modal>
-      )}
     </>
   )
 }
 
-const mapStateToProps = ({ session, user }) => {
+const mapStateToProps = ({ session }) => {
   return {
-    isLoading: getIsLoading(user),
     sessionExpired: getSessionExpired(session),
-    user: getUser(user)
   }
 }
 
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
-      fetchUser: fetchUser,
       setSessionExpired: setSessionExpired
     },
     dispatch

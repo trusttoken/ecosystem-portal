@@ -1,22 +1,18 @@
 import React, { useContext } from 'react'
 import moment from 'moment'
 
-import { vestingSchedule } from '@trusttoken/token-transfer-server/src/lib/vesting'
+import { vestingSchedule } from '@/lib/vesting';
 
 import { DataContext } from '@/providers/data'
 
-const VestingHistory = props => {
-  const data = useContext(DataContext)
+const VestingHistory = ({grants}) => {
+  //const data = useContext(DataContext)
 
-  // Once we know the actual start date we will update it in the database
-  // (start date cannot be null in the database, so we have to enter a 'fake' one initially)
-  // and start showing it.
-  // For now we show only days from an unspecified start date.
   const showStartDate = true;
 
   const schedule = {}
-  data.grants.forEach(grant => {
-    vestingSchedule(props.user, grant).forEach(vest => {
+  grants.forEach(grant => {
+    vestingSchedule(grant).forEach(vest => {
       const dateKey = vest.date.format()
       schedule[dateKey] = {amount: vest.amount, day: vest.day, date: dateKey}
     })
@@ -36,7 +32,7 @@ const VestingHistory = props => {
         </td>
         <td className="text-nowrap" width="130px">
           <span style={{fontWeight: 500, fontSize: '16px', color: '#212529'}}>
-            {Number(schedule[date].amount).toLocaleString()} 
+            {Number(schedule[date].amount).toLocaleString("en-US", {style: "decimal", maximumFractionDigits: 5}) } 
           </span>
           <span className="text-muted">
             &nbsp;
@@ -63,13 +59,13 @@ const VestingHistory = props => {
 
   return (
     <>
-      <h2 className="mb-4">My Unlocking Schedule</h2>
+      <h2 className="mb-4">Unlocking Schedule</h2>
       <hr />
       <div className="table-card">
-        <div className="scrolling-table" style={{float: 'left', width: '30%'}}>
+        <div style={{width: '100%'}}>
           <table className="table mb-0">
             <tbody>
-              {data.config.isLocked ? (
+              {false ? ( // data.config.isLocked ? (
                 <tr>
                   <td className="table-empty-cell" colSpan="100%">
                     Unlocking has not yet started.
@@ -78,7 +74,22 @@ const VestingHistory = props => {
                   </td>
                 </tr>
               ) : (
-                tableRows
+                  <tr>
+                    <td>
+                      <table className="table mb-0">
+                        <tbody>
+                          {tableRows.splice(0, Math.ceil(tableRows.length / 2))}
+                        </tbody>
+                      </table>
+                    </td>
+                    <td>
+                      <table className="table mb-0">
+                        <tbody>
+                          {tableRows.splice(Math.ceil(tableRows.length / 2) - 2)}
+                        </tbody>
+                      </table>
+                    </td>
+                  </tr>
               )}
             </tbody>
           </table>

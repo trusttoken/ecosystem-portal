@@ -2,7 +2,7 @@ import React from 'react';
 import Header from '@/components/Header';
 import PrivacyPolicyDoc from '@/components/PrivacyPolicyDoc';
 
-const PrivacyPolicy = ({ isLoading, user }) => {
+const PrivacyPolicy = ({ isLoading }) => {
 
   if (isLoading) {
     return (

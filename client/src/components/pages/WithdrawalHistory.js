@@ -3,7 +3,11 @@ import { withRouter } from 'react-router-dom'
 import moment from 'moment'
 import get from 'lodash.get'
 
-import enums from '@trusttoken/token-transfer-server/src/enums'
+import {
+  InvestorTypes,
+  RevisedScheduleStatus,
+  TransferStatuses
+} from '@/lib/enums'
 
 import { DataContext } from '@/providers/data'
 import EthAddress from '@/components/EthAddress'
@@ -105,7 +109,7 @@ const WithdrawalHistory = ({ history }) => {
                       </td>
                       <td className="text-nowrap">
                         {transfer.status ===
-                          enums.TransferStatuses.WaitingEmailConfirm &&
+                          TransferStatuses.WaitingEmailConfirm &&
                           (moment
                             .utc()
                             .diff(moment(transfer.createdAt), 'minutes') > 5 ? (
@@ -120,36 +124,36 @@ const WithdrawalHistory = ({ history }) => {
                             </>
                           ))}
                         {[
-                          enums.TransferStatuses.Enqueued,
-                          enums.TransferStatuses.WaitingConfirmation,
-                          enums.TransferStatuses.Processing
+                          TransferStatuses.Enqueued,
+                          TransferStatuses.WaitingConfirmation,
+                          TransferStatuses.Processing
                         ].includes(transfer.status) && (
                           <>
                             <div className="status-circle bg-orange mr-2"></div>
                             Processing
                           </>
                         )}
-                        {transfer.status === enums.TransferStatuses.Paused && (
+                        {transfer.status === TransferStatuses.Paused && (
                           <>
                             <div className="status-circle bg-red mr-2"></div>
                             Paused
                           </>
                         )}
-                        {transfer.status === enums.TransferStatuses.Success && (
+                        {transfer.status === TransferStatuses.Success && (
                           <>
                             <div className="status-circle bg-green mr-2"></div>
                             Confirmed
                           </>
                         )}
-                        {transfer.status === enums.TransferStatuses.Failed && (
+                        {transfer.status === TransferStatuses.Failed && (
                           <>
                             <div className="status-circle bg-red mr-2"></div>
                             Failed
                           </>
                         )}
                         {[
-                          enums.TransferStatuses.Expired,
-                          enums.TransferStatuses.Cancelled
+                          TransferStatuses.Expired,
+                          TransferStatuses.Cancelled
                         ].includes(transfer.status) && (
                           <>
                             <div className="status-circle bg-red mr-2"></div>

@@ -6,7 +6,7 @@ import get from 'lodash.get'
 import ReactGA from 'react-ga'
 import moment from 'moment'
 
-import { lockupConfirmationTimeout } from '@trusttoken/token-transfer-server/src/shared'
+import { lockupConfirmationTimeout } from '@/lib/shared'
 
 import { DataContext } from '@/providers/data'
 import { addLockup } from '@/actions/lockup'

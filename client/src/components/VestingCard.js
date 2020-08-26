@@ -6,14 +6,13 @@ import VestingBars from '@/components/VestingBars'
 import VestingHistory from '@/components/VestingHistory'
 import VestingSchedule from '@/assets/schedule@3x.png'
 
-const VestingCard = ({ isEmployee, user }) => {
-  const data = useContext(DataContext)
+const VestingCard = ({grants}) => {
+  //const data = useContext(DataContext)
 
   return (
     <BorderedCard style={{ minHeight: '100%' }}>
-      <VestingBars user={user} />
-      {data.config.isLocked ? (
-        !isEmployee && (
+      <VestingBars grants={grants} />
+      {false ? ( //data.config.isLocked ? (
           <>
             <h2>Revised Unlocking Schedule</h2>
             <p>
@@ -22,9 +21,8 @@ const VestingCard = ({ isEmployee, user }) => {
             </p>
             <img src={VestingSchedule} className="img-fluid mx-auto mt-2" />
           </>
-        )
       ) : (
-        <VestingHistory user={user} />
+        <VestingHistory grants={grants} />
       )}
     </BorderedCard>
   )

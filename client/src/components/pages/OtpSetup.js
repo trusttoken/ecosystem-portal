@@ -1,8 +1,6 @@
 import React, { Component } from 'react'
 import { Redirect } from 'react-router-dom'
 
-import agent from '@/utils/agent'
-import { apiUrl } from '@/constants'
 
 class OtpSetup extends Component {
   state = {
@@ -18,6 +16,7 @@ class OtpSetup extends Component {
   }
 
   handleOtpSetup = async () => {
+    /*
     let response
     try {
       response = await agent.post(`${apiUrl}/api/setup_totp`)
@@ -36,6 +35,7 @@ class OtpSetup extends Component {
       otpKey: response.body.otpKey,
       loading: false
     })
+    */
   }
 
   render() {

@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 const TermsOfUseDoc = props => (
 <>
 <h1 style={{textAlign: "center"}}>TRU Purchaser Portal</h1>
-<h1 style={{textAlign: "center"}}>Terms of Use</h1><p style={{textAlign: "center"}}>While using TRU Purchase Portal you agree that you are familiar <br/> with Terms of Use of our service and accept it.</p><p style={{textAlign: "center"}}> Last modified: June 5, 2020</p>
+<h1 style={{textAlign: "center"}}>Terms of Use</h1><p style={{textAlign: "center"}}>While using TRU Purchase Portal you agree that you have read <br/> Terms of Use of our services and accept it.</p><p style={{textAlign: "center"}}> Last modified: July 27, 2020</p>
 
 <p>Welcome to the TrustToken Purchaser Portal! Please read these Terms of Use and our <Link to="/privacy-policy"> Privacy Policy </Link> (collectively the “Terms”) carefully, as you agree that you consent to these Terms by your use of this website and the services, as described further below.</p>
 <h2>Acceptance of the Terms of Use</h2>

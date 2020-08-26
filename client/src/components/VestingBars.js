@@ -6,7 +6,13 @@ import BigNumber from 'bignumber.js'
 
 import { DataContext } from '@/providers/data';
 
-import { vestingSchedule } from '@trusttoken/token-transfer-server/src/lib/vesting'
+import { vestingSchedule } from '@/lib/vesting';
+
+import {
+  calculateGranted,
+  calculateVested,
+  momentizeGrant
+} from '@/lib/shared'
 
 const DateAndDayLabel = styled.div`
   margin-top: 4px;
@@ -33,19 +39,23 @@ const Ticker = styled.div`
   padding-left: 4px;
 `;
 
-const VestingBars = ({ user }) => {
-  const data = useContext(DataContext)
+const VestingBars = ({grants}) => {
+  //const data = useContext(DataContext)
 
   const [displayPopover, setDisplayPopover] = useState({})
 
-  if (!data.grants || data.grants.length === 0) {
+  if (!grants || grants.length === 0) {
     return null;
   }
+
+  const granted = calculateGranted(grants);
+  const vested = calculateVested(grants);
+  const unvested = granted.minus(vested);
 
   const now = moment()
 
   // Momentize all the dates
-  const grants = data.grants.map(grant => {
+  const mgrants = grants.map(grant => {
     return {
       ...grant,
       start: moment(grant.start),
@@ -54,8 +64,8 @@ const VestingBars = ({ user }) => {
     }
   })
 
-  const firstStartDate = moment(Math.min(...grants.map(g => g.start)))
-  const lastEndDate = moment(Math.max(...grants.map(g => g.end)))
+  const firstStartDate = moment(Math.min(...mgrants.map(g => g.start)))
+  const lastEndDate = moment(Math.max(...mgrants.map(g => g.end)))
   const totalDuration = lastEndDate - firstStartDate
 
   const maxMarkers = 8;
@@ -70,12 +80,13 @@ const VestingBars = ({ user }) => {
       markers.push({
         amountLabel: amountMarkers[i].label,
         dayLabel: monthMarkers[i].dayLabel,
+        dateLabel: monthMarkers[i].dateLabel,
         left: amountMarkers[i].left,
       });
     }
     markers.push({
-      amountLabel: grants[0].amount,
-      dayLabel: 750,
+      amountLabel: mgrants[0].amount,
+      dateLabel: firstStartDate.clone().add(750, 'days').format('MM/DD/YYYY'),
       left: 100,
     });
     return markers;
@@ -114,7 +125,7 @@ const VestingBars = ({ user }) => {
   const generateAmountMarkers = maxMarkers => {
     return [...Array(maxMarkers + 1).keys()].map(i => {
       return {
-        label: numeral((grants[0].amount / maxMarkers) * i).format('0.0a'),
+        label: numeral((mgrants[0].amount / maxMarkers) * i).format('0.0a'),
         left: (100 / maxMarkers) * i
       }
     })
@@ -133,26 +144,24 @@ const VestingBars = ({ user }) => {
     })
   }
 
-  const total = BigNumber(data.totals.vested).plus(
-    BigNumber(data.totals.unvested)
-  )
+  const total = BigNumber(vested).plus(BigNumber(unvested))
 
   return (
     <div className="mb-5">
       <h2 style={{ marginBottom: '2.5rem' }}>Unlocking Progress</h2>
       <div id="vestingBars" style={{ position: 'relative' }}>
-        {grants.map(grant => {
+        {mgrants.map(grant => {
           // Calculate the percentage of the grant that is complete with a
           // upper bound of 100
 
           let i = 0;
-          vestingSchedule(user, grant).forEach((vest, index) => {
+          vestingSchedule(grant).forEach((vest, index) => {
               if (vest.vested) {
                   i = index;
               }
           });
 
-          const complete = data.config.isLocked ? 0 : Math.min((100.0 / maxMarkers) * i, 100)
+          const complete = false ? 0 : Math.min((100.0 / maxMarkers) * i, 100)
           // Calculate the width of the grant relative to the width of the
           // total component
           const width = ((grant.end - grant.start) / totalDuration) * 100
@@ -207,7 +216,7 @@ const VestingBars = ({ user }) => {
             position: 'absolute',
             left: `${marker.left}%`,
             top: 0,
-            height: `${1 + 2 * grants.length}rem`,
+            height: `${1 + 2 * mgrants.length}rem`,
             marginTop: '-1rem',
             pointerEvents: 'none' // Stop absolute positioning from stealing clicks
           }
@@ -223,7 +232,7 @@ const VestingBars = ({ user }) => {
               <DateAndDayLabel i={index}>
                 <small className="text-muted">
                   {marker.amountLabel}<br/>
-                  Day {marker.dayLabel}
+                  {marker.dateLabel}
                 </small>
               </DateAndDayLabel>
             </div>
@@ -232,27 +241,27 @@ const VestingBars = ({ user }) => {
       </div>
       <div
         className="row"
-        style={{ marginTop: `${5 * grants.length}rem` }}
+        style={{ marginTop: `${5 * mgrants.length}rem` }}
       >
         <div className="col-12 col-sm-4">
           <div className="status-circle bg-green mr-2"></div>
           <span className=" text-muted">
             Purchased TrustTokens
-            <Amount>{Number(grants[0].amount).toLocaleString()} <Ticker>TRU</Ticker></Amount>
+            <Amount>{Number(mgrants[0].amount).toLocaleString()} <Ticker>TRU</Ticker></Amount>
           </span>
         </div>
         <div className="col-12 col-sm-4">
           <div className="status-circle bg-green mr-2"></div>
           <span className="text-muted">
             Unlocked
-            <Amount>{Number(data.totals.vested).toLocaleString()} <Ticker>TRU</Ticker></Amount>
+            <Amount>{Number(vested).toLocaleString()} <Ticker>TRU</Ticker></Amount>
           </span>
         </div>
         <div className="col-12 col-sm-4">
           <div className="status-circle mr-2"></div>
           <span className=" text-muted">
             Locked
-            <Amount>{Number(data.totals.unvested).toLocaleString()} <Ticker>TRU</Ticker></Amount>
+            <Amount>{Number(unvested).toLocaleString()} <Ticker>TRU</Ticker></Amount>
           </span>
         </div>
       </div>

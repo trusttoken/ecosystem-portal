@@ -4,7 +4,7 @@ import {
   calculateLocked,
   calculateNextVestLocked,
   momentizeLockup
-} from '@trusttoken/token-transfer-server/src/shared'
+} from '@/lib/shared'
 
 import {
   ADD_LOCKUP_PENDING,

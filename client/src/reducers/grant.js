@@ -2,7 +2,7 @@ import {
   calculateGranted,
   calculateVested,
   momentizeGrant
-} from '@trusttoken/token-transfer-server/src/shared'
+} from '@/lib/shared'
 
 import {
   FETCH_GRANTS_PENDING,
@@ -44,10 +44,10 @@ export default function grantsReducer(state = initialState, action) {
 export const getGrants = state => state.grants.map(momentizeGrant)
 export const getError = state => state.error
 export const getIsLoading = state => state.isLoading
-export const getTotals = (user, state) => {
+export const getTotals = (state) => {
   const grants = getGrants(state)
   const granted = calculateGranted(grants)
-  const vested = calculateVested(user, grants)
+  const vested = calculateVested(grants)
   const unvested = granted.minus(vested)
   return { granted, vested, unvested }
 }

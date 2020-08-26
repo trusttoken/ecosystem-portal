@@ -1,5 +1,3 @@
-import agent from '@/utils/agent'
-import { apiUrl } from '@/constants'
 
 export const ADD_TRANSFER_PENDING = 'ADD_TRANSFER_PENDING'
 export const ADD_TRANSFER_SUCCESS = 'ADD_TRANSFER_SUCCESS'
@@ -73,46 +71,54 @@ function fetchTransfersError(error) {
 
 export function addTransfer(transfer) {
   return dispatch => {
-    dispatch(addTransferPending())
+    dispatch(addTransferPending());
+    dispatch(addTransferSuccess([{}]));
 
-    return agent
-      .post(`${apiUrl}/api/transfers`)
-      .send(transfer)
-      .then(response => dispatch(addTransferSuccess(response.body)))
-      .catch(error => {
-        dispatch(addTransferError(error))
-        throw error
-      })
+    //return agent
+    //  .post(`${apiUrl}/api/transfers`)
+    //  .send(transfer)
+    //  .then(response => dispatch(addTransferSuccess(response.body)))
+    //  .catch(error => {
+    //    dispatch(addTransferError(error))
+    //    throw error
+    //  })
   }
 }
 
 export function confirmTransfer(id, token) {
   return dispatch => {
-    dispatch(confirmTransferPending())
+    dispatch(confirmTransferPending());
+    dispatch(confirmTransferSuccess([{}]));
 
-    return agent
-      .post(`${apiUrl}/api/transfers/${id}`)
-      .send({ token })
-      .then(response => dispatch(confirmTransferSuccess(response.body)))
-      .catch(error => {
-        dispatch(confirmTransferError(error))
-        throw error
-      })
+    //return agent
+    //  .post(`${apiUrl}/api/transfers/${id}`)
+    //  .send({ token })
+    //  .then(response => dispatch(confirmTransferSuccess(response.body)))
+    //  .catch(error => {
+    //    dispatch(confirmTransferError(error))
+    //    throw error
+    //  })
   }
 }
 
 export function fetchTransfers() {
-  return dispatch => {
-    dispatch(fetchTransfersPending())
+  console.log("::: fetchTransfers");
 
-    agent
-      .get(`${apiUrl}/api/transfers`)
-      .then(response => dispatch(fetchTransfersSuccess(response.body)))
-      .catch(error => {
-        dispatch(fetchTransfersError(error))
-        if (error.status !== 401) {
-          throw error
-        }
-      })
+  return dispatch => {
+    console.log("::: fetchTransfers BEGIN");
+
+    dispatch(fetchTransfersPending());
+
+    dispatch(fetchTransfersSuccess([]));
+    //agent
+    //  .get(`${apiUrl}/api/transfers`)
+    //  .then(response => dispatch(fetchTransfersSuccess(response.body)))
+    //  .catch(error => {
+    //    dispatch(fetchTransfersError(error))
+    //    if (error.status !== 401) {
+    //      throw error
+    //    }
+    //  })
+    console.log("::: fetchTransfers END");
   }
 }

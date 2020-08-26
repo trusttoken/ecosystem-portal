@@ -3,7 +3,14 @@ import { Link } from 'react-router-dom';
 
 const Footer = () => {
   return (
-      <div className="text-right" style={{ color: '#638298' }}>
+      <div className="text-right" style={{
+                                            position: 'fixed',
+                                            left: 0,
+                                            bottom: 0,
+                                            width: '100%',
+                                            textAalign: 'right',
+                                        }}
+      >
         <small>
 
           <Link

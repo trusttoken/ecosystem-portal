@@ -139,7 +139,6 @@ const webpackConfig = {
       TEAM_API_URL: process.env.TEAM_API_URL || 'http://localhost:5000',
       ENABLE_GA: process.env.ENABLE_GA || false,
       INVESTOR_API_URL: process.env.INVESTOR_API_URL || 'http://localhost:5000',
-      MAGIC_PUBLISHABLE_KEY: process.env.MAGIC_PUBLISHABLE_KEY || 'pk_test_338A272670C8642F',
     })
   ],
 

@@ -1,5 +1,5 @@
 // Code shared between token-transfer-client and token-transfer-server
-// The imports in here should be kept minimal o avoid issues
+// The imports in here should be kept minimal to avoid issues
 // with webpack building and node
 
 const BigNumber = require('bignumber.js')
@@ -10,7 +10,7 @@ const {
   vestedAmount,
   toMoment,
   momentizeGrant
-} = require('./lib/vesting')
+} = require('./vesting')
 const enums = require('./enums')
 
 /**
@@ -53,13 +53,13 @@ function calculateGranted(grants) {
  * @param {User|Object} user: user to calculate grants for
  * @param {[Object]} grants: grant object
  */
-function calculateVested(user, grants) {
+function calculateVested(grants) {
   return grants.reduce((total, grant) => {
     if (grant.dataValues) {
       // Convert if instance of sequelize model
       grant = grant.get({ plain: true })
     }
-    return total.plus(vestedAmount(user, grant))
+    return total.plus(vestedAmount(grant))
     // @ts-ignore
   }, BigNumber(0))
 }
@@ -163,15 +163,15 @@ function calculateNextVestLocked(lockups) {
   }, BigNumber(0))
 }
 
-/** Get the next vest for a user.
+/** Get the next vest.
  * @param {[Object]} grants: array of grant objects
  * @param {User|Object} user: user the grants belong to
  */
-function getNextVest(grants, user) {
+function getNextVest(grants) {
   // Flat map implementation, can remove in node >11
   const flatMap = (a, cb) => [].concat(...a.map(cb))
   const allGrantVestingSchedule = flatMap(grants, grant => {
-    return vestingSchedule(user, grant)
+    return vestingSchedule(grant)
   })
   const sortedUnvested = allGrantVestingSchedule
     .filter(v => !v.vested)
@@ -242,7 +242,7 @@ function lockupHasExpired(lockup) {
   )
 }
 
-module.exports = {
+export {
   calculateGranted,
   calculateVested,
   calculateUnlockedEarnings,
@@ -258,4 +258,4 @@ module.exports = {
   transferHasExpired,
   lockupConfirmationTimeout,
   transferConfirmationTimeout
-}
+};

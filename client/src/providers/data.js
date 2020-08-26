@@ -31,6 +31,14 @@ import {
   getIsLoading as getTransferIsLoading,
   getWithdrawn
 } from '@/reducers/transfer'
+import { EthService } from '@/contracts/EthService';
+
+import styled from 'styled-components';
+
+const Centered = styled.div`
+  text-align: center;
+`;
+
 
 export const DataContext = createContext()
 
@@ -51,9 +59,20 @@ const _DataProvider = ({ children, ...rest }) => {
     rest.lockupIsLoading
   ) {
     return (
+    <>
       <div className="spinner-grow" role="status">
         <span className="sr-only">Loading...</span>
       </div>
+      { EthService.networkIdToNetworkName(web3.version.network) != EthService.getEthNetwork()
+        ? <Centered>
+            Your MetaMask wallet is connected to Ethereum network <b>{EthService.networkIdToNetworkName(web3.version.network)}</b>.
+            <br/>
+
+            Please connect to <b>{EthService.getEthNetwork()}</b>.
+          </Centered>
+        : null
+      }
+    </>
     )
   }
 
@@ -97,7 +116,6 @@ const mapStateToProps = ({
   grant,
   lockup,
   transfer,
-  user
 }) => {
   return {
     activeAccount: getActiveAccount(account),
@@ -112,7 +130,7 @@ const mapStateToProps = ({
     lockupIsLoading: getLockupIsLoading(lockup),
     transferIsLoading: getTransferIsLoading(transfer),
     withdrawn: getWithdrawn(transfer),
-    grantTotals: getGrantTotals(user.user, grant),
+    grantTotals: getGrantTotals(grant),
     lockupTotals: getLockupTotals(lockup)
   }
 }

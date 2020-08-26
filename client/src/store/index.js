@@ -10,7 +10,6 @@ import news from '@/reducers/news'
 import otc from '@/reducers/otc'
 import session from '@/reducers/session'
 import transfer from '@/reducers/transfer'
-import user from '@/reducers/user'
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 
@@ -25,7 +24,6 @@ export default createStore(
     otc,
     session,
     transfer,
-    user
   }),
   composeEnhancers(applyMiddleware(thunk))
 )

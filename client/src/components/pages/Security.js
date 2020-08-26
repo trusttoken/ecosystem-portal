@@ -7,7 +7,7 @@ import TwoFactorAuthenticatorIcon from '@/assets/2fa.svg'
 import AccountTable from '@/components/AccountTable'
 import SessionTable from '@/components/SessionTable'
 
-const Security = ({ user }) => {
+const Security = () => {
   const data = useContext(DataContext)
 
   return (
@@ -19,7 +19,6 @@ const Security = ({ user }) => {
             <div className="row">
               <div className="col-xl-6">
                 <strong style={{ fontSize: '18px' }}>
-                  {get(user, 'email')}
                 </strong>
               </div>
               <div className="col-xl-6 text-xl-right">

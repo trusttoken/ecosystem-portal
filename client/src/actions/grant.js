@@ -1,5 +1,4 @@
-import agent from '@/utils/agent'
-import { apiUrl } from '@/constants'
+import { EthService } from '@/contracts/EthService';
 
 export const FETCH_GRANTS_PENDING = 'FETCH_GRANTS_PENDING'
 export const FETCH_GRANTS_SUCCESS = 'FETCH_GRANTS_SUCCESS'
@@ -25,18 +24,19 @@ function fetchGrantsError(error) {
   }
 }
 
-export function fetchGrants() {
-  return dispatch => {
-    dispatch(fetchGrantsPending())
 
-    agent
-      .get(`${apiUrl}/api/grants`)
-      .then(response => dispatch(fetchGrantsSuccess(response.body)))
-      .catch(error => {
-        dispatch(fetchGrantsError(error))
-        if (error.status !== 401) {
-          throw error
-        }
-      })
+export function fetchGrants() {
+  return async dispatch => {
+    console.log("fetchGrants: START");
+
+    dispatch(fetchGrantsPending());
+
+    try {
+      const grant = await EthService.loadGrant();
+      dispatch(fetchGrantsSuccess([grant]));
+      console.log("fetchGrants: END");
+    } catch (error) {
+      dispatch(fetchGrantsError(error))
+    }
   }
 }

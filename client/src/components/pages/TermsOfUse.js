@@ -2,7 +2,7 @@ import React from 'react';
 import Header from '@/components/Header';
 import TermsOfUseDoc from '@/components/TermsOfUseDoc';
 
-const TermsOfUse = ({ isLoading, user }) => {
+const TermsOfUse = ({ isLoading }) => {
 
   if (isLoading) {
     return (

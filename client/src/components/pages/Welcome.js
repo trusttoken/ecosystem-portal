@@ -3,7 +3,7 @@ import { Redirect } from 'react-router-dom'
 
 import { getNextOnboardingPage } from '@/utils'
 
-const Welcome = ({ isLoading, user }) => {
+const Welcome = ({ isLoading }) => {
   const [redirectTo, setRedirectTo] = useState(null)
 
   if (redirectTo) {
@@ -18,7 +18,7 @@ const Welcome = ({ isLoading, user }) => {
     )
   }
 
-  const nextOnboardingStep = getNextOnboardingPage(user)
+  const nextOnboardingStep = getNextOnboardingPage()
 
   return (
     <div className="action-card">
@@ -35,12 +35,10 @@ const Welcome = ({ isLoading, user }) => {
       <div className="form-group">
         <label className="mt-0">Purchaser</label>
         <br />
-        {user.name}
       </div>
       <div className="form-group">
         <label className="mt-0">Email Address</label>
         <br />
-        {user.email}
       </div>
       <hr className="mx-5" />
       <button
