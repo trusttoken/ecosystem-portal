@@ -125,10 +125,6 @@ function Claim(props) {
   }
 
   const claimTrustToken = async () => {
-    //if ( ! EthService.isConnectedToMetaMask()) {
-    //  this.props.history.push(window.location.pathname);
-    //  return;
-    //}
     if (processing) {
       console.log("claimTrustToken: claiming now");
       return;
@@ -176,8 +172,15 @@ function Claim(props) {
     } catch (error) {
       setProcessing(false);
       console.log('claim error, txn: ' + transactionHash + ': => ' + JSON.stringify(error));
-      showStatus('error', error.message);
-
+      if (error.message.includes("Ledger device: Invalid data received")) {
+        showStatus('error', "Please change your Ledger Ethereum app settings to allow contract data");
+      } else if (error.message.includes("Failed to sign with Ledger device: U2F DEVICE_INELIGIBLE")) {
+        // Error: TransportError: Failed to sign with Ledger device: U2F DEVICE_INELIGIBLE
+        showStatus('error', "You may want to try again but review the transaction on your Ledger device a bit quicker. " + error.message);
+      } else {
+        showStatus('error', error.message);
+      }
+      
       const provider = new ethers.providers.Web3Provider(window.web3.currentProvider);
       const tx = await provider.getTransaction(transactionHash)
       if (!tx) {
@@ -188,7 +191,6 @@ function Claim(props) {
         console.log('revert reason:', reason);
         showStatus('error', "Claim failed: " + reason);
         if (reason.includes('distribution already set')) {
-          //setTimeout(() => setRedirect("/dashboard"), 3000);
           setRedirect("/dashboard");
         }
       }
