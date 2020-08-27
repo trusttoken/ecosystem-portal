@@ -74,7 +74,7 @@ function getEthNetwork() {
 }
 
 function isConnectedToMetaMask() {
-  return typeof web3 !== "undefined" && web3.eth.accounts && web3.eth.accounts.length;
+  return typeof window.ethereum !== "undefined";
 }
 
 function getTrustTokenContract() {
