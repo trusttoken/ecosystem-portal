@@ -143,7 +143,9 @@ export function fetchAccounts() {
       });
     }
 
-    const accounts = window.web3.eth.accounts.map(address => ({address: address, nickname: 'MetaMask Wallet', balance: null}));
+    console.log("fetchAccounts: window.ethereum: " + window.ethereum);
+
+    const accounts = [{address: window.ethereum.selectedAddress || window.eth.accounts[0], nickname: 'MetaMask Wallet', balance: null}];
     console.log("fetchAccounts: " + JSON.stringify(accounts));
     // Fetch balance of the first account, so we can show it immediately.
     if (accounts.length == 0) {

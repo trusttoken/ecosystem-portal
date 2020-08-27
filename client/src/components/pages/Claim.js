@@ -181,7 +181,7 @@ function Claim(props) {
         showStatus('error', error.message);
       }
       
-      const provider = new ethers.providers.Web3Provider(window.web3.currentProvider);
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
       const tx = await provider.getTransaction(transactionHash)
       if (!tx) {
         console.log('tx not found')

@@ -108,16 +108,16 @@ function EnableMetaMaskDropdownItem(props) {
             } else {
               setTooltipText("MetaMask enabled!");
 
-              const accounts = window.web3 && window.web3.eth && window.web3.eth.accounts;
-              console.log('MetaMask accounts:', JSON.stringify(accounts));
+              const account = window.ethereum.selectedAddress || window.web3.eth.accounts[0];
+              console.log('MetaMask account:', JSON.stringify(account));
 
-              if (!accounts || accounts.length === 0) {
+              if (!account) {
                 console.log("No MetaMask account!?");
               } else {
-                console.log("Adding MetaMask account " + JSON.stringify(accounts[0]));
+                console.log("Adding MetaMask account " + JSON.stringify(account));
                 const result = await props.parentprops.addAccount({
                   nickname: "MetaMask Wallet",
-                  address: accounts[0]
+                  address: account
                 });
               }
             }
