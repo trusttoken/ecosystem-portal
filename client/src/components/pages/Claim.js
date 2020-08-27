@@ -176,7 +176,7 @@ function Claim(props) {
         showStatus('error', "Please change your Ledger Ethereum app settings to allow contract data");
       } else if (error.message.includes("Failed to sign with Ledger device: U2F DEVICE_INELIGIBLE")) {
         // Error: TransportError: Failed to sign with Ledger device: U2F DEVICE_INELIGIBLE
-        showStatus('error', "You may want to try again but review the transaction on your Ledger device a bit quicker. " + error.message);
+        showStatus('error', "You failed to review and accept the transaction on your Ledger device. Please try again! " + error.message);
       } else {
         showStatus('error', error.message);
       }
