@@ -141,12 +141,14 @@ async function getTrustTokenNextEpoch() {
 
 
 async function getActiveAccount() {
-  console.log("getActiveAccount: window.ethereum.selectedAccount: " + window.ethereum.selectedAccount);
+  //console.log("getActiveAccount: window.ethereum.selectedAccount: " + window.ethereum.selectedAccount);
   // console.log("getActiveAccount: window.web3.eth.accounts[0]: " + window.web3.eth.acccounts[0]);
-  let account = window.ethereum.selectedAccount || window.web3.eth.accounts[0];
-  if (! account) {
+  let account;
+  if (typeof window.web3 === "undefined") {
     await window.ethereum.enable();
     account = window.ethereum.selectedAccount;
+  } else {
+    account = window.web3.eth.accounts[0];
   }
   console.log("getActiveAccount: account: " + account);
   return account;
