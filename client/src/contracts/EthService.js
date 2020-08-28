@@ -14,7 +14,6 @@ const EthService = {
     metamaskInstalled: false,
     TUSDBalance: null,
   },
-  accounts: null,
   wallet: null,
   TUSDTokenContract: null,
   TrustTokenContract: null,
@@ -72,7 +71,7 @@ function getEthNetwork() {
 }
 
 function isConnectedToMetaMask() {
-  return typeof window.ethereum !== "undefined" && (window.ethereum.selectedAddress || window.web3.eth.accounts[0]);
+  return typeof window.ethereum !== "undefined" && window.ethereum.selectedAddress;
 }
 
 function getTrustTokenContract() {
@@ -160,12 +159,6 @@ async function enableMetamask() {
 }
 
 
-function handleMetamaskAccountsChangedEvent() {
-  window.ethereum.on('accountsChanged', function (accounts) {
-    console.log('metamask accounts changed coolio!');
-    window.location.reload();
-  });
-}
 
 function createTokenContracts() {
   console.log("createTokenContracts:");
@@ -236,10 +229,16 @@ async function initMetamask() {
     if (enableRes.code === 4001) {
         return false;
       } else {
-        handleMetamaskAccountsChangedEvent();
+       
+
         const provider = new ethers.providers.Web3Provider(window.ethereum);
         const account = await provider.getSigner().getAddress();
         console.log("initMetamask: MetMask account: " + account);
+
+        window.ethereum.on('accountsChanged', function (accounts) {
+          console.log('metamask accounts changed coolio!');
+          window.location.reload();
+        });
 
         EthService.accounts = enableRes;
 
