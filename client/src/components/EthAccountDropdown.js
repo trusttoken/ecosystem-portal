@@ -108,7 +108,7 @@ function EnableMetaMaskDropdownItem(props) {
             } else {
               setTooltipText("MetaMask enabled!");
 
-              const account = window.ethereum.selectedAddress || window.web3.eth.accounts[0];
+              const account = await EthService.signer().getAddress();
               console.log('MetaMask account:', JSON.stringify(account));
 
               if (!account) {
