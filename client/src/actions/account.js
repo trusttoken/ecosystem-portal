@@ -136,31 +136,27 @@ export function fetchAccounts() {
         if (enableRes.code === 4001) {
           console.log("MetaMask NOT enabled.");
           // TODO: dispatch error
-          
         } else {
           console.log("MetaMask enabled!");
+          EthService.signer().getAddress()
+          .then(address => {
+            const accounts = [{address: address, nickname: 'MetaMask Wallet', balance: null}];
+            console.log("fetchAccounts: " + JSON.stringify(accounts));
+            const selectedAccount = accounts[0];
+            EthService
+              .getTrustTokenBalance(selectedAccount.address)
+              .then(balance => {
+                console.log("fetchAccounts: balance of " + selectedAccount + " " + balance);
+                selectedAccount.balance = balance;
+                dispatch(selectAccountSuccess(selectedAccount));
+                dispatch(fetchAccountsSuccess(accounts));
+              });
+            console.log("::: fetchAccounts END");
+          });
         }
       });
     }
 
-    const accounts = window.web3.eth.accounts.map(address => ({address: address, nickname: 'MetaMask Wallet', balance: null}));
-    console.log("fetchAccounts: " + JSON.stringify(accounts));
-    // Fetch balance of the first account, so we can show it immediately.
-    if (accounts.length == 0) {
-        // TODO: handle error condition better.
-        console.log("accounts.length == 0");
-        return;
-    }
-    const selectedAccount = accounts[0];
-    EthService
-      .getTrustTokenBalance(selectedAccount.address)
-      .then(balance => {
-        console.log("fetchAccounts: balance of " + selectedAccount + " " + balance);
-        selectedAccount.balance = balance;
-        dispatch(selectAccountSuccess(selectedAccount));
-        dispatch(fetchAccountsSuccess(accounts));
-      });
-    console.log("::: fetchAccounts END");
   }
 }
 

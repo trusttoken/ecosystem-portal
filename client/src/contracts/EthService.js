@@ -14,14 +14,11 @@ const EthService = {
     metamaskInstalled: false,
     TUSDBalance: null,
   },
-  web3Provider: null,
-  accounts: null,
   wallet: null,
   TUSDTokenContract: null,
   TrustTokenContract: null,
   StakedTokenContract: null,
   TimeLockRegistryProxy: null,
-  isMetamaskLocked,
   init,
   enableTrueReward,
   disableTrueReward,
@@ -41,6 +38,8 @@ const EthService = {
   registeredDistributions,
   loadGrant,
   networkIdToNetworkName,
+  signer,
+  provider,
 };
 
 function networkIdToNetworkName(networkId) {
@@ -74,15 +73,13 @@ function getEthNetwork() {
 }
 
 function isConnectedToMetaMask() {
-  return typeof web3 !== "undefined" && web3.eth.accounts && web3.eth.accounts.length;
+  return typeof window.ethereum !== "undefined" && window.ethereum.selectedAddress;
 }
 
 function getTrustTokenContract() {
   const network = getEthNetwork();
   const trustTokenContractAddress = TRUSTTOKEN_CONTRACT_ADDRESSES[network];
-  const provider = new ethers.providers.Web3Provider(window.web3.currentProvider);
-  const signer = provider.getSigner();
-  const TrustTokenContract = new ethers.Contract(trustTokenContractAddress, TrustTokenControllerAbi, signer);
+  const TrustTokenContract = new ethers.Contract(trustTokenContractAddress, TrustTokenControllerAbi, signer());
   return TrustTokenContract;
 }
 
@@ -112,6 +109,7 @@ async function registeredDistributions(address) {
 }
 
 async function getTrustTokenBalance(address) {
+  console.log("getTrustTokenBalance(" + address + ")");
   const TrustTokenContract = getTrustTokenContract();
   const trustTokenBalance = await TrustTokenContract.balanceOf(address);
   const balance = trustTokenBalance / 100000000;
@@ -141,20 +139,9 @@ async function getTrustTokenNextEpoch() {
 
 
 async function getActiveAccount() {
-  let accounts = window.web3.eth.accounts;
-  if (accounts.length === 0) {
-    await window.ethereum.enable();
-    accounts = window.web3.eth.accounts;
-  }
-  return accounts[0];
-}
-
-function isMetamaskLocked() {
-  const accounts = window.web3.eth.accounts;
-  console.log('accounts length', accounts.length);
-  const isLocked = accounts.length === 0;
-  console.log('isLocked', isLocked);
-  return isLocked;
+  const account = await signer().getAddress();
+  console.log("getActiveAccount: account: " + account);
+  return account;
 }
 
 async function enableMetamask() {
@@ -169,12 +156,14 @@ async function enableMetamask() {
   return res;
 }
 
-
-function handleMetamaskAccountsChangedEvent() {
-  window.ethereum.on('accountsChanged', function (accounts) {
-    console.log('metamask accounts changed coolio!');
-  });
+function provider() {
+  return new ethers.providers.Web3Provider(window.ethereum);
 }
+
+function signer() {
+  return provider().getSigner();
+}
+
 
 function createTokenContracts() {
   console.log("createTokenContracts:");
@@ -187,12 +176,10 @@ function createTokenContracts() {
   const StakedTokenContractAddress = test ?   '0xE510468dAD975bC77F0B81fADdE2f9DdF4231cf4' : '0x9499e8d5a56bb9ecf1b7c6a95e1c4f5331805a2e';
   const TimeLockRegistryProxyAddress = test ? '0xa9Fe04F164DF0C75F9A9F67994Ba91Abb9932633' : '0x5Fe2F5F2Cc97887746C5cB44386A94061F35DcC4';
 
-  const signer = EthService.web3Provider.getSigner();
-
-  EthService.TUSDTokenContract = new ethers.Contract(TUSDTokenContractAddress, TrueUSDControllerAbi, signer);
-  EthService.TrustTokenContract = new ethers.Contract(TrustTokenContractAddress, TrustTokenControllerAbi, signer);
-  EthService.StakedTokenContract = new ethers.Contract(StakedTokenContractAddress, StakedTokenControllerAbi, signer);
-  EthService.TimeLockRegistryProxy = new ethers.Contract(TimeLockRegistryProxyAddress, TimeLockRegistryProxyAbi, signer);
+  EthService.TUSDTokenContract = new ethers.Contract(TUSDTokenContractAddress, TrueUSDControllerAbi, signer());
+  EthService.TrustTokenContract = new ethers.Contract(TrustTokenContractAddress, TrustTokenControllerAbi, signer());
+  EthService.StakedTokenContract = new ethers.Contract(StakedTokenContractAddress, StakedTokenControllerAbi, signer());
+  EthService.TimeLockRegistryProxy = new ethers.Contract(TimeLockRegistryProxyAddress, TimeLockRegistryProxyAbi, signer());
 
   console.log("createTokenContracts: EthService.TimeLockRegistryProxy: " + EthService.TimeLockRegistryProxy);
 }
@@ -235,8 +222,7 @@ async function depositStakedToken(trustTokenAmount) {
 
 async function initMetamask() {
   console.log('******************* initMetamask');
-  const ethereum = window.ethereum;
-  if (typeof web3 !== 'undefined') {
+  if (typeof window.ethereum !== 'undefined') {
     console.log('Metamask installed');
     EthService.state.metamaskInstalled = true;
 
@@ -245,19 +231,24 @@ async function initMetamask() {
     if (enableRes.code === 4001) {
         return false;
       } else {
-        handleMetamaskAccountsChangedEvent();
+        const account = await signer().getAddress();
+        console.log("initMetamask: MetMask account: " + account);
+
+        window.ethereum.on('accountsChanged', function (accounts) {
+          console.log('metamask accounts changed coolio!');
+          window.location.reload();
+        });
 
         EthService.accounts = enableRes;
-        EthService.web3Provider = new ethers.providers.Web3Provider(window.web3.currentProvider);
 
         createTokenContracts();
 
-        const tusdBalance = await EthService.TUSDTokenContract.balanceOf(EthService.accounts[0]);
+        const tusdBalance = await EthService.TUSDTokenContract.balanceOf(account);
         console.log("================== TUSD balance:", tusdBalance.toString());
 
         EthService.state.TUSDBalance = ethUtils.formatEther(tusdBalance.toString());
 
-        const trustTokenBalance = await getTrustTokenBalance(EthService.accounts[0]);
+        const trustTokenBalance = await getTrustTokenBalance(account);
 
         EthService.state.TrustTokenBalance = trustTokenBalance.toString();
 

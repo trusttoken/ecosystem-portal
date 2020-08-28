@@ -63,9 +63,9 @@ const _DataProvider = ({ children, ...rest }) => {
       <div className="spinner-grow" role="status">
         <span className="sr-only">Loading...</span>
       </div>
-      { EthService.networkIdToNetworkName(web3.version.network) != EthService.getEthNetwork()
+      { EthService.networkIdToNetworkName(ethereum.networkVersion) != EthService.getEthNetwork()
         ? <Centered>
-            Your MetaMask wallet is connected to Ethereum network <b>{EthService.networkIdToNetworkName(web3.version.network)}</b>.
+            Your MetaMask wallet is connected to Ethereum network <b>{EthService.networkIdToNetworkName(ethereum.networkVersion)}</b>.
             <br/>
 
             Please connect to <b>{EthService.getEthNetwork()}</b>.
