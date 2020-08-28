@@ -38,6 +38,8 @@ const EthService = {
   registeredDistributions,
   loadGrant,
   networkIdToNetworkName,
+  signer,
+  provider,
 };
 
 function networkIdToNetworkName(networkId) {
@@ -77,9 +79,7 @@ function isConnectedToMetaMask() {
 function getTrustTokenContract() {
   const network = getEthNetwork();
   const trustTokenContractAddress = TRUSTTOKEN_CONTRACT_ADDRESSES[network];
-  const provider = new ethers.providers.Web3Provider(window.ethereum);
-  const signer = provider.getSigner();
-  const TrustTokenContract = new ethers.Contract(trustTokenContractAddress, TrustTokenControllerAbi, signer);
+  const TrustTokenContract = new ethers.Contract(trustTokenContractAddress, TrustTokenControllerAbi, signer());
   return TrustTokenContract;
 }
 
@@ -139,9 +139,7 @@ async function getTrustTokenNextEpoch() {
 
 
 async function getActiveAccount() {
-  const provider = new ethers.providers.Web3Provider(window.ethereum);
-  const signer = provider.getSigner();
-  const account = await signer.getAddress();
+  const account = await signer().getAddress();
   console.log("getActiveAccount: account: " + account);
   return account;
 }
@@ -158,6 +156,13 @@ async function enableMetamask() {
   return res;
 }
 
+function provider() {
+  return new ethers.providers.Web3Provider(window.ethereum);
+}
+
+function signer() {
+  return provider().getSigner();
+}
 
 
 function createTokenContracts() {
@@ -171,13 +176,10 @@ function createTokenContracts() {
   const StakedTokenContractAddress = test ?   '0xE510468dAD975bC77F0B81fADdE2f9DdF4231cf4' : '0x9499e8d5a56bb9ecf1b7c6a95e1c4f5331805a2e';
   const TimeLockRegistryProxyAddress = test ? '0xa9Fe04F164DF0C75F9A9F67994Ba91Abb9932633' : '0x5Fe2F5F2Cc97887746C5cB44386A94061F35DcC4';
 
-  const provider = new ethers.providers.Web3Provider(window.ethereum);
-  const signer = provider.getSigner();
-
-  EthService.TUSDTokenContract = new ethers.Contract(TUSDTokenContractAddress, TrueUSDControllerAbi, signer);
-  EthService.TrustTokenContract = new ethers.Contract(TrustTokenContractAddress, TrustTokenControllerAbi, signer);
-  EthService.StakedTokenContract = new ethers.Contract(StakedTokenContractAddress, StakedTokenControllerAbi, signer);
-  EthService.TimeLockRegistryProxy = new ethers.Contract(TimeLockRegistryProxyAddress, TimeLockRegistryProxyAbi, signer);
+  EthService.TUSDTokenContract = new ethers.Contract(TUSDTokenContractAddress, TrueUSDControllerAbi, signer());
+  EthService.TrustTokenContract = new ethers.Contract(TrustTokenContractAddress, TrustTokenControllerAbi, signer());
+  EthService.StakedTokenContract = new ethers.Contract(StakedTokenContractAddress, StakedTokenControllerAbi, signer());
+  EthService.TimeLockRegistryProxy = new ethers.Contract(TimeLockRegistryProxyAddress, TimeLockRegistryProxyAbi, signer());
 
   console.log("createTokenContracts: EthService.TimeLockRegistryProxy: " + EthService.TimeLockRegistryProxy);
 }
@@ -229,10 +231,7 @@ async function initMetamask() {
     if (enableRes.code === 4001) {
         return false;
       } else {
-       
-
-        const provider = new ethers.providers.Web3Provider(window.ethereum);
-        const account = await provider.getSigner().getAddress();
+        const account = await signer().getAddress();
         console.log("initMetamask: MetMask account: " + account);
 
         window.ethereum.on('accountsChanged', function (accounts) {
