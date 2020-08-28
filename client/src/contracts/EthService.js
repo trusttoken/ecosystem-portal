@@ -14,7 +14,6 @@ const EthService = {
     metamaskInstalled: false,
     TUSDBalance: null,
   },
-  web3Provider: null,
   accounts: null,
   wallet: null,
   TUSDTokenContract: null,
@@ -141,15 +140,9 @@ async function getTrustTokenNextEpoch() {
 
 
 async function getActiveAccount() {
-  //console.log("getActiveAccount: window.ethereum.selectedAccount: " + window.ethereum.selectedAccount);
-  // console.log("getActiveAccount: window.web3.eth.accounts[0]: " + window.web3.eth.acccounts[0]);
-  let account;
-  if (typeof window.web3 === "undefined") {
-    await window.ethereum.enable();
-    account = window.ethereum.selectedAccount;
-  } else {
-    account = window.web3.eth.accounts[0];
-  }
+  const provider = new ethers.providers.Web3Provider(window.ethereum);
+  const signer = provider.getSigner();
+  const account = await signer.getAddress();
   console.log("getActiveAccount: account: " + account);
   return account;
 }
@@ -170,6 +163,7 @@ async function enableMetamask() {
 function handleMetamaskAccountsChangedEvent() {
   window.ethereum.on('accountsChanged', function (accounts) {
     console.log('metamask accounts changed coolio!');
+    window.location.reload();
   });
 }
 
@@ -184,7 +178,8 @@ function createTokenContracts() {
   const StakedTokenContractAddress = test ?   '0xE510468dAD975bC77F0B81fADdE2f9DdF4231cf4' : '0x9499e8d5a56bb9ecf1b7c6a95e1c4f5331805a2e';
   const TimeLockRegistryProxyAddress = test ? '0xa9Fe04F164DF0C75F9A9F67994Ba91Abb9932633' : '0x5Fe2F5F2Cc97887746C5cB44386A94061F35DcC4';
 
-  const signer = EthService.web3Provider.getSigner();
+  const provider = new ethers.providers.Web3Provider(window.ethereum);
+  const signer = provider.getSigner();
 
   EthService.TUSDTokenContract = new ethers.Contract(TUSDTokenContractAddress, TrueUSDControllerAbi, signer);
   EthService.TrustTokenContract = new ethers.Contract(TrustTokenContractAddress, TrustTokenControllerAbi, signer);
@@ -242,11 +237,11 @@ async function initMetamask() {
         return false;
       } else {
         handleMetamaskAccountsChangedEvent();
-        const account = window.ethereum.selectedAccount || web3.eth.accounts[0];
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        const account = await provider.getSigner().getAddress();
         console.log("initMetamask: MetMask account: " + account);
 
         EthService.accounts = enableRes;
-        EthService.web3Provider = new ethers.providers.Web3Provider(window.ethereum);
 
         createTokenContracts();
 
