@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { EthService } from '@/contracts/EthService';
 import TokenStackIcon from '@/assets/token-stack.svg';
 import ClockStackIcon from '@/assets/clock-stack.svg';
-import CardIcon from '@/assets/card.png';
+// import CardIcon from '@/assets/card.png';
 
 const Container = styled.div`
   height: 118px;
@@ -387,14 +387,13 @@ function TrueRewards(props) {
             <a href="https://www.trusttoken.com/trueusd"
                style={{ color: '#FFFFFF' }}
             >
-                <img src={CardIcon} />
                 &nbsp;
                 Purchase TUSD
             </a>
           </div>
         </div>
 
-        
+
       </Container>
 
       <div style={{ display: 'block',
@@ -447,12 +446,12 @@ function TrueRewards(props) {
       rewards=<div>
                 Enable
                 &nbsp;
-                <div style={{float: 'right', padding: '0px 20px'}}> 
+                <div style={{float: 'right', padding: '0px 20px'}}>
                     <Switch
                       onEnable={() => EthService.enableTrueReward()}
                       onDisable={() => EthService.disableTrueReward()}
                     />
-                </div> 
+                </div>
               </div>
     />
 
@@ -500,9 +499,9 @@ function TrueRewards(props) {
       rewards=<div>
                 Enable
                 &nbsp;
-                <div style={{float: 'right', padding: '0px 20px'}}> 
+                <div style={{float: 'right', padding: '0px 20px'}}>
                     <DisabledSwitch />
-                </div> 
+                </div>
               </div>
     />
 
