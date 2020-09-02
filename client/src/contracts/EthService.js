@@ -73,7 +73,12 @@ function getEthNetwork() {
 }
 
 function isConnectedToMetaMask() {
-  return typeof window.ethereum !== "undefined" && window.ethereum.selectedAddress;
+  try {
+    return typeof window.ethereum !== "undefined" && window.ethereum.selectedAddress;
+  } catch (error) {
+    console.log("isConnectedToMetaMask: " + JSON.stringify(error));
+    return false;
+  }
 }
 
 function getTrustTokenContract() {
