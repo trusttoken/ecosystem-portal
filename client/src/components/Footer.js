@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 const Left = styled.span`
   position: fixed;
-  left: 0;
+  left: 100px;
   bottom: 0;
   color: #1253FA;
   text-align: left;
