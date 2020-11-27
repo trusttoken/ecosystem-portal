@@ -24,6 +24,7 @@ const EthService = {
   disableTrueReward,
   depositStakedToken,
   getTrustTokenBalance,
+  getTrustTokenSumLockedAndUnlocked,
   getTrustTokenLockStart,
   getTrustTokenEpochsPassed,
   getTrustTokenFinalEpoch,
@@ -113,12 +114,22 @@ async function registeredDistributions(address) {
   }
 }
 
+async function getTrustTokenSumLockedAndUnlocked(address) {
+  console.log("getTrustTokenSumLockedAndUnlocked(" + address + ")");
+  const TrustTokenContract = getTrustTokenContract();
+  const lockedBalance = await TrustTokenContract.lockedBalance(address);
+  const unlockedBalance = await TrustTokenContract.unlockedBalance(address);
+  const sum = (lockedBalance + unlockedBalance) / 100000000;
+  console.log(`Sum of locked and unlocked TRU of address ${address} is ${sum}`);
+  return sum;
+}
+
 async function getTrustTokenBalance(address) {
   console.log("getTrustTokenBalance(" + address + ")");
   const TrustTokenContract = getTrustTokenContract();
   const trustTokenBalance = await TrustTokenContract.balanceOf(address);
   const balance = trustTokenBalance / 100000000;
-  console.log(`TRU balance of address ${address} on is ${balance}`);
+  console.log(`TRU balance of address ${address} is ${balance}`);
   return balance;
 }
 
@@ -270,7 +281,7 @@ async function init(type) {
 
 async function loadGrant() {
   const account = await getActiveAccount();
-  const amount = await getTrustTokenBalance(account);
+  const amount = await getTrustTokenSumLockedAndUnlocked(account);
   const start = await getTrustTokenLockStart();
   const end = await getTrustTokenFinalEpoch();
   const cliff = moment(start).add(120, 'days');
