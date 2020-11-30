@@ -40,8 +40,6 @@ const Ticker = styled.div`
 `;
 
 const VestingBars = ({grants}) => {
-  //const data = useContext(DataContext)
-
   const [displayPopover, setDisplayPopover] = useState({})
 
   if (!grants || grants.length === 0) {
