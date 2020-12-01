@@ -117,9 +117,14 @@ async function registeredDistributions(address) {
 async function getTrustTokenSumLockedAndUnlocked(address) {
   console.log("getTrustTokenSumLockedAndUnlocked(" + address + ")");
   const TrustTokenContract = getTrustTokenContract();
-  const lockedBalance = await TrustTokenContract.lockedBalance(address);
-  const unlockedBalance = await TrustTokenContract.unlockedBalance(address);
-  const sum = (lockedBalance + unlockedBalance) / 100000000;
+  const epochsLeft = await TrustTokenContract.epochsLeft();
+  const epochsPassed = await TrustTokenContract.epochsPassed();
+  const lockedBalance = await TrustTokenContract.lockedBalance(address) / 100000000;
+  const singleUnlockAmount = lockedBalance / epochsLeft;
+  const unlockedBalance = singleUnlockAmount * epochsPassed;
+  const sum = singleUnlockAmount * (epochsLeft + epochsPassed);
+  console.log(`Locked TRU of address ${address} is ${lockedBalance}`);
+  console.log(`Unlocked TRU of address ${address} is ${unlockedBalance}`);
   console.log(`Sum of locked and unlocked TRU of address ${address} is ${sum}`);
   return sum;
 }
