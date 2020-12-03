@@ -138,6 +138,7 @@ async function getTrustTokenSumLockedAndUnlocked(address) {
   console.log(`unlockedBalance : ${unlockedBalance}`);
 
   const sum = lockedBalance + unlockedBalance;
+
   console.log(`Sum of locked and unlocked TRU of address ${address} is ${sum}`);
   return sum;
 }
