@@ -70,6 +70,10 @@ function networkIdToNetworkName(networkId) {
 
 function getEthNetwork() {
   let network = process.env.ETH_NETWORK || (process.env.NODE_ENV === 'production' ? 'mainnet' : 'ropsten');
+  // FIXME: for now staging will also work with mainnet because contract on ropsten does not work
+  // when methods epochsLeft and epochsPassed called (misconfiguration or wrong version of the contract,
+  // not sure)
+  return "mainnet";
   return network;
 }
 
@@ -117,14 +121,23 @@ async function registeredDistributions(address) {
 async function getTrustTokenSumLockedAndUnlocked(address) {
   console.log("getTrustTokenSumLockedAndUnlocked(" + address + ")");
   const TrustTokenContract = getTrustTokenContract();
+
   const epochsLeft = await TrustTokenContract.epochsLeft();
+  console.log(`epochsLeft: ${epochsLeft}`);
+
   const epochsPassed = await TrustTokenContract.epochsPassed();
+  console.log(`epochsPassed: ${epochsPassed}`);
+
   const lockedBalance = await TrustTokenContract.lockedBalance(address) / 100000000;
+  console.log(`lockedBalance: ${lockedBalance}`);
+
   const singleUnlockAmount = lockedBalance / epochsLeft;
+  console.log(`singleUnlockAmount: ${singleUnlockAmount}`);
+
   const unlockedBalance = singleUnlockAmount * epochsPassed;
-  const sum = singleUnlockAmount * (epochsLeft + epochsPassed);
-  console.log(`Locked TRU of address ${address} is ${lockedBalance}`);
-  console.log(`Unlocked TRU of address ${address} is ${unlockedBalance}`);
+  console.log(`unlockedBalance : ${unlockedBalance}`);
+
+  const sum = lockedBalance + unlockedBalance;
   console.log(`Sum of locked and unlocked TRU of address ${address} is ${sum}`);
   return sum;
 }
