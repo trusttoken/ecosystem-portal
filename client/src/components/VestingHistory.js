@@ -2,11 +2,9 @@ import React, { useContext } from 'react'
 import moment from 'moment'
 
 import { vestingSchedule } from '@/lib/vesting';
-
-import { DataContext } from '@/providers/data'
+import { formatNumber } from '@/utils/formatNumber';
 
 const VestingHistory = ({grants}) => {
-  //const data = useContext(DataContext)
 
   const showStartDate = true;
 
@@ -14,7 +12,7 @@ const VestingHistory = ({grants}) => {
   grants.forEach(grant => {
     vestingSchedule(grant).forEach(vest => {
       const dateKey = vest.date.format()
-      schedule[dateKey] = {amount: vest.amount, day: vest.day, date: dateKey}
+      schedule[dateKey] = {amount: vest.amount.toString(), day: vest.day, date: dateKey}
     })
   })
 
@@ -32,7 +30,7 @@ const VestingHistory = ({grants}) => {
         </td>
         <td className="text-nowrap" width="130px">
           <span style={{fontWeight: 500, fontSize: '16px', color: '#212529'}}>
-            {Number(schedule[date].amount).toLocaleString("en-US", {style: "decimal", maximumFractionDigits: 5}) } 
+            {formatNumber(schedule[date].amount)} 
           </span>
           <span className="text-muted">
             &nbsp;

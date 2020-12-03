@@ -7,12 +7,15 @@ import BigNumber from 'bignumber.js'
 import { DataContext } from '@/providers/data';
 
 import { vestingSchedule } from '@/lib/vesting';
+import { formatNumber } from '@/utils/formatNumber';
 
 import {
   calculateGranted,
   calculateVested,
   momentizeGrant
 } from '@/lib/shared'
+
+
 
 const DateAndDayLabel = styled.div`
   margin-top: 4px;
@@ -123,7 +126,7 @@ const VestingBars = ({grants}) => {
   const generateAmountMarkers = maxMarkers => {
     return [...Array(maxMarkers + 1).keys()].map(i => {
       return {
-        label: numeral((mgrants[0].amount / maxMarkers) * i).format('0.0a'),
+        label: formatNumber((mgrants[0].amount / maxMarkers) * i),
         left: (100 / maxMarkers) * i
       }
     })
@@ -200,7 +203,7 @@ const VestingBars = ({grants}) => {
                   </div>
                   <div>
                     <strong>Grant</strong>{' '}
-                    {Number(grant.amount).toLocaleString()}{' '}
+                    {formatNumber(grant.amount)}{' '}
                     <span className="ogn">TRU</span>
                   </div>
                 </div>
@@ -229,7 +232,7 @@ const VestingBars = ({grants}) => {
               ></div>
               <DateAndDayLabel i={index}>
                 <small className="text-muted">
-                  {marker.amountLabel}<br/>
+                  {formatNumber(marker.amountLabel)}<br/>
                   {marker.dateLabel}
                 </small>
               </DateAndDayLabel>
@@ -245,21 +248,21 @@ const VestingBars = ({grants}) => {
           <div className="status-circle bg-green mr-2"></div>
           <span className=" text-muted">
             Purchased TrustTokens
-            <Amount>{Number(mgrants[0].amount).toLocaleString()} <Ticker>TRU</Ticker></Amount>
+            <Amount>{formatNumber(mgrants[0].amount)} <Ticker>TRU</Ticker></Amount>
           </span>
         </div>
         <div className="col-12 col-sm-4">
           <div className="status-circle bg-green mr-2"></div>
           <span className="text-muted">
             Unlocked
-            <Amount>{Number(vested).toLocaleString()} <Ticker>TRU</Ticker></Amount>
+            <Amount>{formatNumber(vested)} <Ticker>TRU</Ticker></Amount>
           </span>
         </div>
         <div className="col-12 col-sm-4">
           <div className="status-circle mr-2"></div>
           <span className=" text-muted">
             Locked
-            <Amount>{Number(unvested).toLocaleString()} <Ticker>TRU</Ticker></Amount>
+            <Amount>{formatNumber(unvested)} <Ticker>TRU</Ticker></Amount>
           </span>
         </div>
       </div>
