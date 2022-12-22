@@ -41,7 +41,7 @@
     "express-useragent": "^1.0.13",
     "express-validator": "^6.4.0",
     "helmet": "^3.22.0",
-    "jsonwebtoken": "^8.5.1",
+    "jsonwebtoken": "^9.0.0",
     "lodash-es": "^4.17.15",
     "logplease": "^1.2.15",
     "mjml": "^4.6.2",
